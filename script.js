@@ -14,6 +14,8 @@ let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
 
+const debug=false
+
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
   left: [4, 5, 6, 7],    // Frames de 4 a 7 para esquerda
@@ -276,8 +278,12 @@ function moveCharacter() {
     // Atualizar animação
     const spriteIndex = directions[currentDirection][frame % 4];
     character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
-    const positionDisplay = document.getElementById('position-display');
+
+    if(debug){
+      const positionDisplay = document.getElementById('position-display');
     positionDisplay.textContent = `X: ${positionX}%, Y: ${positionY}%`;
+    }
+    
     aux++;
     if (aux >= 10) {
       frame++;

@@ -154,6 +154,52 @@ body {
   z-index: 10;
 }
 
+
+#text-boxfix {
+  position: absolute;
+  top: 25%;
+  right: 2%;
+  width: 550px; /* Ajuste o tamanho desejado */
+  height: 300px; /* Ajuste para caber a imagem completa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+#text-boxfix img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  opacity: 0;
+}
+#text-boxfix span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+#text-boxfix a {
+  color: #171244;             /* Cor dos links */
+  text-decoration: none;      /* Remove o sublinhado dos links */
+  padding: 5px 10px;          /* Espaçamento ao redor do texto */
+  border-radius: 5px;         /* Bordas arredondadas para os links */
+  transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+#text-boxfix a:hover {
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo preto com 10% de opacidade */
+  color: #171244;                       /* Mantém a cor original do texto */
+  text-decoration: none;                /* Garante que o sublinhado permaneça removido */
+}
+
+
 /* Animação para o fade out */
 @keyframes fadeOut {
   from { opacity: 1; }

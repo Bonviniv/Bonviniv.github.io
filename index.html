@@ -12,7 +12,24 @@
     <canvas id="collisionCanvas"></canvas>
     <div id="character"></div>
   </div>
+  
+  <div id="text-boxfix">
+    <img src="images/text-box.png" alt="Text Box" />
+    
+    <span>Welcome to my site,<br> 
+      My name is Vitor Barbosa<br>
+      I'm an Informatics Engineering Master’s student <br>
+      at ISCTE<br>
+      Hope you like your stay here!<br>
+      <br>
+      <a href="pdf/VitorBarbosaCV.pdf" download="VitorBarbosaCV">Download CV</a> |
+    <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">LinkedIn Profile</a>
+    </span>
+    
+  </div>
 
+
+  
   <div id="text-box">
     <img src="images/text-box.png" alt="Text Box" />
     <span>Use AWSD to move</span>
@@ -21,11 +38,11 @@
   <div id="text-box2" style="display: none;">
     <img src="images/text-box.png" alt="Text Box">
     <span>
-      Welcome to my site,<br> 
-      My name is Vitor Barbosa<br>
-      I'm an Informatics Engineering Master’s student <br>
-      at ISCTE<br>
-      Hope you like your stay here! 
+      The new information center <br>
+      was recently inaugurated,<br>
+       stop by to learn more.
+       <br> The center is the yellow building
+       <br> next to this garden. 
     </span>
     </div>
     <div id="text-box3" style="display: none;">
@@ -36,9 +53,14 @@
         maybe later..
       </span>
       </div>
-  <div id="volume-control">
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.25">
-  </div>
+
+      <div id="volume-control">
+        <!-- Volume icon -->
+        <span class="volume-icon">🔊</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.25">
+      </div>
+
+
 
   <audio id="background-music" loop>
     <source src="musica/Littleroot Town - Pokémon Ruby⧸Sapphire⧸Emerald Soundtrack.mp3" type="audio/mpeg">
