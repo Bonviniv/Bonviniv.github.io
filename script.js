@@ -7,9 +7,11 @@ let positionY = map.offsetHeight / 2 - 20;
 
 let currentDirection = null; // Nenhuma direção inicial
 let frame = 0; // Para controlar as animações
-const speed = 0.25; // Velocidade de movimento
+const speed = 0.1; // Velocidade de movimento
 let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
+let isTextBox3Visible = false; // Controle se o text-box está visível
+
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
   left: [4, 5, 6, 7],    // Frames de 4 a 7 para esquerda
@@ -122,19 +124,19 @@ function hideTextBox2WithFade() {
 function showTextBox3() {
   textBox3.style.display = 'flex'; // Mostra a caixa de texto
   textBox3.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
-  isTextBoxVisible = true;
+  isTextBox3Visible = true;
 }
 
 // Função para esconder a caixa de texto 2 com fade-out após 5 segundos
 function hideTextBox3WithFade() {
-  if (isTextBoxVisible) {
+  if (isTextBox3Visible) {
     // Inicia o fade-out após 5 segundos
     fadeTimeout = setTimeout(() => {
       textBox3.style.transition = 'opacity 1s'; // Define a duração do fade-out
       textBox3.style.opacity = '0'; // Reduz a opacidade para 0
       setTimeout(() => {
         textBox3.style.display = 'none'; // Oculta a caixa de texto após o fade-out
-        isTextBoxVisible = false;
+        isTextBox3Visible = false;
       }, 1500); // Tempo para o fade-out completar (1 segundo)
     }, 3000); // 5 segundos de atraso antes do fade-out
   }
@@ -235,6 +237,24 @@ function checkPlacaCollision(characterX, characterY) {
   }
   return false; // Não houve colisão com a placa
 }
+
+function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
+  // Convertendo as porcentagens para valores decimais (entre 0 e 1)
+  const xPersonagem = personagemX / 100;
+  const yPersonagem = personagemY / 100;
+  const xPonto = pontoX / 100;
+  const yPonto = pontoY / 100;
+
+  // Calculando a distância euclidiana (distância em linha reta)
+  const distanciaX = Math.abs(xPersonagem - xPonto);
+  const distanciaY = Math.abs(yPersonagem - yPonto);
+  const distancia = Math.sqrt(distanciaX * distanciaX + distanciaY * distanciaY);
+
+  // Verificando se a distância é menor que 2%
+  return distancia < 0.02;
+}
+
+let aux=0
 // Função para mover o personagem
 function moveCharacter() {
   const { mapWidth, mapHeight } = getMapDimensions();
@@ -242,8 +262,9 @@ function moveCharacter() {
   let newXPercentage = positionX;
   let newYPercentage = positionY;
  
- 
-  if (isMoving && currentDirection) {
+
+  if (isMoving && currentDirection ) {
+    
     if (currentDirection === 'up') newYPercentage -= speed;
     if (currentDirection === 'down') newYPercentage += speed;
     if (currentDirection === 'left') newXPercentage -= speed;
@@ -277,32 +298,37 @@ function moveCharacter() {
     positionDisplay.textContent = `X: ${positionX}%, Y: ${positionY}%`;
 
     // Advance frame
-    frame++;
+    aux+=1
+    if(aux>10){
+      frame++;
+      aux=0
+    }
+    
 
     //if (44.25<positionX<44.75 && 57.25<positionY<57.75) {
 
-    if (positionX > 44 && positionX < 45 && positionY > 56 && positionY < 58) {
-      // Se a posição estiver dentro dos limites, mostrar a caixa de texto
-      if(!isTextBoxVisible)
-      showTextBox2();
-
-      // Cancelar qualquer fade-out em andamento
-      clearTimeout(fadeTimeout);
-    } else if (isTextBoxVisible) {
-      // Quando o personagem sair da posição específica, iniciar o fade-out
-      hideTextBox2WithFade();
+    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
+      if(!isTextBox3Visible)
+        showTextBox3();
+        clearTimeout(fadeTimeout);
+        // Cancelar qualquer fade-out em andamento
+        
+      } else if (isTextBox3Visible) {
+        // Quando o personagem sair da posição específica, iniciar o fade-out
+        hideTextBox3WithFade();
+        isTextBox3Visible
     }
-  
-    if (positionX > 48 && positionX < 52 && positionY > 34 && positionY < 36) {
-      // Se a posição estiver dentro dos limites, mostrar a caixa de texto
-      if(!isTextBoxVisible)
-      showTextBox3();
 
-      // Cancelar qualquer fade-out em andamento
-      clearTimeout(fadeTimeout);
-    } else if (isTextBoxVisible) {
-      // Quando o personagem sair da posição específica, iniciar o fade-out
-      hideTextBox3WithFade();
+    if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=56)){
+      if(!isTextBoxVisible)
+        showTextBox2();
+        clearTimeout(fadeTimeout);
+        // Cancelar qualquer fade-out em andamento
+        
+      } else if (isTextBoxVisible) {
+        // Quando o personagem sair da posição específica, iniciar o fade-out
+        hideTextBox2WithFade();
+        isTextBoxVisible=false
     }
   
 
@@ -396,6 +422,7 @@ document.addEventListener('keydown', (event) => {
 
 // Configurar volume inicial
 audio.volume = 0.25;
+
 
 // Inicializa o personagem e toca a música
 window.onload = () => {
