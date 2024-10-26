@@ -1,28 +1,196 @@
 body {
   margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
   background-color: #e0f7fa;
+}
+@font-face {
+  font-family: 'PokemonFont';
+  src: url('fonte/pokemon-firered-leafgreen-font-recreation.ttf') format('truetype');
+}
+
+* {
+  font-family: 'PokemonFont', sans-serif;
 }
 
 #map {
   position: relative;
-  width: 500px; /* Ajustar conforme o tamanho da imagem */
-  height: 500px;
+  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
+  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
+  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
 }
-
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Prevent canvas from interfering with character movement */
+}
 #town-map {
   width: 100%;
   height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra todo o container sem distorções */
+  position: absolute;
 }
+
 
 #character {
   position: absolute;
   width: 40px;
   height: 40px;
-  background-image: url('character-sprite.png'); /* Coloque sua sprite */
-  background-size: cover;
-  bottom: 10px; /* Posição inicial do personagem */
+  background-image: url('images/tile000.png'); /* Sprite inicial */
+  background-size: 100% 100%; /* Certifica que a imagem ocupe todo o espaço do personagem */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; /* Colocar o personagem acima do mapa */
 }
+
+
+/* ... (existing CSS) */
+
+#position-display {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px;
+  z-index: 100; /* Ensure it's visible above other elements */
+}
+#text-box {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 300px; /* Ajuste o tamanho desejado */
+  height: 250px; /* Ajuste para caber a imagem completa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out; /* Para a transição de entrada */
+}
+
+#text-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Exibe a imagem completa */
+  border-radius: 8px;
+}
+
+#text-box span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  z-index: 10;
+}
+
+
+#text-box2 {
+  position: absolute;
+  top: 20%;
+  left: 2%;
+  width: 550px; /* Ajuste o tamanho desejado */
+  height: 300px; /* Ajuste para caber a imagem completa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#text-box2 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+}
+#text-box2 span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+
+
+
+#text-box3 {
+  position: absolute;
+  top: 20%;
+  left: 2%;
+  width: 550px; /* Ajuste o tamanho desejado */
+  height: 300px; /* Ajuste para caber a imagem completa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+#text-box3 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+}
+#text-box3 span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+/* Animação para o fade out */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+#volume-control {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+#volume-slider {
+  -webkit-appearance: none; /* Remove o estilo padrão do navegador */
+  appearance: none;
+  width: 150px;
+  height: 10px;
+  background-color: rgba(128, 128, 128, 0.5); /* Cinza com 50% de opacidade */
+  border-radius: 5px; /* Bordas arredondadas */
+  outline: none;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove o estilo padrão do navegador */
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: white; /* Bola branca */
+  border-radius: 50%; /* Deixa o thumb redondo */
+  cursor: pointer;
+}
+
+#volume-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background-color: white; /* Bola branca */
+  border-radius: 50%; /* Deixa o thumb redondo */
+  cursor: pointer;
+}
+
