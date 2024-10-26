@@ -194,3 +194,12 @@ body {
   cursor: pointer;
 }
 
+#collisionCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Impede que o canvas interfira na movimentação do personagem */
+  z-index: 15; /* Coloque o canvas acima do mapa */
+}

@@ -1,9 +1,11 @@
 const character = document.getElementById('character');
 const map = document.getElementById('map');
 const initialTextBox = document.getElementById('text-box-initial');
+const audio = document.getElementById('background-music');
+const volumeSlider = document.getElementById('volume-slider');
 
-let positionX = map.offsetWidth / 2 - 20; // Começa no meio do mapa
-let positionY = map.offsetHeight / 2 - 20;
+let positionX = 50; // Começa no meio do mapa em porcentagem
+let positionY = 50;
 
 let currentDirection = null; // Nenhuma direção inicial
 let frame = 0; // Para controlar as animações
@@ -18,8 +20,13 @@ const directions = {
   right: [8, 9, 10, 11], // Frames de 8 a 11 para direita
   up: [12, 13, 14, 15]   // Frames de 12 a 15 para cima
 };
-// Obtendo as dimensões do mapa
 
+let fadeTimeout; // Variável para armazenar o timeout de fade-out
+
+
+let aux=0
+
+// Obtendo as dimensões do mapa
 const textBox = document.getElementById('text-box');
 let hasMoved = false;
 const textBox2 = document.getElementById('text-box2');
@@ -95,9 +102,6 @@ const collisionLines = [
 
 ];
 
-// Criar um elemento canvas
-let fadeTimeout; // Variável para armazenar o timeout de fade-out
-
 // Função para mostrar a caixa de texto 2
 function showTextBox2() {
   textBox2.style.display = 'flex'; // Mostra a caixa de texto
@@ -159,84 +163,72 @@ function convertToPixel(value, mapDimension) {
   return (value / 100) * mapDimension;
 }
 
-function checkCollision(character, line) {
-  // Obtém as coordenadas do personagem (em pixels)
-  const characterX = convertToPixel(character.x, mapWidth);
-  const characterY = convertToPixel(character.y, mapHeight);
+function ativarTextos (positionX, positionY){
+  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
+    if(!isTextBox3Visible){
+      showTextBox3();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox3Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox3WithFade();
+      isTextBox3Visible=false
+  }
 
-  // Encontra o ponto mais próximo na linha
-  const closestPoint = findClosestPointOnLine(characterX, characterY, line);
-
-  // Calcula a distância entre o personagem e o ponto mais próximo
-  const distance = calculateDistance(characterX, characterY, closestPoint.x, closestPoint.y);
-
-  // Verifica se a distância é menor que o raio do personagem
-  const characterRadius = 2; // Ajuste de acordo com o tamanho do personagem
-  return distance <= characterRadius;
+  if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=56)){
+    if(!isTextBoxVisible){
+      showTextBox2()
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBoxVisible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox2WithFade();
+      isTextBoxVisible=false
+  }
 }
+  
+function checkCollisionLines(newXPercentage, newYPercentage) {
+  // Coordenadas iniciais e finais do personagem na tentativa de movimento
+  const startX = positionX;
+  const startY = positionY;
+  const endX = newXPercentage;
+  const endY = newYPercentage;
 
-// Função para encontrar o ponto mais próximo na linha
-function findClosestPointOnLine(px, py, line) {
-  const { x1, y1, x2, y2 } = line;
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)));
-  return { x: x1 + t * dx, y: y1 + t * dy };
-}
+  // Função auxiliar para verificar a interseção entre dois segmentos de linha
+  function isIntersecting(x1, y1, x2, y2, x3, y3, x4, y4) {
+    // Calcula a orientação das tripletas de pontos
+    function orientation(px, py, qx, qy, rx, ry) {
+      const val = (qy - py) * (rx - qx) - (qx - px) * (ry - qy);
+      return val === 0 ? 0 : (val > 0 ? 1 : 2);
+    }
 
-// Função para calcular a distância entre dois pontos
-function calculateDistance(x1, y1, x2, y2) {
-  const dx = x2 - x1;
-  const dy = y2 - y1;
-  return Math.sqrt(dx * dx + dy * dy);
-}
+    // Checa a orientação para decidir se os segmentos se intersectam
+    const o1 = orientation(x1, y1, x2, y2, x3, y3);
+    const o2 = orientation(x1, y1, x2, y2, x4, y4);
+    const o3 = orientation(x3, y3, x4, y4, x1, y1);
+    const o4 = orientation(x3, y3, x4, y4, x2, y2);
 
-function checkCollisionLines(characterX, characterY, collisionLines) {
-  for (const line of collisionLines) {
+    // Condição geral para interseção
+    if (o1 !== o2 && o3 !== o4) return true;
+
+    return false;
+  }
+
+  // Verifica cada linha de colisão
+  for (let line of collisionLines) {
     const { x1, y1, x2, y2 } = line;
 
-    // Calcula a distância perpendicular do personagem ao segmento de linha
-    const distance = perpendicularDistance(characterX, characterY, x1, y1, x2, y2);
-
-    // Verifica se o ponto de colisão está dentro do intervalo do segmento de linha
-    if (distance <= 2 && isPointOnLineSegment(characterX, characterY, x1, y1, x2, y2)) {
-      return true; // Houve colisão
+    // Checa se a linha de movimento do personagem colide com a linha de colisão
+    if (isIntersecting(startX, startY, endX, endY, x1, y1, x2, y2)) {
+      return true; // Há colisão
     }
   }
 
-  return false; // Não houve colisão
+  return false; // Sem colisão
 }
 
-
-// Função para calcular a distância perpendicular entre o personagem e uma linha
-function perpendicularDistance(x, y, x1, y1, x2, y2) {
-  const numerator = Math.abs((y2 - y1) * x - (x2 - x1) * y + x2 * y1 - y2 * x1);
-  const denominator = Math.sqrt((y2 - y1) ** 2 + (x2 - x1) ** 2);
-  return numerator / denominator;   
-}
-
-// Função para verificar se o ponto está no intervalo do segmento de linha
-function isPointOnLineSegment(px, py, x1, y1, x2, y2) {
-  // Verifica se o ponto está dentro do intervalo dos pontos da linha
-  const withinX = Math.min(x1, x2) <= px && px <= Math.max(x1, x2);
-  const withinY = Math.min(y1, y2) <= py && py <= Math.max(y1, y2);
-  return withinX && withinY;
-}
-
-function checkPlacaCollision(characterX, characterY) {
-  for (const line of placaLines) {
-    const { x1, y1, x2, y2 } = line;
-
-    // Calcula a distância perpendicular do personagem ao segmento de linha
-    const distance = perpendicularDistance(characterX, characterY, x1, y1, x2, y2);
-
-    if (distance <= 2 && isPointOnLineSegment(characterX, characterY, x1, y1, x2, y2)) {
-      console.log("Colisão detectada com a placa!");
-      return true; // Houve colisão com a placa
-    }
-  }
-  return false; // Não houve colisão com a placa
-}
 
 function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
   // Convertendo as porcentagens para valores decimais (entre 0 e 1)
@@ -254,100 +246,49 @@ function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
   return distancia < 0.02;
 }
 
-let aux=0
 // Função para mover o personagem
 function moveCharacter() {
   const { mapWidth, mapHeight } = getMapDimensions();
 
   let newXPercentage = positionX;
   let newYPercentage = positionY;
- 
 
-  if (isMoving && currentDirection ) {
-    
+  if (isMoving && currentDirection) {
     if (currentDirection === 'up') newYPercentage -= speed;
     if (currentDirection === 'down') newYPercentage += speed;
     if (currentDirection === 'left') newXPercentage -= speed;
     if (currentDirection === 'right') newXPercentage += speed;
 
-    // Check for collision before updating position
-    const willCollide = checkCollisionLines(newXPercentage, newYPercentage, collisionLines);
+    // Verifica se a nova posição colidiria
+    const willCollide = checkCollisionLines(newXPercentage, newYPercentage);
 
-    // Update position only if there's no collision
     if (!willCollide) {
-      positionX = newXPercentage;
-      positionY = newYPercentage;
-    }
-
-    // Maintain character within map boundaries
-    positionX = Math.max(0, Math.min(100, positionX));
-    positionY = Math.max(0, Math.min(100, positionY));
-
-    // Update character position in pixels
+      positionX = Math.max(0, Math.min(100, newXPercentage));
+      positionY = Math.max(0, Math.min(100, newYPercentage));
+      
     const newXPixel = convertToPixel(positionX, mapWidth);
     const newYPixel = convertToPixel(positionY, mapHeight);
     character.style.left = `${newXPixel}px`;
     character.style.top = `${newYPixel}px`;
 
-    // Update animation (change sprite)
+    }
+
+    // Atualizar animação
     const spriteIndex = directions[currentDirection][frame % 4];
     character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
-
-    // Update position display in percentage
     const positionDisplay = document.getElementById('position-display');
     positionDisplay.textContent = `X: ${positionX}%, Y: ${positionY}%`;
-
-    // Advance frame
-    aux+=1
-    if(aux>10){
+    aux++;
+    if (aux >= 10) {
       frame++;
-      aux=0
+      aux = 0;
     }
-    
-
-    //if (44.25<positionX<44.75 && 57.25<positionY<57.75) {
-
-    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
-      if(!isTextBox3Visible)
-        showTextBox3();
-        clearTimeout(fadeTimeout);
-        // Cancelar qualquer fade-out em andamento
-        
-      } else if (isTextBox3Visible) {
-        // Quando o personagem sair da posição específica, iniciar o fade-out
-        hideTextBox3WithFade();
-        isTextBox3Visible
-    }
-
-    if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=56)){
-      if(!isTextBoxVisible)
-        showTextBox2();
-        clearTimeout(fadeTimeout);
-        // Cancelar qualquer fade-out em andamento
-        
-      } else if (isTextBoxVisible) {
-        // Quando o personagem sair da posição específica, iniciar o fade-out
-        hideTextBox2WithFade();
-        isTextBoxVisible=false
-    }
-  
-
-    // Remove a caixa de texto inicial com fadeOut quando o personagem se move pela primeira vez
-    if (!hasMoved) {
-      hasMoved = true;
-      initialTextBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
-      setTimeout(() => {
-        initialTextBox.style.display = 'none'; // Remove a caixa após a animação
-      }, 1000); // Tempo para o fade-out completar
-    }
+    ativarTextos(positionX,positionY)
   }
-
-
-  // Repete o loop da animação
   requestAnimationFrame(moveCharacter);
-  
 }
 
+// Mantém a lógica de colisão e ativação das caixas de texto
 document.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'w': currentDirection = 'up'; break;
@@ -358,26 +299,10 @@ document.addEventListener('keydown', (event) => {
   isMoving = true;
 });
 
-
+// Parar o movimento quando a tecla é solta
 document.addEventListener('keyup', (event) => {
-  // Parar o movimento quando a tecla é solta
   isMoving = false;
 });
-
-// Inicializa o personagem no centro do mapa
-window.onload = () => {
-  positionX = 50; // Inicializa no meio do mapa
-  positionY = 50;
-
-  const newXPixel = convertToPixel(positionX, mapWidth);
-  const newYPixel = convertToPixel(positionY, mapHeight);
-  character.style.left = `${newXPixel}px`;
-  character.style.top = `${newYPixel}px`;
-  character.style.backgroundImage = "url('images/tile000.png')"; // Sprite inicial
-
-  // Iniciar o loop de animação
-  moveCharacter();
-};
 
 
 document.addEventListener('keydown', (event) => {
@@ -390,8 +315,7 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-const audio = document.getElementById('background-music');
-const volumeSlider = document.getElementById('volume-slider');
+
 
 // Tocar música somente após interação do usuário
 document.addEventListener('keydown', (event) => {
@@ -409,45 +333,26 @@ document.addEventListener('keydown', (event) => {
       textBox.style.display = 'none'; // Remove a caixa após a animação
     }, 1000); // Tempo para o fade-out completar
   }
-
-  if (!isMoving) {
-    if (event.key === 'w') currentDirection = 'up';
-    if (event.key === 'a') currentDirection = 'left';
-    if (event.key === 's') currentDirection = 'down';
-    if (event.key === 'd') currentDirection = 'right';
-
-    isMoving = true; // Começar o movimento
-  }
 });
 
-// Configurar volume inicial
-audio.volume = 0.25;
 
-
-// Inicializa o personagem e toca a música
-window.onload = () => {
-  positionX = 50; // Inicializa no meio do mapa
-  positionY = 50;
-
-  const newXPixel = convertToPixel(positionX, mapWidth);
-  const newYPixel = convertToPixel(positionY, mapHeight);
-  character.style.left = `${newXPixel}px`;
-  character.style.top = `${newYPixel}px`;
-  character.style.backgroundImage = "url('images/tile000.png')"; // Sprite inicial
-
-  // Iniciar o loop de animação
-  moveCharacter();
-
-  // Tocar música ao carregar a página (após usuário interagir)
-  audio.play().catch((error) => {
-    console.log("A reprodução automática foi bloqueada pelo navegador.");
-  });
-};
-
-
+audio.volume=0.25
 // Atualizar o volume conforme o controle deslizante
 volumeSlider.addEventListener('input', (event) => {
   audio.volume = event.target.value;
 });
 
+
+window.onload = () => {
+  const { mapWidth, mapHeight } = getMapDimensions();
+  positionX = 50;
+  positionY = 50;
+  const newXPixel = convertToPixel(positionX, mapWidth);
+  const newYPixel = convertToPixel(positionY, mapHeight);
+  character.style.left = `${newXPixel}px`;
+  character.style.top = `${newYPixel}px`;
+  character.style.backgroundImage = "url('images/tile000.png')";
+
+  moveCharacter();
+};
 
