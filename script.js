@@ -272,9 +272,9 @@ function moveCharacter() {
     const newYPixel = convertToPixel(positionY, mapHeight);
     character.style.left = `${newXPixel}px`;
     character.style.top = `${newYPixel}px`;
-
     }
 
+    
     // Atualizar animação
     const spriteIndex = directions[currentDirection][frame % 4];
     character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
