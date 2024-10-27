@@ -65,9 +65,9 @@ body {
   position: absolute;
   top: 62.2%; /* Ajuste a posição vertical conforme necessário */
   left: 45.5%; /* Ajuste a posição horizontal conforme necessário */
-  width: 120px; /* Largura inicial do GIF, ajuste conforme necessário */
-  height: 135px; /* Altura inicial do GIF, ajuste conforme necessário */
-  z-index: 999; /* Alto suficiente para ficar sobre o mapa, mas abaixo da imagem overlay se necessário */
+  width: 8%; /* Largura inicial do GIF, ajuste conforme necessário */
+  height: 17%; /* Altura inicial do GIF, ajuste conforme necessário */
+  z-index: 12; /* Alto suficiente para ficar sobre o mapa, mas abaixo da imagem overlay se necessário */
   pointer-events: none; /* Permite interações com elementos abaixo dele */
 }
 
