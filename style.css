@@ -23,6 +23,14 @@ body {
   height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
   overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
 }
+
+#mapup {
+  position: relative;
+  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
+  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
+  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
+  z-index: 11;
+}
 #canvas {
   position: absolute;
   top: 0;
@@ -50,6 +58,26 @@ body {
   transform: translate(-50%, -50%);
   z-index: 10; /* Colocar o personagem acima do mapa */
 }
+
+
+
+#water-overlay {
+  position: absolute;
+  top: 62.2%; /* Ajuste a posição vertical conforme necessário */
+  left: 45.5%; /* Ajuste a posição horizontal conforme necessário */
+  width: 120px; /* Largura inicial do GIF, ajuste conforme necessário */
+  height: 135px; /* Altura inicial do GIF, ajuste conforme necessário */
+  z-index: 999; /* Alto suficiente para ficar sobre o mapa, mas abaixo da imagem overlay se necessário */
+  pointer-events: none; /* Permite interações com elementos abaixo dele */
+}
+
+#water-gif {
+  width: 50%; /* Ajusta para ocupar toda a largura do container */
+  height: 50%; /* Ajusta para ocupar toda a altura do container */
+  object-fit: cover; /* Garante que o GIF cubra todo o container sem distorção */
+  opacity: 50%;
+}
+
 
 
 /* ... (existing CSS) */
@@ -123,6 +151,21 @@ body {
 }
 
 
+#map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Cobre toda a largura da tela */
+  height: 100vh; /* Cobre toda a altura da tela */
+  z-index: 1000; /* Alto suficiente para ficar acima de todos os outros elementos */
+  pointer-events: none; /* Impede a interferência da imagem com a interação do usuário */
+}
+
+#overlay-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem ocupe todo o espaço do container */
+}
 
 
 

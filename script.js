@@ -14,7 +14,7 @@ let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
 
-const debug=false
+const debug=true
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
@@ -70,31 +70,31 @@ const collisionLines = [
   { x1: 49, y1: 49.5, x2: 49, y2: 52},
 
   //predios
-  { x1: 50.5, y1: 56, x2: 57, y2: 56}, 
-  { x1: 50.5, y1: 49, x2: 57, y2: 49},
-  { x1: 50.5, y1: 56, x2: 50.5, y2: 49},
-  { x1: 57, y1: 56, x2: 57, y2: 49},
+  { x1: 50.25, y1: 56, x2: 57.5, y2: 56}, 
+  { x1: 50.25, y1: 49, x2: 57.5, y2: 49},
+  { x1: 50.25, y1: 56, x2: 50.25, y2: 49},
+  { x1: 57.5, y1: 56, x2: 57.5, y2: 49},
 
-  { x1: 51.5, y1: 45, x2: 56, y2: 45}, 
-  { x1: 51.5, y1: 39, x2: 56, y2: 39},
-  { x1: 51.5, y1: 39, x2: 51.5, y2: 45},
-  { x1:  56, y1: 39, x2:  56, y2: 45},
+  { x1: 51, y1: 45, x2: 56.5, y2: 45}, 
+  { x1: 51, y1: 39, x2: 56.5, y2: 39},
+  { x1: 51, y1: 39, x2: 51, y2: 45},
+  { x1:  56.5, y1: 39, x2:  56.5, y2: 45},
 
-  { x1: 44, y1: 45, x2: 48.5, y2: 45}, 
-  { x1: 44, y1: 39, x2: 48.5, y2: 39},
-  { x1: 44, y1: 39, x2:  44, y2: 45},
-  { x1:  48.5, y1: 39, x2:  48.5, y2: 45},
+  { x1: 43.5, y1: 45, x2: 49, y2: 45}, 
+  { x1: 43.5, y1: 39, x2: 49, y2: 39},
+  { x1: 43.5, y1: 39, x2:  43.5, y2: 45},
+  { x1:  49, y1: 39, x2:  49, y2: 45},
 
   //caixas de correio
-  { x1: 43, y1: 43, x2: 44, y2: 43}, 
+  { x1: 43, y1: 42, x2: 44, y2: 42}, 
   { x1: 43, y1: 45, x2: 44, y2: 45},
-  { x1: 43, y1: 43, x2:  43, y2: 45},
-  { x1: 44, y1: 43, x2:  44, y2: 45},
+  { x1: 43, y1: 42, x2:  43, y2: 45},
+  { x1: 44, y1: 42, x2:  44, y2: 45},
 
-  { x1: 50.5, y1: 43, x2: 51.5, y2: 43}, 
+  { x1: 50.5, y1: 42, x2: 51.5, y2: 42}, 
   { x1: 50.5, y1: 45, x2: 51.5, y2: 45},
-  { x1: 50.5, y1: 43, x2:  50.5, y2: 45},
-  { x1: 51.5, y1: 43, x2:  51.5, y2: 45},
+  { x1: 50.5, y1: 42, x2:  50.5, y2: 45},
+  { x1: 51.5, y1: 42, x2:  51.5, y2: 45},
 
   //placa
   { x1: 44., y1: 55, x2: 45.25, y2: 55}, 
@@ -252,45 +252,49 @@ function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
 function moveCharacter() {
   const { mapWidth, mapHeight } = getMapDimensions();
 
+  // Define as novas posições em porcentagem
   let newXPercentage = positionX;
   let newYPercentage = positionY;
-
+  
+  // Apenas calcula a nova posição e atualiza a direção se o personagem está em movimento
   if (isMoving && currentDirection) {
     if (currentDirection === 'up') newYPercentage -= speed;
     if (currentDirection === 'down') newYPercentage += speed;
     if (currentDirection === 'left') newXPercentage -= speed;
     if (currentDirection === 'right') newXPercentage += speed;
 
-    // Verifica se a nova posição colidiria
+    // Checa colisão na nova posição
     const willCollide = checkCollisionLines(newXPercentage, newYPercentage);
 
     if (!willCollide) {
+      // Atualiza a posição somente se não houver colisão
       positionX = Math.max(0, Math.min(100, newXPercentage));
       positionY = Math.max(0, Math.min(100, newYPercentage));
+
+      // Converte porcentagens para pixels e aplica ao estilo do personagem
+      const newXPixel = convertToPixel(positionX, mapWidth);
+      const newYPixel = convertToPixel(positionY, mapHeight);
+      character.style.left = `${newXPixel}px`;
+      character.style.top = `${newYPixel}px`;
+
+      // Atualiza a animação
+      const spriteIndex = directions[currentDirection][frame % 4];
+      character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
       
-    const newXPixel = convertToPixel(positionX, mapWidth);
-    const newYPixel = convertToPixel(positionY, mapHeight);
-    character.style.left = `${newXPixel}px`;
-    character.style.top = `${newYPixel}px`;
+      // Controle do frame para a animação (evita flickering ao pausar)
+      aux++;
+      if (aux >= 10) {
+        frame++;
+        aux = 0;
+      }
     }
 
-    
-    // Atualizar animação
-    const spriteIndex = directions[currentDirection][frame % 4];
-    character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
+    // Atualiza a posição do display (para depuração)
+   
+  } 
 
-    if(debug){
-      const positionDisplay = document.getElementById('position-display');
-    positionDisplay.textContent = `X: ${positionX}%, Y: ${positionY}%`;
-    }
-    
-    aux++;
-    if (aux >= 10) {
-      frame++;
-      aux = 0;
-    }
-    ativarTextos(positionX,positionY)
-  }
+  ativarTextos(positionX, positionY);
+  
   requestAnimationFrame(moveCharacter);
 }
 
