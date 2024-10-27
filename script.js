@@ -353,7 +353,21 @@ volumeSlider.addEventListener('input', (event) => {
 });
 
 
+const frames = [];
+
+// Precarregar frames
+function preloadFrames() {
+  for (let i = 0; i <= 15; i++) {
+    const img = new Image();
+    img.src = `images/tile${i.toString().padStart(3, '0')}.png`;
+    frames.push(img);
+  }
+}
+
+
 window.onload = () => {
+  preloadFrames();
+
   const { mapWidth, mapHeight } = getMapDimensions();
   positionX = 50;
   positionY = 50;
@@ -361,6 +375,10 @@ window.onload = () => {
   const newYPixel = convertToPixel(positionY, mapHeight);
   character.style.left = `${newXPixel}px`;
   character.style.top = `${newYPixel}px`;
+  
+    
+    
+ 
   character.style.backgroundImage = "url('images/tile000.png')";
 
   moveCharacter();
