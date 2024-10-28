@@ -91,34 +91,58 @@ body {
   padding: 5px;
   z-index: 100; /* Ensure it's visible above other elements */
 }
+
+
 #text-box {
   position: absolute;
   top: 20%;
   left: 15%;
-  width: 300px; /* Ajuste o tamanho desejado */
-  height: 250px; /* Ajuste para caber a imagem completa */
+  width: 300px; /* Mantém o tamanho da imagem */
+  height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   z-index: 100;
-  animation: fadeIn 0.5s ease-in-out; /* Para a transição de entrada */
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 #text-box img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Exibe a imagem completa */
-  border-radius: 8px;
+  object-fit: contain; /* Mantém a imagem completa */
 }
+
+.text-background {
+  position: absolute;
+  padding: 10% 20%; /* Ajuste o padding para cobrir o texto */
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.text-background2 {
+  position: absolute;
+  padding: 14% 47%; /* Ajuste o padding para cobrir o texto */
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 #text-box span {
   color: #333;
   font-size: 18px;
   font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
   z-index: 10;
 }
+
+
 
 
 #text-box2 {
@@ -181,12 +205,14 @@ body {
   text-align: center;
   z-index: 100;
   animation: fadeIn 0.5s ease-in-out;
+  
 }
 #text-box3 img {
   flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
   width: 100%; /* Faz a imagem ocupar toda a largura do container */
   height: 100%; /* Faz a imagem ocupar toda a altura do container */
   object-fit: contain; /* Mantém a proporção e evita distorções */
+  
 }
 #text-box3 span {
   color: #333;
@@ -195,6 +221,7 @@ body {
   position: absolute; /* Mantém o texto sobre a imagem */
   text-align: center;
   z-index: 10;
+  
 }
 
 
@@ -212,6 +239,7 @@ body {
   animation: fadeIn 0.5s ease-in-out;
 }
 #text-boxfix img {
+
   flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
   width: 100%; /* Faz a imagem ocupar toda a largura do container */
   height: 100%; /* Faz a imagem ocupar toda a altura do container */
@@ -225,8 +253,8 @@ body {
   position: absolute; /* Mantém o texto sobre a imagem */
   text-align: center;
   z-index: 10;
+  
 }
-
 
 
 #text-boxfix a {
