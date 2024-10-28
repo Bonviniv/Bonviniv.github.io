@@ -8,6 +8,7 @@ const positionDisplay = document.getElementById('position-display');
 let cenario=1
 // Variável para monitorar o estado da tecla "W"
 let isWPressed = false;
+let isSPressed = false;
 
 let positionX = 50; // Começa no meio do mapa em porcentagem
 let positionY = 50;
@@ -18,6 +19,8 @@ const speed = 0.1; // Velocidade de movimento
 let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
+let isTextBox4Visible = false; // Controle se o text-box está visível
+
 
 const debug=true
 
@@ -39,6 +42,7 @@ const textBox = document.getElementById('text-box');
 let hasMoved = false;
 const textBox2 = document.getElementById('text-box2');
 const textBox3 = document.getElementById('text-box3');
+const textBox4 = document.getElementById('text-box4');
 
 
 const mapWidth = map.offsetWidth;
@@ -110,6 +114,64 @@ const collisionLines = [
 
 ];
 
+const collisionLines2 = [
+  //paredes lab
+  { x1: 51, y1: 62.5, x2: 57, y2: 62.5 }, 
+  { x1: 49.5, y1: 62.5, x2: 43, y2: 62.5 }, 
+  { x1: 43, y1: 62.5, x2: 43, y2: 39 }, 
+  { x1: 56.5, y1: 62.5, x2: 56.5, y2: 39 }, 
+  { x1: 56.5, y1: 40, x2: 43, y2: 40 },    
+
+  //moveis
+  { x1: 49.5, y1: 41, x2: 44, y2: 41 },  
+  { x1: 49.5, y1: 41, x2:49.5, y2: 39 },
+
+  { x1: 52, y1: 41, x2: 57, y2: 41 }, 
+  { x1: 52, y1: 41, x2: 52, y2: 39 }, 
+
+  { x1: 48.75, y1: 56, x2: 43, y2: 56 }, 
+  { x1: 48.75, y1: 52, x2: 43, y2: 52 }, 
+  { x1: 48.75, y1: 52, x2: 48.75, y2: 56 },
+
+  { x1: 57, y1: 56, x2: 51, y2: 56 }, 
+  { x1: 57, y1: 52, x2: 51, y2: 52 }, 
+  { x1: 51, y1: 52, x2: 51, y2: 56 },
+
+  //plantas
+  { x1: 43, y1: 60.75, x2: 44, y2: 60.75 }, 
+  { x1:  44, y1: 60.75, x2:  44, y2: 63 },
+
+  { x1: 55.5, y1: 60.75, x2: 57, y2: 60.75 }, 
+  { x1:  55.5, y1: 60.75, x2: 55.5, y2: 63 },
+
+  //professor oak
+
+  { x1: 51.5, y1: 46.5, x2: 48.25, y2: 46.5 },
+  { x1: 51.5, y1: 42, x2: 48.25, y2: 42 },
+  { x1: 51.5, y1: 46.5, x2: 51.5, y2:  42 },
+  { x1: 48.25, y1: 46.5, x2: 48.25, y2: 42 },
+
+
+  //mesa
+  { x1: 55.25, y1: 47.75, x2: 55.25, y2: 44.5 },
+  { x1: 51, y1: 47.75, x2: 51, y2: 44.5 },
+  { x1: 51, y1: 44.5, x2: 55.25, y2: 44.5 },
+  { x1: 51, y1: 47.75, x2: 55.25, y2: 47.75 },
+
+  //equipamentos
+  { x1: 43, y1: 48.5, x2: 46.5, y2: 48.5 },
+  { x1: 43, y1: 44, x2: 46.5, y2: 44 },
+  { x1: 46.5, y1: 44, x2: 46.5, y2:48.5 },
+
+  { x1: 44, y1: 45, x2: 44, y2: 41.75 },
+  { x1: 43, y1:41.75, x2: 44, y2: 41.75 },
+
+
+
+];
+
+let lines
+
 // Função para mostrar a caixa de texto 2
 function showTextBox2() {
   textBox2.style.display = 'flex'; // Mostra a caixa de texto
@@ -153,6 +215,28 @@ function hideTextBox3WithFade() {
     }, 3000); // 5 segundos de atraso antes do fade-out
   }
 }
+
+
+function showTextBox4() {
+  textBox4.style.display = 'flex'; // Mostra a caixa de texto
+  textBox4.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBox4Visible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBox4WithFade() {
+  if (isTextBox4Visible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBox4.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBox4.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBox4.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBox4Visible = false;
+      }, 1500); // Tempo para o fade-out completar (1 segundo)
+    }, 3000); // 5 segundos de atraso antes do fade-out
+  }
+}
 // ... (restante do código)
 // Função para obter as dimensões do mapa
 function getMapDimensions() {
@@ -172,9 +256,9 @@ function convertToPixel(value, mapDimension) {
 }
 
 function ativarTextos (positionX, positionY){
-  if(cenario=1){
-    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
-    if(!isTextBox3Visible){
+
+  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
+    if(!isTextBox4Visible){
       showTextBox3();
       clearTimeout(fadeTimeout);
       // Cancelar qualquer fade-out em andamento
@@ -196,11 +280,31 @@ function ativarTextos (positionX, positionY){
       hideTextBox2WithFade();
       isTextBoxVisible=false
   }
+
+  
+}
+
+
+function ativarTextoslab (positionX, positionY){
+
+  if (calcularDistancia(positionX,positionY,pontoX=50,pontoY=45)){
+    if(!isTextBox4Visible){
+      showTextBox4();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox4Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox4WithFade();
+      isTextBox4Visible=false
   }
+
+  
+
   
 }
   
-function checkCollisionLines(newXPercentage, newYPercentage) {
+function checkCollisionLines(newXPercentage, newYPercentage,lines) {
   // Coordenadas iniciais e finais do personagem na tentativa de movimento
   const startX = positionX;
   const startY = positionY;
@@ -228,14 +332,17 @@ function checkCollisionLines(newXPercentage, newYPercentage) {
   }
 
   // Verifica cada linha de colisão
-  for (let line of collisionLines) {
-    const { x1, y1, x2, y2 } = line;
-
-    // Checa se a linha de movimento do personagem colide com a linha de colisão
-    if (isIntersecting(startX, startY, endX, endY, x1, y1, x2, y2)) {
-      return true; // Há colisão
+  
+    for (let line of lines) {
+      const { x1, y1, x2, y2 } = line;
+  
+      // Checa se a linha de movimento do personagem colide com a linha de colisão
+      if (isIntersecting(startX, startY, endX, endY, x1, y1, x2, y2)) {
+        return true; // Há colisão
+      }
     }
-  }
+
+  
 
   return false; // Sem colisão
 }
@@ -268,8 +375,22 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 's' || event.key === 's') {
+    isSPressed = true;
+  }
+});
+document.addEventListener('keyup', (event) => {
+  if (event.key === 's' || event.key === 's') {
+    isSPressed = false;
+  }
+});
+
 // Função para mover o personagem
 function moveCharacter() {
+
+  
   const { mapWidth, mapHeight } = getMapDimensions();
 
   // Define as novas posições em porcentagem
@@ -282,10 +403,27 @@ function moveCharacter() {
     if (currentDirection === 'down') newYPercentage += speed;
     if (currentDirection === 'left') newXPercentage -= speed;
     if (currentDirection === 'right') newXPercentage += speed;
-
+    let lines
+    const body = document.body;
+  
+    if (body.dataset.background == "lab") {
+      // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
+      lines = collisionLines2;
+      cenario = 2;
+      console.log("Cenário alterado para o lab.");
+      ativarTextoslab(newXPercentage,newYPercentage)
+    } 
+    if (body.dataset.background == "town") {
+      // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
+      lines = collisionLines;
+      cenario = 1;
+      console.log("Cenário alterado para town.");
+      ativarTextos(newXPercentage,newYPercentage)
+    } 
+    
     // Checa colisão na nova posição
-    const willCollide = checkCollisionLines(newXPercentage, newYPercentage);
-
+    const willCollide = checkCollisionLines(newXPercentage, newYPercentage, lines);
+    
     if (!willCollide) {
       // Atualiza a posição somente se não houver colisão
       positionX = Math.max(0, Math.min(100, newXPercentage));
@@ -302,7 +440,6 @@ function moveCharacter() {
       character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
       
       // Controle do frame para a animação (evita flickering ao pausar)
-       
 
       aux++;
       if (aux >= 10) {
@@ -312,22 +449,39 @@ function moveCharacter() {
 
       positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
 
-       // Checa se a tecla "W" está pressionada e se o personagem está na área especificada
-       if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
-        cenario=2
+      if(cenario==1){
+        if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
+        
         // Redireciona para a nova página e define o fundo
-        window.location.href = "https://Bonviniv.github.io/lab.html";
+        window.location.href = "lab.html";
         document.body.style.backgroundImage = "url('images/oaks-lab.png')";
+        newWindow()
+        
       }
+      }
+       // Checa se a tecla "W" está pressionada e se o personagem está na área especificada
+       if(cenario==2){
+        if (isSPressed && positionX >= 49 && positionX <= 51 && positionY >= 63 && positionY <= 65) {
+        
+        // Redireciona para a nova página e define o fundo
+        window.location.href = "index.html";
+        document.body.style.backgroundImage = "url('images/pallet-town.png')";
+        newWindow()
+        
+      
+      }
+      }
+
+      
+    
     }
 
     // Atualiza a posição do display (para depuração)
    
   } 
 
-  
 
-  ativarTextos(positionX, positionY);
+  //ativarTextos(positionX, positionY);
   
   requestAnimationFrame(moveCharacter);
 }
@@ -398,8 +552,8 @@ function preloadFrames() {
   }
 }
 
+function newWindow(){
 
-window.onload = () => {
   preloadFrames();
 
   const { mapWidth, mapHeight } = getMapDimensions();
@@ -410,10 +564,13 @@ window.onload = () => {
   character.style.left = `${newXPixel}px`;
   character.style.top = `${newYPixel}px`;
   
-    
-    
- 
+  
   character.style.backgroundImage = "url('images/tile000.png')";
+  cenario=1
+}
+
+window.onload = () => {
+  newWindow()
 
   moveCharacter();
 };

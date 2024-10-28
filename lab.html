@@ -9,18 +9,36 @@
   <link rel="icon" href="images/logo2.png" type="image/png">
 </head>
 
-<body>
+
+<body data-background="lab">
 </head>
 
 <body>
 
   <body>
-    
+    <div id="map-overlay">
+        <img src="images\oaks-labup.png" alt="Overlay Map" id="overlay-image">
+      </div>
     <div id="map">
-      <img src="images/oaks-lab.png" alt="Pallet Town Map" id="town-map">
+      <img src="images/oaks-lab.png" alt="lab Map" id="lab-map">
       <canvas id="collisionCanvas"></canvas>
       <div id="character"></div>
     </div>
+
+    <div id="text-box4" style="display: none;">
+        <img src="images/text-box.png" alt="Text Box">
+        <div class="text-background4">
+          <span>
+            Hello, I'm Professor Oak, and this is the information center.<br>
+             I would offer you one of the three starter Pokémon,<br>
+              but unfortunately, the last trainers took them...<br>
+               However, we have something even better <br>
+               on the table, go take a look!".
+
+          </span>
+        </div>
+      </div>
+
 <div id="volume-control">
         <!-- Volume icon -->
         <span class="volume-icon">🔊</span>
@@ -32,8 +50,10 @@
     Your browser does not support the audio element.
   </audio>
 
+
   <div id="position-display"></div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
