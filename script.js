@@ -3,6 +3,11 @@ const map = document.getElementById('map');
 const initialTextBox = document.getElementById('text-box-initial');
 const audio = document.getElementById('background-music');
 const volumeSlider = document.getElementById('volume-slider');
+const positionDisplay = document.getElementById('position-display');
+// Seleciona a div que mostrará a posição
+let cenario=1
+// Variável para monitorar o estado da tecla "W"
+let isWPressed = false;
 
 let positionX = 50; // Começa no meio do mapa em porcentagem
 let positionY = 50;
@@ -30,6 +35,7 @@ let aux=0
 
 // Obtendo as dimensões do mapa
 const textBox = document.getElementById('text-box');
+
 let hasMoved = false;
 const textBox2 = document.getElementById('text-box2');
 const textBox3 = document.getElementById('text-box3');
@@ -166,7 +172,8 @@ function convertToPixel(value, mapDimension) {
 }
 
 function ativarTextos (positionX, positionY){
-  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
+  if(cenario=1){
+    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
     if(!isTextBox3Visible){
       showTextBox3();
       clearTimeout(fadeTimeout);
@@ -189,6 +196,8 @@ function ativarTextos (positionX, positionY){
       hideTextBox2WithFade();
       isTextBoxVisible=false
   }
+  }
+  
 }
   
 function checkCollisionLines(newXPercentage, newYPercentage) {
@@ -247,6 +256,17 @@ function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
   // Verificando se a distância é menor que 2%
   return distancia < 0.02;
 }
+      // Detecta quando uma tecla é pressionada e solta
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'w' || event.key === 'W') {
+    isWPressed = true;
+  }
+});
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'w' || event.key === 'W') {
+    isWPressed = false;
+  }
+});
 
 // Função para mover o personagem
 function moveCharacter() {
@@ -282,16 +302,30 @@ function moveCharacter() {
       character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
       
       // Controle do frame para a animação (evita flickering ao pausar)
+       
+
       aux++;
       if (aux >= 10) {
         frame++;
         aux = 0;
+      }
+
+      positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
+
+       // Checa se a tecla "W" está pressionada e se o personagem está na área especificada
+       if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
+        cenario=2
+        // Redireciona para a nova página e define o fundo
+        window.location.href = "https://Bonviniv.github.io/lab.html";
+        document.body.style.backgroundImage = "url('images/oaks-lab.png')";
       }
     }
 
     // Atualiza a posição do display (para depuração)
    
   } 
+
+  
 
   ativarTextos(positionX, positionY);
   
