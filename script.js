@@ -4,11 +4,24 @@ const initialTextBox = document.getElementById('text-box-initial');
 const audio = document.getElementById('background-music');
 const volumeSlider = document.getElementById('volume-slider');
 const positionDisplay = document.getElementById('position-display');
+const maplinks = document.getElementById('map-overlay-links');
+const maplinksimage = document.getElementById('overlay-image-links');
+const link1 = document.getElementById('link1');
+const link2 = document.getElementById('link2');
+const downloadArea = document.getElementById('download-area');
+
+// Define os links
+const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
+const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
+const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
+
+
 // Seleciona a div que mostrará a posição
 let cenario=1
 // Variável para monitorar o estado da tecla "W"
 let isWPressed = false;
 let isSPressed = false;
+
 
 let positionX = 50; // Começa no meio do mapa em porcentagem
 let positionY = 50;
@@ -171,6 +184,8 @@ const collisionLines2 = [
 ];
 
 let lines
+
+
 
 // Função para mostrar a caixa de texto 2
 function showTextBox2() {
@@ -342,7 +357,6 @@ function checkCollisionLines(newXPercentage, newYPercentage,lines) {
       }
     }
 
-  
 
   return false; // Sem colisão
 }
@@ -387,6 +401,38 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+function ativarLinks(positionX, positionY) {
+  // Verifique se o elemento maplinks existe
+  if (!maplinks) {
+      console.error("Element with id 'map-overlay-links' not found.");
+      return; // Pare a execução se o elemento não for encontrado
+  }
+
+  // Exibe ou oculta o overlay com base nas condições
+  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 48) {
+      maplinks.style.display = 'block'; // Torna visível quando as condições são atendidas
+  } else {
+      maplinks.style.display = 'none'; // Oculta se as condições não forem atendidas
+  }// Adicione os ouvintes de evento após a definição das áreas clicáveis
+link1.addEventListener('click', () => {
+  window.location.href = url1; // Redireciona para o link 1
+});
+
+link2.addEventListener('click', () => {
+  window.location.href = url2; // Redireciona para o link 2
+});
+
+downloadArea.addEventListener('click', () => {
+  window.open(pdfUrl); // Inicia o download do PDF
+});
+
+
+
+}
+
+
+
+
 // Função para mover o personagem
 function moveCharacter() {
 
@@ -412,6 +458,7 @@ function moveCharacter() {
       cenario = 2;
       console.log("Cenário alterado para o lab.");
       ativarTextoslab(newXPercentage,newYPercentage)
+      ativarLinks(newXPercentage,newYPercentage)
     } 
     if (body.dataset.background == "town") {
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações

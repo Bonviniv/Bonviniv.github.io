@@ -190,6 +190,23 @@ body {
   pointer-events: none; /* Impede a interferência da imagem com a interação do usuário */
 }
 
+#map-overlay-links{
+  display: none;  /*Oculte por padrão */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Cobre toda a largura da tela */
+  height: 100vh; /* Cobre toda a altura da tela */
+  z-index: 9999; /* Alto suficiente para ficar acima de todos os outros elementos */
+  pointer-events: none; /* Impede a interferência da imagem com a interação do usuário */
+}
+#overlay-image-links {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem ocupe todo o espaço do container */
+}
+
+
 #overlay-image {
   width: 100%;
   height: 100%;
@@ -273,6 +290,22 @@ body {
 }
 
 
+.clickable-area {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.5); /* Fundo semitransparente */
+  border: 2px solid rgba(0, 0, 0, 0.5); /* Borda para visualização */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  z-index: 1001; /* Alto o suficiente para estar acima do overlay */
+  opacity: 0;
+
+}
+
+/* Adiciona uma animação ao passar o mouse */
+.clickable-area:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  
+}
 
 
 
