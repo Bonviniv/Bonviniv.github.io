@@ -550,8 +550,11 @@ function moveCharacter() {
         aux = 0;
       }
 
-      positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
+      if(debug){
 
+        positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
+
+      }
       if(cenario==1){
         if (isWPressed && positionX >= 45 && positionX <= 46 && positionY >= 45&& positionY <= 46) {
         // Redireciona para a nova página e define o fundo
