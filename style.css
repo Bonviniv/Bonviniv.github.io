@@ -200,6 +200,7 @@ body {
 
 
 
+
 #map-overlay {
   position: absolute;
   top: 0;
@@ -459,6 +460,16 @@ body {
   justify-content: center;
   align-items: center;
 }
+.text-backgroundlinks {
+  position: absolute;
+  padding: -1% 40%; /* Ajuste o padding para cobrir o texto */
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 
 /* Reset de margens e preenchimentos */
