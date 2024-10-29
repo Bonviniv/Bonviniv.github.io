@@ -10,17 +10,20 @@ const link1 = document.getElementById('link1');
 const link2 = document.getElementById('link2');
 const downloadArea = document.getElementById('download-area');
 
+let LabTown=false
+
 // Define os links
 const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
 
-
+let aux=0
 // Seleciona a div que mostrará a posição
 let cenario=1
 // Variável para monitorar o estado da tecla "W"
 let isWPressed = false;
 let isSPressed = false;
+let isAPressed = false;
 
 
 let positionX = 50; // Começa no meio do mapa em porcentagem
@@ -47,7 +50,7 @@ const directions = {
 let fadeTimeout; // Variável para armazenar o timeout de fade-out
 
 
-let aux=0
+
 
 // Obtendo as dimensões do mapa
 const textBox = document.getElementById('text-box');
@@ -183,6 +186,21 @@ const collisionLines2 = [
 
 ];
 
+
+const collisionLines3 = [
+  //paredes
+  { x1: 44.75, y1: 40, x2:44.75, y2: 58 },
+  { x1:55.5, y1: 40, x2:55.5, y2: 58 },
+  { x1: 44.75, y1: 57.5, x2:55.5, y2: 57.5 },
+  { x1: 44.75, y1: 43, x2:55.5, y2: 43 },
+
+  //escada
+  { x1: 53.4, y1: 48, x2:51.8, y2: 48 },
+  { x1: 51.25, y1: 48, x2:51.25, y2: 43 },
+
+  //tv
+  
+];
 let lines
 
 
@@ -401,47 +419,56 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'a' || event.key === 'a') {
+    isAPressed = true;
+  }
+});
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'a' || event.key === 'a') {
+    isAPressed = false;
+  }
+});
+
 function ativarLinks(positionX, positionY) {
+  // Seleciona o elemento de overlay
+  const maplinks = document.getElementById("map-overlay-links");
+  const maplinksa = document.getElementById("overlay-image-links");
+
   // Verifique se o elemento maplinks existe
   if (!maplinks) {
-      console.error("Element with id 'map-overlay-links' not found.");
-      return; // Pare a execução se o elemento não for encontrado
+    console.error("Elemento com id 'map-overlay-links' não encontrado.");
+    return; // Pare a execução se o elemento não for encontrado
   }
 
-  // Exibe ou oculta o overlay com base nas condições
+  // Verifica a posição e a tecla pressionada para exibir ou ocultar os links
   if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 48) {
-      maplinks.style.display = 'block'; // Torna visível quando as condições são atendidas
+    // Adiciona a classe "active" para exibir o overlay
+    maplinks.style.display="flex"
+    maplinksa.style.display="flex"
   } else {
-      maplinks.style.display = 'none'; // Oculta se as condições não forem atendidas
-  }// Adicione os ouvintes de evento após a definição das áreas clicáveis
-link1.addEventListener('click', () => {
-  window.location.href = url1; // Redireciona para o link 1
-});
-
-link2.addEventListener('click', () => {
-  window.location.href = url2; // Redireciona para o link 2
-});
-
-downloadArea.addEventListener('click', () => {
-  window.open(pdfUrl); // Inicia o download do PDF
-});
-
-
-
+    // Remove a classe "active" para esconder o overlay
+    maplinks.style.display="none"
+    maplinksa.style.display="none"
+  }
 }
 
 
-
+let contador=0
 
 // Função para mover o personagem
 function moveCharacter() {
 
+  
   
   const { mapWidth, mapHeight } = getMapDimensions();
 
   // Define as novas posições em porcentagem
   let newXPercentage = positionX;
   let newYPercentage = positionY;
+
+  const body = document.body;
+    
   
   // Apenas calcula a nova posição e atualiza a direção se o personagem está em movimento
   if (isMoving && currentDirection) {
@@ -450,9 +477,33 @@ function moveCharacter() {
     if (currentDirection === 'left') newXPercentage -= speed;
     if (currentDirection === 'right') newXPercentage += speed;
     let lines
-    const body = document.body;
+
+
+   
+   if(contador==2){
+  character.style.opacity=1
+  }
+
+
+  if (body.dataset.background == "casa") {
+    if(contador==0){
+      newXPercentage = 54.4;
+      newYPercentage = 44.6
+     }
+    // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
+    lines = collisionLines3;
+    cenario = 3;
+    console.log("Cenário alterado para o casa.");
+    
+  } 
   
     if (body.dataset.background == "lab") {
+      if(contador==0){
+        newXPercentage = 50;
+        newYPercentage = 63
+       }
+    
+    
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
       lines = collisionLines2;
       cenario = 2;
@@ -460,8 +511,12 @@ function moveCharacter() {
       ativarTextoslab(newXPercentage,newYPercentage)
       ativarLinks(newXPercentage,newYPercentage)
     } 
+
     if (body.dataset.background == "town") {
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
+     
+    
+    
       lines = collisionLines;
       cenario = 1;
       console.log("Cenário alterado para town.");
@@ -489,6 +544,7 @@ function moveCharacter() {
       // Controle do frame para a animação (evita flickering ao pausar)
 
       aux++;
+      contador++;
       if (aux >= 10) {
         frame++;
         aux = 0;
@@ -497,22 +553,48 @@ function moveCharacter() {
       positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
 
       if(cenario==1){
-        if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
-        
+        if (isWPressed && positionX >= 45 && positionX <= 46 && positionY >= 45&& positionY <= 46) {
         // Redireciona para a nova página e define o fundo
+       
+        window.location.href = "casa.html";
+        document.body.style.backgroundImage = "url('images/casa.png')";
+        newWindow()
+        
+      }
+      }
+
+      if(cenario==1){
+        if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
+        // Redireciona para a nova página e define o fundo
+       
         window.location.href = "lab.html";
         document.body.style.backgroundImage = "url('images/oaks-lab.png')";
         newWindow()
+        
         
       }
       }
        // Checa se a tecla "W" está pressionada e se o personagem está na área especificada
        if(cenario==2){
         if (isSPressed && positionX >= 49 && positionX <= 51 && positionY >= 63 && positionY <= 65) {
-        
+         
         // Redireciona para a nova página e define o fundo
         window.location.href = "index.html";
         document.body.style.backgroundImage = "url('images/pallet-town.png')";
+        
+        newWindow()
+        
+      
+      }
+      }
+
+      if(cenario==3){
+        if (isAPressed && positionX >= 52 && positionX <= 53 && positionY >= 43.9 && positionY <= 46) {
+         
+        // Redireciona para a nova página e define o fundo
+        window.location.href = "index.html";
+        document.body.style.backgroundImage = "url('images/pallet-town.png')";
+        
         newWindow()
         
       
@@ -522,13 +604,12 @@ function moveCharacter() {
       
     
     }
-
+    
     // Atualiza a posição do display (para depuração)
    
   } 
 
 
-  //ativarTextos(positionX, positionY);
   
   requestAnimationFrame(moveCharacter);
 }
@@ -542,6 +623,7 @@ document.addEventListener('keydown', (event) => {
     case 'd': currentDirection = 'right'; break;
   }
   isMoving = true;
+ 
 });
 
 // Parar o movimento quando a tecla é solta
@@ -602,6 +684,7 @@ function preloadFrames() {
 function newWindow(){
 
   preloadFrames();
+  character.style.opacity=0
 
   const { mapWidth, mapHeight } = getMapDimensions();
   positionX = 50;
@@ -610,15 +693,12 @@ function newWindow(){
   const newYPixel = convertToPixel(positionY, mapHeight);
   character.style.left = `${newXPixel}px`;
   character.style.top = `${newYPixel}px`;
-  
-  
   character.style.backgroundImage = "url('images/tile000.png')";
-  cenario=1
+ 
 }
 
 window.onload = () => {
   newWindow()
-
   moveCharacter();
 };
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vitor Barbosa</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Favicon Link -->
+  <link rel="icon" href="images/logo2.png" type="image/png">
+</head>
+
+<body data-background="casa">
+</head>
+
+<body>
+  
+  <body>
+    <div id="map-overlay" >
+      <img src="images/casaup.png" alt="Overlay Map" id="overlay-image">
+    </div>
+    
+    <div id="map">
+      <img src="images/casa.png" alt="Casa map" id="casa-map">
+      <canvas id="collisionCanvas"></canvas>
+      <div id="character"></div>
+    </div>
+  
+ 
+      <div id="volume-control">
+        <!-- Volume icon -->
+        <span class="volume-icon">🔊</span>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.25">
+      </div>
+
+
+
+  <audio id="background-music" loop>
+    <source src="musica/Littleroot Town - Pokémon Ruby⧸Sapphire⧸Emerald Soundtrack.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="position-display"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

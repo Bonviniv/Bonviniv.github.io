@@ -5,65 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vitor Barbosa</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Favicon Link -->
   <link rel="icon" href="images/logo2.png" type="image/png">
 </head>
-
-
 <body data-background="lab">
-</head>
+   
 
-<body>
-
-  <body>
-   <!-- <div id="map-overlay-links" style="display: none;">-->
-    <div id="map-overlay-links" >
+    <div id="map-overlay-links">
         <img src="images/oaks-lab-links.png" alt="Overlay Map links" id="overlay-image-links">
-        
-        <div class="clickable-area" id="link1" style="top: 38%; left: 18%; width: 12%; height: 25%;"></div>
-        <div class="clickable-area" id="link2" style="top: 38%; left: 43.8%; width: 12%; height: 25%;"></div>
-        <div class="clickable-area" id="download-area" style="top: 38%; left: 66.8%; width: 12%; height: 25%;"></div>
+        <svg viewBox="0 0 100 100">
+          <!-- Link para o LinkedIn -->
+          <a xlink:href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">
+            <rect x="83%" y="39.5%" width="25%" height="22%" opacity="0"></rect>
+          </a>
+          <!-- Link para o GitHub -->
+          <a xlink:href="https://github.com/Bonviniv/" target="_blank">
+            <rect x="-14%" y="39.5%" width="25%" height="22%" opacity="0"></rect>
+          </a>
+          <!-- Link para baixar o PDF -->
+          <a xlink:href="pdf/VitorBarbosaCV.pdf" download="VitorBarbosaCV">
+            <rect x="37%" y="39.5%" width="25%" height="22%" opacity="0"></rect>
+          </a>
+        </svg>
+      </div>
+  <!-- Overlay para camada acima do mapa -->
+  <div id="map-overlay">
+    <img src="images/oaks-labup.png" alt="Overlay Map" id="overlay-image">
+  </div>
+
+  <!-- Mapa principal com o personagem e canvas -->
+  <div id="map">
+    <img src="images/oaks-lab.png" alt="Lab Map" id="lab-map">
+    <canvas id="collisionCanvas"></canvas>
+    <div id="character"></div>
+  </div>
+
+  <!-- Div de overlay que contém o SVG com links clicáveis -->
+  
+
+  <!-- Caixa de diálogo do Professor Oak -->
+  <div id="text-box4" style="display: none;">
+    <img src="images/text-box.png" alt="Text Box">
+    <div class="text-background4">
+      <span>
+        Hello, I'm Professor Oak, and this is the information center.<br>
+        I would offer you one of the three starter Pokémon,<br>
+        but unfortunately, the last trainers took them...<br>
+        However, we have something even better<br>
+        on the table, go take a look!
+      </span>
     </div>
-    
-      
-    <div id="map-overlay">
-        <img src="images\oaks-labup.png" alt="Overlay Map" id="overlay-image">
-      </div>
-    <div id="map">
-      <img src="images/oaks-lab.png" alt="lab Map" id="lab-map">
-      <canvas id="collisionCanvas"></canvas>
-      <div id="character"></div>
-    </div>
+  </div>
 
-    <div id="text-box4" style="display: none;">
-        <img src="images/text-box.png" alt="Text Box">
-        <div class="text-background4">
-          <span>
-            Hello, I'm Professor Oak, and this is the information center.<br>
-             I would offer you one of the three starter Pokémon,<br>
-              but unfortunately, the last trainers took them...<br>
-               However, we have something even better <br>
-               on the table, go take a look!".
-
-          </span>
-        </div>
-      </div>
-
-<div id="volume-control">
-        <!-- Volume icon -->
-        <span class="volume-icon">🔊</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.25">
-      </div>
+  <!-- Controle de volume -->
+  <div id="volume-control">
+    <span class="volume-icon">🔊</span>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.25">
+  </div>
 
   <audio id="background-music" loop>
     <source src="musica/Littleroot Town - Pokémon Ruby⧸Sapphire⧸Emerald Soundtrack.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-
+  <!-- Div para mostrar a posição (apenas para debug) -->
   <div id="position-display"></div>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
