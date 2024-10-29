@@ -38,7 +38,7 @@ let isTextBox3Visible = false; // Controle se o text-box está visível
 let isTextBox4Visible = false; // Controle se o text-box está visível
 
 
-const debug=true
+const debug=false
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
