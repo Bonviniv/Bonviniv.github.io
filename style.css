@@ -580,32 +580,39 @@ svg * {
 }
 
 #volume-slider {
-  -webkit-appearance: none; /* Remove o estilo padrão do navegador */
+  -webkit-appearance: none;
   appearance: none;
   width: 150px;
   height: 10px;
-  background-color: rgba(128, 128, 128, 0.5); /* Cinza com 50% de opacidade */
-  border-radius: 5px; /* Bordas arredondadas */
+  background: linear-gradient(to right, #7a7f7f 0%,#7a7f7f 15%,#c9cece 20%, #c9cece 50%, #c9cece 100%); /* Gradiente inicial */
+  border-radius: 5px;
   outline: none;
+  /* Adicione esta transição para suavizar a mudança de cor */
+  transition: background 0.3s ease;
 }
 
 #volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Remove o estilo padrão do navegador */
+  -webkit-appearance: none;
   appearance: none;
   width: 15px;
   height: 15px;
-  background-color: white; /* Bola branca */
-  border-radius: 50%; /* Deixa o thumb redondo */
+  background-color: white;
+  border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 #volume-slider::-moz-range-thumb {
   width: 15px;
   height: 15px;
-  background-color: white; /* Bola branca */
-  border-radius: 50%; /* Deixa o thumb redondo */
+  background-color: white;
+  border-radius: 50%;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
+
 
 #collisionCanvas {
   position: absolute;

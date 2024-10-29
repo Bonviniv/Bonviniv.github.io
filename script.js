@@ -9,6 +9,19 @@ const maplinksimage = document.getElementById('overlay-image-links');
 const link1 = document.getElementById('link1');
 const link2 = document.getElementById('link2');
 const downloadArea = document.getElementById('download-area');
+const volumeIcon = document.querySelector('.volume-icon');
+
+volumeSlider.addEventListener('input', function () {
+  const value = this.value * 100; // Converte o valor para porcentagem
+  this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #ccc ${value}%)`;
+
+  if (this.value == 0) {
+    volumeIcon.textContent = '🔇'; // Ícone de sem som
+  } else {
+    volumeIcon.textContent = '🔊'; // Ícone de som
+  }
+});
+
 
 let LabTown=false
 
@@ -637,7 +650,7 @@ function moveCharacter() {
 
 
    
-   if(contador==2){
+   if(contador==3){
   character.style.opacity=1
   }
 
@@ -660,7 +673,6 @@ function moveCharacter() {
         newXPercentage = 50;
         newYPercentage = 63
        }
-    
     
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
       lines = collisionLines2;
@@ -748,7 +760,7 @@ function moveCharacter() {
       }
 
       if(cenario==3){
-        if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 44.1 && positionY <= 45.5) {
+        if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 44 && positionY <= 46) {
          
         
         window.location.href = "index.html";
@@ -780,6 +792,8 @@ document.addEventListener('keydown', (event) => {
     case 'a': currentDirection = 'left'; break;
     case 's': currentDirection = 'down'; break;
     case 'd': currentDirection = 'right'; break;
+    default:
+      currentDirection = null;
   }
   isMoving = true;
  
@@ -822,7 +836,7 @@ document.addEventListener('keydown', (event) => {
 });
 
 
-audio.volume=0.25
+audio.volume=0.15
 // Atualizar o volume conforme o controle deslizante
 volumeSlider.addEventListener('input', (event) => {
   audio.volume = event.target.value;
