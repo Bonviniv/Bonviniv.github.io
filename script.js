@@ -36,9 +36,14 @@ let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
 let isTextBox4Visible = false; // Controle se o text-box está visível
+let isTextBox5Visible = false; // Controle se o text-box está visível
+let isTextBox6Visible = false; // Controle se o text-box está visível
+let isTextBox7Visible = false; // Controle se o text-box está visível
+let isTextBox8Visible = false; // Controle se o text-box está visível
 
 
-const debug=false
+
+const debug=true
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
@@ -59,6 +64,10 @@ let hasMoved = false;
 const textBox2 = document.getElementById('text-box2');
 const textBox3 = document.getElementById('text-box3');
 const textBox4 = document.getElementById('text-box4');
+const textBox5 = document.getElementById('text-box5');
+const textBox6 = document.getElementById('text-box6');
+const textBox7 = document.getElementById('text-box7');
+const textBox8 = document.getElementById('text-box8');
 
 
 const mapWidth = map.offsetWidth;
@@ -189,17 +198,30 @@ const collisionLines2 = [
 
 const collisionLines3 = [
   //paredes
-  { x1: 44.75, y1: 40, x2:44.75, y2: 58 },
-  { x1:55.5, y1: 40, x2:55.5, y2: 58 },
-  { x1: 44.75, y1: 57.5, x2:55.5, y2: 57.5 },
-  { x1: 44.75, y1: 43, x2:55.5, y2: 43 },
-
+  { x1: 44.75, y1: 40, x2:44.75, y2: 64.15 },
+  { x1: 44.75, y1: 64.15 , x2:58, y2: 64.15 },
+  { x1: 57.5 ,y1: 40, x2:57.5, y2: 64.15 },
+  { x1: 44.75, y1: 44 , x2:57.5, y2: 44 },
   //escada
-  { x1: 53.4, y1: 48, x2:51.8, y2: 48 },
-  { x1: 51.25, y1: 48, x2:51.25, y2: 43 },
+  { x1: 56, y1: 48 , x2:53, y2: 48 },
+  //{ x1: 56, y1: 48 , x2:56, y2: 46 },
+  { x1: 53, y1: 47.5 , x2:53, y2: 43},
+  //moveis
+  { x1: 50, y1: 45 , x2:43, y2: 45 },
+  { x1: 50, y1: 45 , x2:50, y2: 43 },
+  { x1: 45.5, y1: 46 , x2:45.5, y2: 43 },
+  { x1: 45.5, y1: 46 , x2:43, y2: 46 },
+
+  //cama
+  { x1: 47, y1: 56.5 , x2:47, y2: 60.75 },
+  { x1: 43, y1: 56.5 , x2:47, y2: 56.5 },
+  { x1: 43, y1: 60.75 , x2:47, y2: 60.75 },
 
   //tv
-  
+  { x1: 51, y1: 54 , x2:51, y2: 59 },
+  { x1: 49, y1: 54 , x2:49, y2: 59 },
+  { x1: 49, y1: 54 , x2:51, y2: 54 },
+  { x1: 49, y1: 59 , x2:51, y2: 59 },
 ];
 let lines
 
@@ -270,6 +292,90 @@ function hideTextBox4WithFade() {
     }, 3000); // 5 segundos de atraso antes do fade-out
   }
 }
+
+function showTextBox5() {
+  textBox5.style.display = 'flex'; // Mostra a caixa de texto
+  textBox5.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBox5Visible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBox5WithFade() {
+  if (isTextBox5Visible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBox5.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBox5.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBox5.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBox5Visible = false;
+      }, 1000); // Tempo para o fade-out completar (1 segundo)
+    }, 500); // 5 segundos de atraso antes do fade-out
+  }
+}
+
+function showTextBox6() {
+  textBox6.style.display = 'flex'; // Mostra a caixa de texto
+  textBox6.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBox6Visible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBox6WithFade() {
+  if (isTextBox6Visible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBox6.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBox6.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBox6.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBox6Visible = false;
+      }, 1000); // Tempo para o fade-out completar (1 segundo)
+    }, 500); // 5 segundos de atraso antes do fade-out
+  }
+}
+
+function showTextBox7() {
+  textBox7.style.display = 'flex'; // Mostra a caixa de texto
+  textBox7.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBox7Visible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBox7WithFade() {
+  if (isTextBox7Visible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBox7.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBox7.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBox7.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBox7Visible = false;
+      }, 1000); // Tempo para o fade-out completar (1 segundo)
+    }, 500); // 5 segundos de atraso antes do fade-out
+  }
+}
+
+function showTextBox8() {
+  textBox8.style.display = 'flex'; // Mostra a caixa de texto
+  textBox8.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBox8Visible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBox8WithFade() {
+  if (isTextBox8Visible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBox8.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBox8.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBox8.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBox8Visible = false;
+      }, 1000); // Tempo para o fade-out completar (1 segundo)
+    }, 500); // 5 segundos de atraso antes do fade-out
+  }
+}
 // ... (restante do código)
 // Função para obter as dimensões do mapa
 function getMapDimensions() {
@@ -315,6 +421,7 @@ function ativarTextos (positionX, positionY){
   }
 
   
+  
 }
 
 
@@ -331,9 +438,59 @@ function ativarTextoslab (positionX, positionY){
       hideTextBox4WithFade();
       isTextBox4Visible=false
   }
-
   
+}
 
+function ativarTextoscasa (positionX, positionY){
+
+  if (calcularDistancia(positionX,positionY,pontoX=45.5,pontoY=59)){
+    if(!isTextBox5Visible){
+      showTextBox5();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox5Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox5WithFade();
+      isTextBox5Visible=false
+  }
+
+
+  if (calcularDistancia(positionX,positionY,pontoX=49,pontoY=44)){
+    if(!isTextBox6Visible){
+      showTextBox6();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox6Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox6WithFade();
+      isTextBox6Visible=false
+  }
+
+  if (calcularDistancia(positionX,positionY,pontoX=43.5,pontoY=45)){
+    if(!isTextBox7Visible){
+      showTextBox7();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox7Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox7WithFade();
+      isTextBox7Visible=false
+  }
+
+  if (calcularDistancia(positionX,positionY,pontoX=58.4,pontoY=43)){
+    if(!isTextBox8Visible){
+      showTextBox8();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBox8Visible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBox8WithFade();
+      isTextBox8Visible=false
+  }
   
 }
   
@@ -487,15 +644,16 @@ function moveCharacter() {
 
   if (body.dataset.background == "casa") {
     if(contador==0){
-      newXPercentage = 54.4;
-      newYPercentage = 44.6
+      newXPercentage = 56.5;
+      newYPercentage = 49
      }
     // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
     lines = collisionLines3;
     cenario = 3;
     console.log("Cenário alterado para o casa.");
+    ativarTextoscasa(newXPercentage,newYPercentage)
     
-  } 
+  }  
   
     if (body.dataset.background == "lab") {
       if(contador==0){
@@ -515,8 +673,6 @@ function moveCharacter() {
     if (body.dataset.background == "town") {
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
      
-    
-    
       lines = collisionLines;
       cenario = 1;
       console.log("Cenário alterado para town.");
@@ -592,9 +748,9 @@ function moveCharacter() {
       }
 
       if(cenario==3){
-        if (isAPressed && positionX >= 52 && positionX <= 53 && positionY >= 43.9 && positionY <= 46) {
+        if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 44.1 && positionY <= 45.5) {
          
-        // Redireciona para a nova página e define o fundo
+        
         window.location.href = "index.html";
         document.body.style.backgroundImage = "url('images/pallet-town.png')";
         
