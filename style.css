@@ -189,6 +189,17 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
 #map-overlay {
   position: absolute;
   top: 0;
@@ -273,6 +284,50 @@ body {
   text-align: center;
   z-index: 10;
 }
+
+
+#text-box5 {
+  position: absolute;
+  top: 20%;
+  left: 6%;
+  width:31%; /* Ajuste o tamanho desejado */
+  height: 50%; /* Ajuste para caber a imagem completa */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+  
+}
+
+#text-box5 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 10%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box5 span {
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+.text-background5 {
+  position: absolute;
+  padding: 12% 45%; /* Ajuste o padding para cobrir o texto */
+  background-color: rgba(135, 135, 135, 0.1); /* Fundo opaco apenas no texto */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .text-background4 {
   position: absolute;
