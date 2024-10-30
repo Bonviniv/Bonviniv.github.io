@@ -21,7 +21,7 @@ const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
 
-const debug=true
+const debug=false
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
@@ -31,7 +31,6 @@ const directions = {
 };
 
 const frames = [];
-
 const textBox = document.getElementById('text-box');
 const textBox2 = document.getElementById('text-box2');
 const textBox3 = document.getElementById('text-box3');
@@ -58,6 +57,8 @@ let positionY = 50;
 let currentDirection = null; // Nenhuma direção inicial
 let frame = 0; // Para controlar as animações
 let isMoving = false; // Controla se o personagem está se movendo
+let isTextBoxcasaVisible = false; // Controle se o text-box está visível
+
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
 let isTextBox4Visible = false; // Controle se o text-box está visível
@@ -65,6 +66,7 @@ let isTextBox5Visible = false; // Controle se o text-box está visível
 let isTextBox6Visible = false; // Controle se o text-box está visível
 let isTextBox7Visible = false; // Controle se o text-box está visível
 let isTextBox8Visible = false; // Controle se o text-box está visível
+let isTextVisible=false
 
 let contador=0
 let lines
@@ -155,6 +157,10 @@ const collisionLines2 = [
   //paredes lab
   { x1: 51, y1: 62.5, x2: 57, y2: 62.5 }, 
   { x1: 49.5, y1: 62.5, x2: 43, y2: 62.5 }, 
+
+  { x1: 51, y1: 62.5, x2: 51, y2: 65 }, 
+  { x1: 49.5, y1: 62.5, x2: 49.5, y2: 65 }, 
+
   { x1: 43, y1: 62.5, x2: 43, y2: 39 }, 
   { x1: 56.5, y1: 62.5, x2: 56.5, y2: 39 }, 
   { x1: 56.5, y1: 40, x2: 43, y2: 40 },    
@@ -235,7 +241,38 @@ const collisionLines3 = [
   { x1: 49, y1: 59 , x2:51, y2: 59 },
 ];
 
+let lastWidth = window.innerWidth;
+let lastHeight = window.innerHeight;
+let zoom=false
 
+function checkZoom() {
+    const currentWidth = window.innerWidth;
+    const currentHeight = window.innerHeight;
+
+    if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
+      textBoxcasa.style.display="none" 
+      textBox.style.display="none" 
+      textBox2.style.display="none" 
+      textBox3.style.display="none" 
+      textBox4.style.display="none" 
+      textBox5.style.display="none" 
+      textBox6.style.display="none" 
+      textBox7.style.display="none" 
+      textBox8.style.display="none"
+    } 
+
+    // Atualiza os valores para a próxima verificação
+    lastWidth = currentWidth;
+    lastHeight = currentHeight;
+}
+
+
+
+// Verifica a cada 500ms (ou ajuste conforme necessário)
+
+
+// Verifica quando a janela é redimensionada
+window.addEventListener('resize', checkZoom);
 function adjustYValuesWithFactor(lines, change) {
   const adjustedLines = lines.map(line => ({
     ...line,
@@ -246,7 +283,13 @@ function adjustYValuesWithFactor(lines, change) {
   console.log(adjustedLines);
 }
 
-
+function textBoxCheck(){
+  if(isTextBoxVisible&&isTextBox3Visible&&isTextBox4Visible&&isTextBox5Visible&&isTextBox6Visible&&isTextBox7Visible&&isTextBox8Visible&&isTextBoxcasaVisible){
+    isTextVisible=true
+  }else{
+    isTextVisible=false
+  }
+}
 // Função para alterar a escala do personagem
 function setCharacterScale(scale) {
   const character = document.getElementById('character');
@@ -441,6 +484,8 @@ function hideTextBox8WithFade() {
     }, 500); // 5 segundos de atraso antes do fade-out
   }
 }
+
+
 // ... (restante do código)
 // Função para obter as dimensões do mapa
 function getMapDimensions() {
@@ -460,8 +505,8 @@ function convertToPercentage(value, mapDimension) {
 
 
 function ativarTextos (positionX, positionY){
-
-  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=36)){
+if(!isTextVisible){
+    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=37.5)){
     if(!isTextBox3Visible){
       showTextBox3();
       clearTimeout(fadeTimeout);
@@ -486,10 +531,12 @@ function ativarTextos (positionX, positionY){
   }
 }
 
+}
+
 
 function ativarTextoslab (positionX, positionY){
-
-  if (calcularDistancia(positionX,positionY,pontoX=50,pontoY=45)){
+if(!isTextVisible){
+  if (calcularDistancia(positionX,positionY,pontoX=50,pontoY=46.5)){
     if(!isTextBox4Visible){
       showTextBox4();
       clearTimeout(fadeTimeout);
@@ -500,12 +547,14 @@ function ativarTextoslab (positionX, positionY){
       hideTextBox4WithFade();
       isTextBox4Visible=false
   }
+}
+  
   
 }
 
 function ativarTextoscasa (positionX, positionY){
-
-  if (calcularDistancia(positionX,positionY,pontoX=46,pontoY=59)){
+if(!isTextVisible){
+   if (calcularDistancia(positionX,positionY,pontoX=47.5,pontoY=59)){
     if(!isTextBox5Visible){
       showTextBox5();
       clearTimeout(fadeTimeout);
@@ -553,6 +602,8 @@ function ativarTextoscasa (positionX, positionY){
       hideTextBox8WithFade();
       isTextBox8Visible=false
   }
+}
+ 
   
 }
   
@@ -879,6 +930,7 @@ const frameInterval = 1000/10 ; // 1/30 segundos em milissegundos
 function moveCharacter() {
 
   setCharacterScale(scale - (calcularY(map.offsetHeight)));
+  textBoxCheck()
 
   const { mapWidth, mapHeight } = getMapDimensions();
 
@@ -902,6 +954,9 @@ function moveCharacter() {
 
 
   if (body.dataset.background == "casa") {
+    const spanText = document.querySelector("#text-box .text-background span");
+     spanText.style.color = "white";
+     
     if(contador==0){
       newXPercentage = 56.5;
       newYPercentage = 49
@@ -1037,10 +1092,17 @@ document.addEventListener('keyup', (event) => {
 document.addEventListener('keydown', (event) => {
   if (!hasMoved && ['w', 'a', 's', 'd'].includes(event.key)) {
     hasMoved = true;
-    textBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
+    if (document.body.dataset.background == "casa") {
+      textBox.style.animation = 'fadeOut 3s forwards'; // Ativa a animação fadeOut
+      setTimeout(() => {
+        textBox.style.display = 'none'; // Remove a caixa após a animação
+      }, 3000); 
+    }else{
+textBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
     setTimeout(() => {
       textBox.style.display = 'none'; // Remove a caixa após a animação
-    }, 1000); // Tempo para o fade-out completar
+    }, 1000); 
+    } // Tempo para o fade-out completar
   }
 });
 
@@ -1056,10 +1118,19 @@ document.addEventListener('keydown', (event) => {
   // Controla o movimento do personagem aqui
   if (!hasMoved && ['w', 'a', 's', 'd'].includes(event.key)) {
     hasMoved = true;
-    textBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
+    if (document.body.dataset.background == "casa") {
+      textBox.style.animation = 'fadeOut 3s forwards'; // Ativa a animação fadeOut
+      setTimeout(() => {
+        textBox.style.display = 'none'; // Remove a caixa após a animação
+      }, 3000); 
+    }else{
+textBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
     setTimeout(() => {
       textBox.style.display = 'none'; // Remove a caixa após a animação
-    }, 1000); // Tempo para o fade-out completar
+    }, 1000); 
+    }
+
+    // Tempo para o fade-out completar
   }
 });
 

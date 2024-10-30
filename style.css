@@ -364,6 +364,42 @@ svg * {
 }
 
 
+#text-boxcasa {
+  position: absolute;
+  top: 250px; /* 20% da altura */
+  left: 300px; /* 15% da largura */
+  width: 100px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#text-boxcasa span {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 10;
+}
+#text-boxcasa img{
+  width: 450%;
+  height: 150%;
+  object-fit: contain; /* Mantém a imagem completa */
+}
+
+.text-backgroundcasa {
+  position: absolute;
+  padding: 45px 180px; /* 10% e 20% da altura e largura, respectivamente */
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #text-box {
   position: absolute;
   top: 230px; /* 20% da altura */
