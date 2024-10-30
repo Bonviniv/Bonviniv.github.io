@@ -14,7 +14,7 @@ const volumeIcon = document.querySelector('.volume-icon');
 const mapWidth = map.offsetWidth;
 const mapHeight = map.offsetHeight;
 
-const speed = 0.1; // Velocidade de movimento
+const speed = 0.075; // Velocidade de movimento
 
 // Define os links
 const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
@@ -530,7 +530,7 @@ function ativarTextoscasa (positionX, positionY){
       isTextBox6Visible=false
   }
 
-  if (calcularDistancia(positionX,positionY,pontoX=43.5,pontoY=45)){
+  if (calcularDistancia(positionX,positionY,pontoX=43.5,pontoY=46)){
     if(!isTextBox7Visible){
       showTextBox7();
       clearTimeout(fadeTimeout);
@@ -872,6 +872,10 @@ const distAlt=map.offsetHeight-946
 // Exemplo de uso da função
 let scale = 1; // Escala padrão
 
+let lastFrameTime = 0; // Armazena o tempo do último frame
+const frameInterval = 1000/10 ; // 1/30 segundos em milissegundos
+
+
 function moveCharacter() {
 
   setCharacterScale(scale - (calcularY(map.offsetHeight)));
@@ -901,7 +905,7 @@ function moveCharacter() {
     if(contador==0){
       newXPercentage = 56.5;
       newYPercentage = 49
-     }
+     }contador++
     // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
     lines = adjustYValues(collisionLines3,factor);
     cenario = 3;
@@ -913,7 +917,7 @@ function moveCharacter() {
       if(contador==0){
         newXPercentage = 50;
         newYPercentage = 63
-       }
+       }contador++
     
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
       lines = adjustYValues(collisionLines2,factor);
@@ -946,18 +950,21 @@ function moveCharacter() {
       character.style.left = `${newXPixel}px`;
       character.style.top = `${newYPixel}px`;
 
+
+      // Controle do frame para a animação (avança um frame a cada 1/30 segundos)
+      const currentTime = performance.now();
+      if (currentTime - lastFrameTime >= frameInterval) {
+        character.style.opacity=1
+        frame++;
+        lastFrameTime = currentTime; // Atualiza o tempo do último frame
+      }
+
       // Atualiza a animação
       const spriteIndex = directions[currentDirection][frame % 4];
       character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
       
       // Controle do frame para a animação (evita flickering ao pausar)
-      aux++;
-      contador++;
-      if (aux >= 10) {
-        frame++;
-        aux = 0;
-      }
-
+   
       if(debug){
        
         positionDisplay.innerText = `X: ${map.offsetWidth}, Y: ${ map.offsetHeight}`;
