@@ -857,17 +857,24 @@ document.addEventListener('DOMContentLoaded', () => {
   applyResponsiveStyles();
   applyResponsiveStylesToMaps();
 });
+function calcularY(x) {
+  const m = -0.000694444; // Inclinação da reta
+  const b = 0.657;        // Intercepto da reta
+  return m * x + b;      // Retorna o valor de y
+}
 
 const screenRatio=map.offsetWidth/map.offsetHeight
 const dist = screenRatio - 1.986;
 const factor=screenRatio*(0.063 + (dist*0.1))
+
+const distAlt=map.offsetHeight-946
 
 // Exemplo de uso da função
 let scale = 1; // Escala padrão
 
 function moveCharacter() {
 
-  setCharacterScale(scale - (dist*1.5));
+  setCharacterScale(scale - (calcularY(map.offsetHeight)));
 
   const { mapWidth, mapHeight } = getMapDimensions();
 
