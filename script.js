@@ -506,7 +506,7 @@ function convertToPercentage(value, mapDimension) {
 
 function ativarTextos (positionX, positionY){
 if(!isTextVisible){
-    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=37.5)){
+    if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=adjustYValue(35))){
     if(!isTextBox3Visible){
       showTextBox3();
       clearTimeout(fadeTimeout);
@@ -518,7 +518,7 @@ if(!isTextVisible){
       isTextBox3Visible=false
   }
 
-  if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=56)){
+  if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=adjustYValue(56))){
     if(!isTextBoxVisible){
       showTextBox2()
       clearTimeout(fadeTimeout);
@@ -536,7 +536,7 @@ if(!isTextVisible){
 
 function ativarTextoslab (positionX, positionY){
 if(!isTextVisible){
-  if (calcularDistancia(positionX,positionY,pontoX=50,pontoY=46.5)){
+  if (calcularDistancia(positionX,positionY,pontoX=50,pontoY=adjustYValue(46.5))){
     if(!isTextBox4Visible){
       showTextBox4();
       clearTimeout(fadeTimeout);
@@ -555,7 +555,7 @@ if(!isTextVisible){
 
 function ativarTextoscasa (positionX, positionY){
 if(!isTextVisible){
-   if (calcularDistancia(positionX,positionY,pontoX=47.5,pontoY=59)){
+   if (calcularDistancia(positionX,positionY,pontoX=47.5,pontoY=adjustYValue(59))){
     if(!isTextBox5Visible){
       showTextBox5();
       clearTimeout(fadeTimeout);
@@ -568,7 +568,7 @@ if(!isTextVisible){
   }
 
 
-  if (calcularDistancia(positionX,positionY,pontoX=49,pontoY=44)){
+  if (calcularDistancia(positionX,positionY,pontoX=49,pontoY=adjustYValue(44))){
     if(!isTextBox6Visible){
       showTextBox6();
       clearTimeout(fadeTimeout);
@@ -580,7 +580,7 @@ if(!isTextVisible){
       isTextBox6Visible=false
   }
 
-  if (calcularDistancia(positionX,positionY,pontoX=43.5,pontoY=46)){
+  if (calcularDistancia(positionX,positionY,pontoX=43.5,pontoY=adjustYValue(46))){
     if(!isTextBox7Visible){
       showTextBox7();
       clearTimeout(fadeTimeout);
@@ -592,7 +592,7 @@ if(!isTextVisible){
       isTextBox7Visible=false
   }
 
-  if (calcularDistancia(positionX,positionY,pontoX=58.4,pontoY=44)){
+  if (calcularDistancia(positionX,positionY,pontoX=58.4,pontoY=adjustYValue(44))){
     if(!isTextBox8Visible){
       showTextBox8();
       clearTimeout(fadeTimeout);
@@ -620,7 +620,7 @@ function ativarLinks(positionX, positionY) {
   }
 
   // Verifica a posição e a tecla pressionada para exibir ou ocultar os links
-  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 49.5) {
+  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= adjustYValue(46) && positionY <= adjustYValue(49)) {
     // Adiciona a classe "active" para exibir o overlay
     maplinks.style.display="flex"
     maplinksa.style.display="flex"
@@ -1023,7 +1023,7 @@ function moveCharacter() {
    
       if(debug){
        
-        positionDisplay.innerText = `X: ${map.offsetWidth}, Y: ${ map.offsetHeight}`;
+        positionDisplay.innerText = `X: ${newXPercentage}, Y: ${newYPercentage}`;
         //positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
       }else{
         positionDisplay.style.display="none"
@@ -1169,7 +1169,18 @@ function adjustYValues(collisionLines,adjustmentFactor) {
       };
   });
 }
+function adjustYValue(y) {
+  const centerY = 50; // Ponto central em Y
+  const distanceFromCenter = y - centerY;
+  const adjustmentFactor=changeFactor*0.35
 
+  // Calcula o valor ajustado para y com base na posição em relação ao centro
+  const adjustedY = y < centerY
+    ? y + Math.abs(distanceFromCenter) * adjustmentFactor // Para valores abaixo do centro
+    : y - distanceFromCenter * adjustmentFactor;          // Para valores acima do centro
+
+  return adjustedY;
+}
 
 function newWindow(){
   preloadFrames();
