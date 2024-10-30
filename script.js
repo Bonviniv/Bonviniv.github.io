@@ -11,24 +11,38 @@ const link2 = document.getElementById('link2');
 const downloadArea = document.getElementById('download-area');
 const volumeIcon = document.querySelector('.volume-icon');
 
-volumeSlider.addEventListener('input', function () {
-  const value = this.value * 100; // Converte o valor para porcentagem
-  this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #ccc ${value}%)`;
+const mapWidth = map.offsetWidth;
+const mapHeight = map.offsetHeight;
 
-  if (this.value == 0) {
-    volumeIcon.textContent = '🔇'; // Ícone de sem som
-  } else {
-    volumeIcon.textContent = '🔊'; // Ícone de som
-  }
-});
-
-
-let LabTown=false
+const speed = 0.1; // Velocidade de movimento
 
 // Define os links
 const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
+
+const debug=false
+
+const directions = {
+  down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
+  left: [4, 5, 6, 7],    // Frames de 4 a 7 para esquerda
+  right: [8, 9, 10, 11], // Frames de 8 a 11 para direita
+  up: [12, 13, 14, 15]   // Frames de 12 a 15 para cima
+};
+
+const frames = [];
+
+const textBox = document.getElementById('text-box');
+const textBox2 = document.getElementById('text-box2');
+const textBox3 = document.getElementById('text-box3');
+const textBox4 = document.getElementById('text-box4');
+const textBox5 = document.getElementById('text-box5');
+const textBox6 = document.getElementById('text-box6');
+const textBox7 = document.getElementById('text-box7');
+const textBox8 = document.getElementById('text-box8');
+
+let hasMoved = false;
+let LabTown=false
 
 let aux=0
 // Seleciona a div que mostrará a posição
@@ -38,13 +52,11 @@ let isWPressed = false;
 let isSPressed = false;
 let isAPressed = false;
 
-
 let positionX = 50; // Começa no meio do mapa em porcentagem
 let positionY = 50;
 
 let currentDirection = null; // Nenhuma direção inicial
 let frame = 0; // Para controlar as animações
-const speed = 0.1; // Velocidade de movimento
 let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
@@ -54,59 +66,41 @@ let isTextBox6Visible = false; // Controle se o text-box está visível
 let isTextBox7Visible = false; // Controle se o text-box está visível
 let isTextBox8Visible = false; // Controle se o text-box está visível
 
-
-
-const debug=true
-
-const directions = {
-  down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
-  left: [4, 5, 6, 7],    // Frames de 4 a 7 para esquerda
-  right: [8, 9, 10, 11], // Frames de 8 a 11 para direita
-  up: [12, 13, 14, 15]   // Frames de 12 a 15 para cima
-};
+let contador=0
+let lines
 
 let fadeTimeout; // Variável para armazenar o timeout de fade-out
 
+const changeFactor = 0.5; // Define o valor que será subtraído de y1 e y2
 
-
-
-// Obtendo as dimensões do mapa
-const textBox = document.getElementById('text-box');
-
-let hasMoved = false;
-const textBox2 = document.getElementById('text-box2');
-const textBox3 = document.getElementById('text-box3');
-const textBox4 = document.getElementById('text-box4');
-const textBox5 = document.getElementById('text-box5');
-const textBox6 = document.getElementById('text-box6');
-const textBox7 = document.getElementById('text-box7');
-const textBox8 = document.getElementById('text-box8');
-
-
-const mapWidth = map.offsetWidth;
-const mapHeight = map.offsetHeight;
-
-const placaLines = [
-  { x1: 44, y1: 55, x2: 45.25, y2: 55 },
-  { x1: 44, y1: 57, x2: 45.25, y2: 57 },
-  { x1: 44, y1: 55, x2: 44, y2: 57 },
-  { x1: 45.25, y1: 55, x2: 45.25, y2: 57 }
-];
-
-// Definindo as áreas de colisão em porcentagem
-// Definição das linhas de colisão em porcentagem
 const collisionLines = [
-  { x1: 42, y1: 35.5, x2: 58, y2: 35.5 }, // Linha superior
-  { x1: 42, y1: 64, x2: 58, y2: 64},   // Linha inferior
-  { x1: 42, y1: 35.5, x2: 42, y2: 64 }, // Linha esquerda
-  { x1: 58, y1: 35.5, x2: 58, y2: 64 },     // Linha direita
+  { x1: 42, y1: 35.5, x2: 58, y2: 35.5 },
+  { x1: 42, y1: 64, x2: 58, y2: 64},   
+  { x1: 42, y1: 35.5, x2: 42, y2: 64 }, 
+  { x1: 58, y1: 35.5, x2: 58, y2: 64 },     
+
+  //{x1: 42, y1: 36.5, x2: 58, y2: 36.5},
+  //{x1: 42, y1: 62.5, x2: 58, y2: 62.5},
+  //{x1: 42, y1: 34.75, x2: 36.5, y2: 62.5},
+  //{x1: 58, y1: 36.5, x2: 58, y2: 62.5},
+  
 
   //agua
+  
+  //{ x1: 45, y1: 58.5, x2: 50, y2: 58.5}, 
+  //{ x1: 45, y1: 64, x2: 45, y2: 58.5}, 
+  //{ x1: 50, y1: 64, x2: 50, y2: 58.5}, 
+
   { x1: 45, y1: 59, x2: 50, y2: 59}, 
   { x1: 45, y1: 64, x2: 45, y2: 59}, 
-  { x1: 50, y1: 64, x2: 50, y2: 59}, 
+  { x1: 50, y1: 64, x2: 50, y2: 59},
 
   //cercas
+  //{ x1: 51, y1: 59, x2: 56, y2: 59}, 
+  //{ x1: 51, y1: 57, x2: 56, y2: 57},
+  //{ x1: 51, y1: 57, x2: 51, y2: 59},
+  //{ x1: 56, y1: 57, x2: 56, y2: 59},
+
   { x1: 51, y1: 60, x2: 56, y2: 60}, 
   { x1: 51, y1: 58, x2: 56, y2: 58},
   { x1: 51, y1: 58, x2: 51, y2: 60},
@@ -127,6 +121,11 @@ const collisionLines = [
   { x1: 51, y1: 39, x2: 56.5, y2: 39},
   { x1: 51, y1: 39, x2: 51, y2: 45},
   { x1:  56.5, y1: 39, x2:  56.5, y2: 45},
+
+  //{ x1: 43.5, y1: 46, x2: 49, y2: 46}, 
+  //{ x1: 43.5, y1: 40, x2: 49, y2: 40},
+  //{ x1: 43.5, y1: 40, x2:  43.5, y2: 46},
+  //{ x1:  49, y1: 39, x2:  49, y2: 46},
 
   { x1: 43.5, y1: 45, x2: 49, y2: 45}, 
   { x1: 43.5, y1: 39, x2: 49, y2: 39},
@@ -161,19 +160,19 @@ const collisionLines2 = [
   { x1: 56.5, y1: 40, x2: 43, y2: 40 },    
 
   //moveis
-  { x1: 49.5, y1: 41, x2: 44, y2: 41 },  
-  { x1: 49.5, y1: 41, x2:49.5, y2: 39 },
+  { x1: 49.5, y1: 40.5, x2: 44, y2: 40.5 },  
+  { x1: 49.5, y1: 40.5, x2:49.5, y2: 39 },
 
-  { x1: 52, y1: 41, x2: 57, y2: 41 }, 
-  { x1: 52, y1: 41, x2: 52, y2: 39 }, 
+  { x1: 52, y1: 40.5, x2: 57, y2: 40.5 }, 
+  { x1: 52, y1: 40.5, x2: 52, y2: 39 }, 
 
-  { x1: 48.75, y1: 56, x2: 43, y2: 56 }, 
-  { x1: 48.75, y1: 52, x2: 43, y2: 52 }, 
-  { x1: 48.75, y1: 52, x2: 48.75, y2: 56 },
+  { x1: 48.75, y1: 56.5, x2: 43, y2: 56.5 }, 
+  { x1: 48.75, y1: 51.5, x2: 43, y2: 51.5 }, 
+  { x1: 48.75, y1:51.5, x2: 48.75, y2: 56.5 },
 
-  { x1: 57, y1: 56, x2: 51, y2: 56 }, 
-  { x1: 57, y1: 52, x2: 51, y2: 52 }, 
-  { x1: 51, y1: 52, x2: 51, y2: 56 },
+  { x1: 57, y1: 56.5, x2: 51, y2: 56.5 }, 
+  { x1: 57, y1: 51.5, x2: 51, y2: 51.5 }, 
+  { x1: 51, y1: 51.5, x2: 51, y2: 56.5 },
 
   //plantas
   { x1: 43, y1: 60.75, x2: 44, y2: 60.75 }, 
@@ -185,9 +184,9 @@ const collisionLines2 = [
   //professor oak
 
   { x1: 51.5, y1: 46.5, x2: 48.25, y2: 46.5 },
-  { x1: 51.5, y1: 42, x2: 48.25, y2: 42 },
-  { x1: 51.5, y1: 46.5, x2: 51.5, y2:  42 },
-  { x1: 48.25, y1: 46.5, x2: 48.25, y2: 42 },
+  { x1: 51.5, y1: 41.5, x2: 48.25, y2: 41.5 },
+  { x1: 51.5, y1: 46.5, x2: 51.5, y2:  41.5 },
+  { x1: 48.25, y1: 46.5, x2: 48.25, y2: 41.5 },
 
 
   //mesa
@@ -208,7 +207,6 @@ const collisionLines2 = [
 
 ];
 
-
 const collisionLines3 = [
   //paredes
   { x1: 44.75, y1: 40, x2:44.75, y2: 64.15 },
@@ -226,18 +224,73 @@ const collisionLines3 = [
   { x1: 45.5, y1: 46 , x2:43, y2: 46 },
 
   //cama
-  { x1: 47, y1: 56.5 , x2:47, y2: 60.75 },
-  { x1: 43, y1: 56.5 , x2:47, y2: 56.5 },
+  { x1: 47, y1: 56 , x2:47, y2: 60.75 },
+  { x1: 43, y1: 56 , x2:47, y2: 56 },
   { x1: 43, y1: 60.75 , x2:47, y2: 60.75 },
 
   //tv
-  { x1: 51, y1: 54 , x2:51, y2: 59 },
-  { x1: 49, y1: 54 , x2:49, y2: 59 },
-  { x1: 49, y1: 54 , x2:51, y2: 54 },
+  { x1: 51, y1: 53.75 , x2:51, y2: 59 },
+  { x1: 49, y1: 53.75 , x2:49, y2: 59 },
+  { x1: 49, y1: 53.75 , x2:51, y2: 53.75 },
   { x1: 49, y1: 59 , x2:51, y2: 59 },
 ];
-let lines
 
+
+function adjustYValuesWithFactor(lines, change) {
+  const adjustedLines = lines.map(line => ({
+    ...line,
+    y1: line.y1 - change,
+    y2: line.y2 - change
+  }));
+
+  console.log(adjustedLines);
+}
+
+
+// Função para alterar a escala do personagem
+function setCharacterScale(scale) {
+  const character = document.getElementById('character');
+  // Define a transformação com a nova escala
+  character.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+
+
+// Para alterar a escala dinamicamente, você pode fazer algo como:
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowUp') {
+      scale += 0.1; // Aumenta a escala
+  } else if (event.key === 'ArrowDown') {
+      scale -= 0.1; // Diminui a escala
+  }
+  setCharacterScale(scale); // Aplica a nova escala
+});
+
+function transformYCoordinates(lines) {
+  // Calcula a média de todos os valores y1 e y2
+  let yValues = lines.flatMap(line => [line.y1, line.y2]);
+  let yMean = yValues.reduce((sum, y) => sum + y, 0) / yValues.length;
+
+  // Ajusta cada y1 e y2 de acordo com a média calculada
+  const transformedLines = lines.map(line => ({
+    ...line,
+    y1: line.y1 < yMean ? line.y1 - 1 : line.y1 - 0.5,
+    y2: line.y2 < yMean ? line.y2 - 1 : line.y2 - 0.5
+  }));
+
+  return transformedLines;
+}
+
+volumeSlider.addEventListener('input', function () {
+  const value = this.value * 100; // Converte o valor para porcentagem
+  this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #ccc ${value}%)`;
+
+  if (this.value == 0) {
+    volumeIcon.textContent = '🔇'; // Ícone de sem som
+  } else {
+    volumeIcon.textContent = '🔊'; // Ícone de som
+  }
+});
 
 
 // Função para mostrar a caixa de texto 2
@@ -283,7 +336,6 @@ function hideTextBox3WithFade() {
     }, 3000); // 5 segundos de atraso antes do fade-out
   }
 }
-
 
 function showTextBox4() {
   textBox4.style.display = 'flex'; // Mostra a caixa de texto
@@ -396,21 +448,21 @@ function getMapDimensions() {
   const mapHeight = map.offsetHeight;
   return { mapWidth, mapHeight };
 }
-
-// Função para converter de pixel para porcentagem
-function convertToPercentage(value, mapDimension) {
-  return (value / mapDimension) * 100;
-}
-
 // Função para converter de porcentagem para pixel
 function convertToPixel(value, mapDimension) {
   return (value / 100) * mapDimension;
 }
 
+// Função para converter de pixel para porcentagem
+function convertToPercentage(value, mapDimension) {
+  return (value / 100) * mapDimension;
+}
+
+
 function ativarTextos (positionX, positionY){
 
-  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=35)){
-    if(!isTextBox4Visible){
+  if (calcularDistancia(positionX,positionY,pontoX=51,pontoY=36)){
+    if(!isTextBox3Visible){
       showTextBox3();
       clearTimeout(fadeTimeout);
       // Cancelar qualquer fade-out em andamento
@@ -432,9 +484,6 @@ function ativarTextos (positionX, positionY){
       hideTextBox2WithFade();
       isTextBoxVisible=false
   }
-
-  
-  
 }
 
 
@@ -456,7 +505,7 @@ function ativarTextoslab (positionX, positionY){
 
 function ativarTextoscasa (positionX, positionY){
 
-  if (calcularDistancia(positionX,positionY,pontoX=45.5,pontoY=59)){
+  if (calcularDistancia(positionX,positionY,pontoX=46,pontoY=59)){
     if(!isTextBox5Visible){
       showTextBox5();
       clearTimeout(fadeTimeout);
@@ -493,7 +542,7 @@ function ativarTextoscasa (positionX, positionY){
       isTextBox7Visible=false
   }
 
-  if (calcularDistancia(positionX,positionY,pontoX=58.4,pontoY=43)){
+  if (calcularDistancia(positionX,positionY,pontoX=58.4,pontoY=44)){
     if(!isTextBox8Visible){
       showTextBox8();
       clearTimeout(fadeTimeout);
@@ -507,6 +556,30 @@ function ativarTextoscasa (positionX, positionY){
   
 }
   
+function ativarLinks(positionX, positionY) {
+  // Seleciona o elemento de overlay
+  const maplinks = document.getElementById("map-overlay-links");
+  const maplinksa = document.getElementById("overlay-image-links");
+
+  // Verifique se o elemento maplinks existe
+  if (!maplinks) {
+    console.error("Elemento com id 'map-overlay-links' não encontrado.");
+    return; // Pare a execução se o elemento não for encontrado
+  }
+
+  // Verifica a posição e a tecla pressionada para exibir ou ocultar os links
+  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 48) {
+    // Adiciona a classe "active" para exibir o overlay
+    maplinks.style.display="flex"
+    maplinksa.style.display="flex"
+  } else {
+    // Remove a classe "active" para esconder o overlay
+    maplinks.style.display="none"
+    maplinksa.style.display="none"
+  }
+}
+
+
 function checkCollisionLines(newXPercentage, newYPercentage,lines) {
   // Coordenadas iniciais e finais do personagem na tentativa de movimento
   const startX = positionX;
@@ -548,7 +621,6 @@ function checkCollisionLines(newXPercentage, newYPercentage,lines) {
 
   return false; // Sem colisão
 }
-
 
 function calcularDistancia(personagemX, personagemY, pontoX, pontoY) {
   // Convertendo as porcentagens para valores decimais (entre 0 e 1)
@@ -600,37 +672,201 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
-function ativarLinks(positionX, positionY) {
-  // Seleciona o elemento de overlay
-  const maplinks = document.getElementById("map-overlay-links");
-  const maplinksa = document.getElementById("overlay-image-links");
+function applyResponsiveStyles() {
+  const { mapWidth, mapHeight } = getMapDimensions();
 
-  // Verifique se o elemento maplinks existe
-  if (!maplinks) {
-    console.error("Elemento com id 'map-overlay-links' não encontrado.");
-    return; // Pare a execução se o elemento não for encontrado
+  const maps = ['map', 'mapup', 'town-map', 'lab-map', 'casa-map'];
+  maps.forEach(mapId => {
+    const mapElement = document.getElementById(mapId);
+    if (mapElement) {
+      mapElement.style.width = `${mapWidth}px`;
+      mapElement.style.height = `${mapHeight}px`;
+    }
+  });
+
+  // Ajuste e centralização dos overlays de mapa
+  const overlays = ['map-overlay', 'map-overlay-links'];
+  overlays.forEach(overlayId => {
+    const overlayElement = document.getElementById(overlayId);
+    if (overlayElement) {
+      overlayElement.style.width = `${mapWidth}px`;
+      overlayElement.style.height = `${mapHeight}px`;
+    }
+  });
+
+  // Ajuste de canvas para cada mapa
+  const collisionCanvas = document.getElementById('collisionCanvas');
+  if (collisionCanvas) {
+    collisionCanvas.style.width = `${mapWidth}px`;
+    collisionCanvas.style.height = `${mapHeight}px`;
   }
 
-  // Verifica a posição e a tecla pressionada para exibir ou ocultar os links
-  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 48) {
-    // Adiciona a classe "active" para exibir o overlay
-    maplinks.style.display="flex"
-    maplinksa.style.display="flex"
-  } else {
-    // Remove a classe "active" para esconder o overlay
-    maplinks.style.display="none"
-    maplinksa.style.display="none"
+  const mainCanvas = document.getElementById('canvas');
+  if (mainCanvas) {
+    mainCanvas.style.width = `${mapWidth}px`;
+    mainCanvas.style.height = `${mapHeight}px`;
   }
+
+  // Ajuste do #water-overlay
+  const watergif = document.getElementById('water-gif');
+  if (watergif) {
+    watergif.style.top = `${convertToPixel(62.2, mapHeight)}px`;
+    watergif.style.left = `${convertToPixel(45.5, mapWidth)}px`;
+    watergif.style.width = `${convertToPixel(4, mapWidth)}px`;
+    watergif.style.height = `${convertToPixel(8.2, mapHeight)}px`;
+  }
+
+  const waterOverlay = document.getElementById('water-overlay');
+  if (waterOverlay) {
+    waterOverlay.style.top = `${convertToPixel(60.5, mapHeight)}px`;
+    waterOverlay.style.left = `${convertToPixel(45.5, mapWidth)}px`;
+    waterOverlay.style.width = `${convertToPixel(8, mapWidth)}px`;
+    waterOverlay.style.height = `${convertToPixel(17, mapHeight)}px`;
+  }
+
+  // Ajuste do #text-boxfix
+  const textBoxFix = document.getElementById('text-boxfix');
+  textBoxFix.style.top = `${convertToPixel(25, mapHeight)}px`;
+  textBoxFix.style.right = `${convertToPixel(2, mapWidth)}px`;
+  textBoxFix.style.width = `${convertToPixel(33.5, mapWidth)}px`; // Aproximado para 500px em 1495px
+  textBoxFix.style.height = `${convertToPixel(54.8, mapHeight)}px`; // Aproximado para 400px em 730px
+
+  // Ajuste do #text-box
+  const textBox = document.getElementById('text-box');
+  textBox.style.top = `${convertToPixel(31.5, mapHeight)}px`;
+  textBox.style.left = `${convertToPixel(15, mapWidth)}px`;
+  textBox.style.width = `${convertToPixel(20, mapWidth)}px`;
+  textBox.style.height = `${convertToPixel(34.3, mapHeight)}px`;
+
+  // Ajuste do #text-box2
+  const textBox2 = document.getElementById('text-box2');
+  textBox2.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox2.style.left = `${convertToPixel(2, mapWidth)}px`;
+  textBox2.style.width = `${convertToPixel(36.8, mapWidth)}px`; // Aproximado para 550px em 1495px
+  textBox2.style.height = `${convertToPixel(41, mapHeight)}px`; // Aproximado para 300px em 730px
+
+  // Ajuste do #text-box3
+  const textBox3 = document.getElementById('text-box3');
+  textBox3.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox3.style.left = `${convertToPixel(2, mapWidth)}px`;
+  textBox3.style.width = `${convertToPixel(36.8, mapWidth)}px`; // Aproximado para 550px em 1495px
+  textBox3.style.height = `${convertToPixel(41, mapHeight)}px`; // Aproximado para 300px em 730px
+
+  // Ajuste do #text-box4
+  const textBox4 = document.getElementById('text-box4');
+  textBox4.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox4.style.left = `${convertToPixel(1, mapWidth)}px`;
+  textBox4.style.width = `${convertToPixel(40, mapWidth)}px`; // Aproximado para 598px em 1495px
+  textBox4.style.height = `${convertToPixel(50, mapHeight)}px`; // Aproximado para 365px em 730px
+
+  // Ajuste do #text-box5
+  const textBox5 = document.getElementById('text-box5');
+  textBox5.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox5.style.left = `${convertToPixel(6, mapWidth)}px`;
+  textBox5.style.width = `${convertToPixel(31, mapWidth)}px`; // Aproximado para 463.45px em 1495px
+  textBox5.style.height = `${convertToPixel(50, mapHeight)}px`; // Aproximado para 365px em 730px
+
+  // Ajuste do #text-box6
+  const textBox6 = document.getElementById('text-box6');
+  textBox6.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox6.style.left = `${convertToPixel(6, mapWidth)}px`;
+  textBox6.style.width = `${convertToPixel(31, mapWidth)}px`;
+  textBox6.style.height = `${convertToPixel(50, mapHeight)}px`;
+
+  // Ajuste do #text-box7
+  const textBox7 = document.getElementById('text-box7');
+  textBox7.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox7.style.left = `${convertToPixel(6, mapWidth)}px`;
+  textBox7.style.width = `${convertToPixel(31, mapWidth)}px`;
+  textBox7.style.height = `${convertToPixel(50, mapHeight)}px`;
+
+  // Ajuste do #text-box8
+  const textBox8 = document.getElementById('text-box8');
+  textBox8.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBox8.style.left = `${convertToPixel(6, mapWidth)}px`;
+  textBox8.style.width = `${convertToPixel(31, mapWidth)}px`;
+  textBox8.style.height = `${convertToPixel(50, mapHeight)}px`;
+
+  // Ajuste do #character
+  const character = document.getElementById('character');
+  character.style.left = `${mapWidth / 2}px`;
+  character.style.top = `${mapHeight / 2}px`;
+
+  
+
+  // Ajuste do #canvas
+  const canvas = document.getElementById('canvas');
+  canvas.style.width = `${mapWidth}px`;
+  canvas.style.height = `${mapHeight}px`;
+
+  
+
+  // Ajuste do #map-element1 (Exemplo de elemento no mapa 1)
+  const mapElement1 = document.getElementById('map-element1');
+  if (mapElement1) {
+    mapElement1.style.top = `${convertToPixel(10, mapHeight)}px`;
+    mapElement1.style.left = `${convertToPixel(5, mapWidth)}px`;
+    mapElement1.style.width = `${convertToPixel(20, mapWidth)}px`;
+    mapElement1.style.height = `${convertToPixel(15, mapHeight)}px`;
+  }
+
+  // Ajuste do #map-element2 (Exemplo de elemento no mapa 2)
+  const mapElement2 = document.getElementById('map-element2');
+  if (mapElement2) {
+    mapElement2.style.top = `${convertToPixel(25, mapHeight)}px`;
+    mapElement2.style.left = `${convertToPixel(30, mapWidth)}px`;
+    mapElement2.style.width = `${convertToPixel(10, mapWidth)}px`;
+    mapElement2.style.height = `${convertToPixel(12, mapHeight)}px`;
+  }
+
+  // Ajuste de overlays
+  const mapOverlay = document.getElementById('map-overlay');
+  if (mapOverlay) {
+    mapOverlay.style.width = `${mapWidth}px`;
+    mapOverlay.style.height = `${mapHeight}px`;
+  }
+
+  const mapOverlayLinks = document.getElementById('map-overlay-links');
+  if (mapOverlayLinks) {
+    mapOverlayLinks.style.width = `${mapWidth}px`;
+    mapOverlayLinks.style.height = `${mapHeight}px`;
+  }
+
+  // Ajuste de canvas para cada mapa
+  
+
+  
+
+   // Ajustes adicionais específicos de elementos internos de cada mapa
+   const additionalElements = ['map-element1', 'map-element2']; // Exemplo
+   additionalElements.forEach(elId => {
+     const element = document.getElementById(elId);
+     if (element) {
+       element.style.width = `${convertToPixel(10, mapWidth)}px`;
+       element.style.height = `${convertToPixel(15, mapHeight)}px`;
+     }
+   });
 }
 
 
-let contador=0
+window.addEventListener('resize', () => {
+  applyResponsiveStyles();
+  applyResponsiveStylesToMaps();
+});
+document.addEventListener('DOMContentLoaded', () => {
+  applyResponsiveStyles();
+  applyResponsiveStylesToMaps();
+});
 
-// Função para mover o personagem
+const screenRatio=map.offsetWidth/map.offsetHeight
+const dist = screenRatio - 1.986;
+const factor=screenRatio*(0.063 + (dist*0.1))
+
+// Exemplo de uso da função
+let scale = 1; // Escala padrão
+
 function moveCharacter() {
-
-  
-  
+  setCharacterScale(scale- (dist*2));
   const { mapWidth, mapHeight } = getMapDimensions();
 
   // Define as novas posições em porcentagem
@@ -639,7 +875,6 @@ function moveCharacter() {
 
   const body = document.body;
     
-  
   // Apenas calcula a nova posição e atualiza a direção se o personagem está em movimento
   if (isMoving && currentDirection) {
     if (currentDirection === 'up') newYPercentage -= speed;
@@ -647,8 +882,6 @@ function moveCharacter() {
     if (currentDirection === 'left') newXPercentage -= speed;
     if (currentDirection === 'right') newXPercentage += speed;
     let lines
-
-
    
    if(contador==3){
   character.style.opacity=1
@@ -661,11 +894,10 @@ function moveCharacter() {
       newYPercentage = 49
      }
     // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
-    lines = collisionLines3;
+    lines = adjustYValues(collisionLines3,factor);
     cenario = 3;
     console.log("Cenário alterado para o casa.");
     ativarTextoscasa(newXPercentage,newYPercentage)
-    
   }  
   
     if (body.dataset.background == "lab") {
@@ -675,7 +907,7 @@ function moveCharacter() {
        }
     
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
-      lines = collisionLines2;
+      lines = adjustYValues(collisionLines2,factor);
       cenario = 2;
       console.log("Cenário alterado para o lab.");
       ativarTextoslab(newXPercentage,newYPercentage)
@@ -685,7 +917,7 @@ function moveCharacter() {
     if (body.dataset.background == "town") {
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
      
-      lines = collisionLines;
+      lines = adjustYValues(collisionLines,factor);
       cenario = 1;
       console.log("Cenário alterado para town.");
       ativarTextos(newXPercentage,newYPercentage)
@@ -710,7 +942,6 @@ function moveCharacter() {
       character.style.backgroundImage = `url('images/tile${spriteIndex.toString().padStart(3, '0')}.png')`;
       
       // Controle do frame para a animação (evita flickering ao pausar)
-
       aux++;
       contador++;
       if (aux >= 10) {
@@ -719,69 +950,51 @@ function moveCharacter() {
       }
 
       if(debug){
-
-        positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
-
-      }
-      if(cenario==1){
-        if (isWPressed && positionX >= 45 && positionX <= 46 && positionY >= 45&& positionY <= 46) {
-        // Redireciona para a nova página e define o fundo
        
+        positionDisplay.innerText = `X: ${map.offsetWidth}, Y: ${ map.offsetHeight}`;
+        //positionDisplay.innerText = `X: ${positionX.toFixed(2)}%, Y: ${positionY.toFixed(2)}%`;
+      }else{
+        positionDisplay.style.display="none"
+      }
+
+
+      if(cenario==1){
+        if (isWPressed && positionX >= 45 && positionX <= 46 && positionY >= 45&& positionY <= 46) {       
         window.location.href = "casa.html";
         document.body.style.backgroundImage = "url('images/casa.png')";
         newWindow()
-        
       }
       }
 
       if(cenario==1){
-        if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 56.5 && positionY <= 57) {
+        if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 55.5 && positionY <= 57) {
         // Redireciona para a nova página e define o fundo
-       
         window.location.href = "lab.html";
         document.body.style.backgroundImage = "url('images/oaks-lab.png')";
         newWindow()
-        
-        
       }
       }
-       // Checa se a tecla "W" está pressionada e se o personagem está na área especificada
+
        if(cenario==2){
         if (isSPressed && positionX >= 49 && positionX <= 51 && positionY >= 63 && positionY <= 65) {
-         
         // Redireciona para a nova página e define o fundo
         window.location.href = "index.html";
         document.body.style.backgroundImage = "url('images/pallet-town.png')";
-        
         newWindow()
-        
-      
       }
       }
 
       if(cenario==3){
         if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 44 && positionY <= 46) {
-         
-        
         window.location.href = "index.html";
         document.body.style.backgroundImage = "url('images/pallet-town.png')";
-        
         newWindow()
-        
-      
       }
       }
-
-      
-    
     }
-    
-    // Atualiza a posição do display (para depuração)
-   
+       
   } 
 
-
-  
   requestAnimationFrame(moveCharacter);
 }
 
@@ -816,7 +1029,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 
-
 // Tocar música somente após interação do usuário
 document.addEventListener('keydown', (event) => {
   if (!audio.played.length) {
@@ -835,17 +1047,12 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-
 audio.volume=0.15
 // Atualizar o volume conforme o controle deslizante
 volumeSlider.addEventListener('input', (event) => {
   audio.volume = event.target.value;
 });
 
-
-const frames = [];
-
-// Precarregar frames
 function preloadFrames() {
   for (let i = 0; i <= 15; i++) {
     const img = new Image();
@@ -854,11 +1061,31 @@ function preloadFrames() {
   }
 }
 
-function newWindow(){
+function adjustYValues(collisionLines,adjustmentFactor) {
+  const centerY = 50; // Ponto central em Y
+  
+  return collisionLines.map(line => {
+      // Calcula a diferença em relação ao centro
+      const y1Distance = line.y1 - centerY;
+      const y2Distance = line.y2 - centerY;
 
+      // Ajusta y1 e y2 baseado na distância, multiplicando pela variável adjustmentFactor
+      const adjustedY1 = line.y1 - y1Distance * adjustmentFactor; // Para valores acima de 50
+      const adjustedY2 = line.y2 - y2Distance * adjustmentFactor; // Para valores acima de 50
+
+      // Se y1 e y2 são menores que 50, devemos aumentar
+      return {
+          ...line,
+          y1: line.y1 < centerY ? line.y1 + Math.abs(y1Distance) * adjustmentFactor : adjustedY1,
+          y2: line.y2 < centerY ? line.y2 + Math.abs(y2Distance) * adjustmentFactor : adjustedY2,
+      };
+  });
+}
+
+
+function newWindow(){
   preloadFrames();
   character.style.opacity=0
-
   const { mapWidth, mapHeight } = getMapDimensions();
   positionX = 50;
   positionY = 50;
@@ -867,6 +1094,12 @@ function newWindow(){
   character.style.left = `${newXPixel}px`;
   character.style.top = `${newYPixel}px`;
   character.style.backgroundImage = "url('images/tile000.png')";
+  adjustYValuesWithFactor(collisionLines, changeFactor);
+  adjustYValues(collisionLines)
+  //transformYCoordinates(collisionLines)
+  //transformYCoordinates(collisionLines2)
+  //transformYCoordinates(collisionLines3)
+
  
 }
 

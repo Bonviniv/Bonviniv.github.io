@@ -17,85 +17,6 @@ body {
   font-family: 'PokemonFont', sans-serif;
 }
 
-#map {
-  position: relative;
-  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
-  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
-  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
-  overflow: hidden;
-  z-index: 0; /* Mantém o mapa na posição inicial */
-}
-
-#mapup {
-  position: relative;
-  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
-  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
-  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
-  z-index: 11;
-}
-#canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* Prevent canvas from interfering with character movement */
-}
-#town-map {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a imagem cubra todo o container sem distorções */
-  position: absolute;
-}
-#lab-map {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a imagem cubra todo o container sem distorções */
-  position: absolute;
-  z-index: 0; /* Mantém o mapa na posição inicial */
-}
-#casa-map {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a imagem cubra todo o container sem distorções */
-  position: absolute;
-  z-index: 0; /* Mantém o mapa na posição inicial */
-}
-#character {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background-image: url('images/tile000.png'); /* Sprite inicial */
-  background-size: 100% 100%; /* Certifica que a imagem ocupe todo o espaço do personagem */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10; /* Colocar o personagem acima do mapa */
-}
-
-
-
-#water-overlay {
-  position: absolute;
-  top: 62.2%; /* Ajuste a posição vertical conforme necessário */
-  left: 45.5%; /* Ajuste a posição horizontal conforme necessário */
-  width: 8%; /* Largura inicial do GIF, ajuste conforme necessário */
-  height: 17%; /* Altura inicial do GIF, ajuste conforme necessário */
-  z-index: 12; /* Alto suficiente para ficar sobre o mapa, mas abaixo da imagem overlay se necessário */
-  pointer-events: none; /* Permite interações com elementos abaixo dele */
-}
-
-#water-gif {
-  width: 50%; /* Ajusta para ocupar toda a largura do container */
-  height: 50%; /* Ajusta para ocupar toda a altura do container */
-  object-fit: cover; /* Garante que o GIF cubra todo o container sem distorção */
-  opacity: 50%;
-}
-
-
-
-/* ... (existing CSS) */
-
 #position-display {
   position: absolute;
   top: 10px;
@@ -105,467 +26,6 @@ body {
   padding: 5px;
   z-index: 999; /* Ensure it's visible above other elements */
 }
-
-
-#text-box {
-  position: absolute;
-  top: 20%;
-  left: 15%;
-  width: 300px; /* Mantém o tamanho da imagem */
-  height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-#text-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Mantém a imagem completa */
-}
-
-.text-background {
-  position: absolute;
-  padding: 10% 20%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.text-background2 {
-  position: absolute;
-  padding: 14% 47%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-#text-box span {
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-  z-index: 10;
-}
-
-
-
-
-#text-box2 {
-  position: absolute;
-  top: 20%;
-  left: 2%;
-  width: 550px; /* Ajuste o tamanho desejado */
-  height: 300px; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-#text-box2 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 100%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-}
-#text-box2 span {
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#map-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw; /* Cobre toda a largura da tela */
-  height: 100vh; /* Cobre toda a altura da tela */
-  z-index: 10; /* Coloca o overlay acima do mapa */
-  pointer-events: none; /* Permite que o mapa abaixo seja interativo */
-}
-
-
-
-
-#overlay-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Garante que a imagem ocupe todo o espaço do container */
-}
-
-
-
-#text-box3 {
-  position: absolute;
-  top: 20%;
-  left: 2%;
-  width: 550px; /* Ajuste o tamanho desejado */
-  height: 300px; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-#text-box3 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 100%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-#text-box3 span {
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-  
-}
-
-
-#text-box4 {
-  position: absolute;
-  top: 20%;
-  left: 6%;
-  width:31%; /* Ajuste o tamanho desejado */
-  height: 50%; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-
-#text-box4 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 10%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-
-#text-box4s span {
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-
-#text-box5 {
-  position: absolute;
-  top: 20%;
-  left: 6%;
-  width:31%; /* Ajuste o tamanho desejado */
-  height: 50%; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-
-#text-box5 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 10%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-
-#text-box5 span {
-  color: #ffffff;
-  font-size: 18px;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-.text-background5 {
-  position: absolute;
-  padding: 12% 45%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(135, 135, 135, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#text-box6 {
-  position: absolute;
-  top: 20%;
-  left: 6%;
-  width:31%; /* Ajuste o tamanho desejado */
-  height: 50%; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-
-#text-box6 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 10%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-
-#text-box6 span {
-  color: #ffffff;
-  font-size: 18px;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-.text-background6 {
-  position: absolute;
-  padding: 12% 45%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(135, 135, 135, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#text-box7 {
-  position: absolute;
-  top: 20%;
-  left: 6%;
-  width:31%; /* Ajuste o tamanho desejado */
-  height: 50%; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-
-#text-box7 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 10%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-
-#text-box7 span {
-  color: #ffffff;
-  font-size: 18px;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-.text-background7 {
-  position: absolute;
-  padding: 12% 45%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(135, 135, 135, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-#text-box8 {
-  position: absolute;
-  top: 20%;
-  left: 6%;
-  width:31%; /* Ajuste o tamanho desejado */
-  height: 50%; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-  
-}
-
-#text-box8 img {
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 10%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  
-}
-
-#text-box8 span {
-  color: #ffffff;
-  font-size: 18px;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-}
-
-.text-background8 {
-  position: absolute;
-  padding: 12% 45%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(135, 135, 135, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.text-background4 {
-  position: absolute;
-  padding: -1% 40%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.text-backgroundlinks {
-  position: absolute;
-  padding: -1% 40%; /* Ajuste o padding para cobrir o texto */
-  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-
-/* Reset de margens e preenchimentos */
-* {
-  margin: 0;
-  padding: 0;
-}
-
-/* Estilos para a div principal com overlay */
-#map-overlay-links {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000; /* Coloca os links clicáveis sobre todos os elementos */
-  display: none; /* Mantém o elemento invisível até ser requisitado */
-}
-
-/* Exibe a div de links apenas quando uma classe "active" é adicionada */
-#map-overlay-links.active {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Imagem de fundo invisível dentro de map-overlay-links */
-#overlay-image-links {
-  display: none;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-/* Configuração para o SVG */
-svg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 2; /* Coloca o SVG sobre a imagem */
-}
-
-/* Estilo para áreas clicáveis do SVG */
-svg * {
-  fill: rgba(0, 255, 255, 0.4);
-  cursor: pointer;
-  opacity: 0; /* Invisível, mas clicável */
-}
-
-#text-boxfix {
-  position: absolute;
-  top: 25%;
-  right: 2%;
-  width: 550px; /* Ajuste o tamanho desejado */
-  height: 300px; /* Ajuste para caber a imagem completa */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-}
-#text-boxfix img {
-
-  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
-  width: 100%; /* Faz a imagem ocupar toda a largura do container */
-  height: 100%; /* Faz a imagem ocupar toda a altura do container */
-  object-fit: contain; /* Mantém a proporção e evita distorções */
-  opacity: 0;
-}
-#text-boxfix span {
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
-  text-align: center;
-  z-index: 10;
-  
-}
-
-
-#text-boxfix a {
-  color: #171244;             /* Cor dos links */
-  text-decoration: none;      /* Remove o sublinhado dos links */
-  padding: 5px 10px;          /* Espaçamento ao redor do texto */
-  border-radius: 5px;         /* Bordas arredondadas para os links */
-  transition: background-color 0.3s, color 0.3s; /* Transição suave */
-}
-
-#text-boxfix a:hover {
-  background-color: rgba(5, 5, 5, 0.1); /* Fundo preto com 10% de opacidade */
-  color: #171244;                       /* Mantém a cor original do texto */
-  text-decoration: none;                /* Garante que o sublinhado permaneça removido */
-}
-
 
 /* Animação para o fade out */
 @keyframes fadeOut {
@@ -614,12 +74,485 @@ svg * {
 }
 
 
+
+#text-boxfix span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+#text-boxfix a {
+  color: #171244;             /* Cor dos links */
+  text-decoration: none;      /* Remove o sublinhado dos links */
+  padding: 5px 10px;          /* Espaçamento ao redor do texto */
+  border-radius: 5px;         /* Bordas arredondadas para os links */
+  transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+#text-boxfix a:hover {
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo preto com 10% de opacidade */
+  color: #171244;                       /* Mantém a cor original do texto */
+  text-decoration: none;                /* Garante que o sublinhado permaneça removido */
+}
+
+
+
+#text-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Mantém a imagem completa */
+}
+
+#text-box span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 10;
+}
+
+
+
+
+
+#text-box2 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+}
+#text-box2 span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+
+
+
+
+
+#text-box3 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+#text-box3 span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+  
+}
+
+
+
+
+#text-box4 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 20%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box4s span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+.text-background4 {
+  position: absolute;
+  padding: -5% 40%; /* Ajuste o padding para cobrir o texto */
+  background-color: rgba(5, 5, 5, 0.1); /* Fundo opaco apenas no texto */
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#text-box5 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 10%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box5 span {
+  color: #ffffff;
+  font-size: 18px;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+
+
+#text-box6 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 10%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box6 span {
+  color: #ffffff;
+  font-size: 18px;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+#text-box7 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 10%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box7 span {
+  color: #ffffff;
+  font-size: 18px;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+#text-box8 img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 10%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-box8 span {
+  color: #ffffff;
+  font-size: 18px;
+  position: absolute; /* Mantém o texto sobre a imagem */
+  text-align: center;
+  z-index: 10;
+}
+
+
+
+/* Reset de margens e preenchimentos */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos para a div principal com overlay */
+
+
+/* Exibe a div de links apenas quando uma classe "active" é adicionada */
+#map-overlay-links.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Imagem de fundo invisível dentro de map-overlay-links */
+#overlay-image-links {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+
+
+/* Configuração para o SVG */
+svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* Coloca o SVG sobre a imagem */
+}
+
+/* Estilo para áreas clicáveis do SVG */
+svg * {
+  fill: rgba(0, 255, 255, 0.4);
+  cursor: pointer;
+  opacity: 0; /* Invisível, mas clicável */
+}
+
 #collisionCanvas {
   position: absolute;
   top: 0;
   left: 0;
+  width: 1495px;
+  height: 730px;
+  pointer-events: none;
+  z-index: 15;
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1495px;
+  height: 730px;
+  pointer-events: none;
+}
+
+
+
+#character {
+  position: absolute;
+  width: 40px; /* Pode ser removido */
+  height: 40px; /* Pode ser removido */
+  background-image: url('images/tile000.png');
+  background-size: 100% 100%;
+  left: 747.5px; /* 50% da largura */
+  top: 365px; /* 50% da altura */
+  transform: translate(-50%, -50%) scale(1); /* A escala padrão começa em 1 */
+  z-index: 10;
+}
+
+#water-overlay {
+  position: absolute;
+  top: 575px; /* 62.2% da altura */
+  left: 853px; /* 45.5% da largura */
+  width: 90px; /* 8% da largura */
+  height: 124.1px; /* 17% da altura */
+  z-index: 12;
+  pointer-events: none;
+}
+
+#water-gif {
+  width: 60px; /* 50% da largura */
+  height: 70px; /* 50% da altura */
+  object-fit: cover;
+  opacity: 50%;
+}
+
+#text-boxfix {
+  position: absolute;
+  top: 182.5px; /* 25% da altura */
+  right: 70px; /* 2% da largura */
+  width: 500px;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+
+#text-box {
+  position: absolute;
+  top: 230px; /* 20% da altura */
+  left: 224.25px; /* 15% da largura */
+  width: 300px;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.text-background {
+  position: absolute;
+  padding: -1px 299px; /* 10% e 20% da altura e largura, respectivamente */
+  background-color: rgba(5, 5, 5, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#text-box2 {
+  position: absolute;
+  top: 146px; /* 20% de 730px */
+  left: 30px; /* 2% de 1495px */
+  width: 550px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.text-background2 {
+  position: absolute;
+  padding: 70px 250px; /* 14% e 47% da altura e largura */
+  background-color: rgba(5, 5, 5, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#text-box3 {
+  position: absolute;
+  top: 146px; /* 20% de 730px */
+  left: 30px; /* 2% de 1495px */
+  width: 550px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#text-box4 {
+  position: absolute;
+  top: 146px; /* 20% da altura */
+  left: 14.95px; /* 1% da largura */
+  width: 598px; /* 40% da largura */
+  height: 365px; /* 50% da altura */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.text-background4 {
+  position: absolute;
+  padding: -1px 598px; /* -5% e 40% da altura e largura */
+  background-color: rgba(5, 5, 5, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#text-box5,
+#text-box6,
+#text-box7,
+#text-box8 {
+  position: absolute;
+  top: 146px; /* 20% da altura */
+  left: 89.7px; /* 6% da largura */
+  width: 463.45px; /* 31% da largura */
+  height: 365px; /* 50% da altura */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.text-background5,
+.text-background6,
+.text-background7,
+.text-background8 {
+  position: absolute;
+  padding: 65px 220px; /* 14% e 47% da altura e largura */
+  background-color: rgba(135, 135, 135, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.text-backgroundlinks {
+  position: absolute;
+  padding: -7.3px 598px; /* -1% e 40% da altura e largura */
+  background-color: rgba(5, 5, 5, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#map {
+  position: absolute;
+  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
+  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
+  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
+  z-index: 0; /* Mantém o mapa na posição inicial */
+}
+
+#mapup {
+  position: absolute;
+  width: 100vw; /* Faz o mapa cobrir toda a largura da tela */
+  height: 100vh; /* Faz o mapa cobrir toda a altura da tela */
+  overflow: hidden; /* Esconde qualquer parte que exceda o viewport */
+  z-index: 11;
+}
+
+
+#map, #mapup, #town-map, #lab-map, #casa-map {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  
+}
+
+#map, #map-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+
+#map-overlay {
+  position: absolute;
+  width: 1495px;
+  height: 730px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#overlay-image {
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Impede que o canvas interfira na movimentação do personagem */
-  z-index: 15; /* Coloque o canvas acima do mapa */
+  z-index: 99;
+   /* Garante que a imagem ocupe todo o espaço do container */
 }
+
+
+#map-overlay-links {
+  position: absolute;
+  
+  width: 1495px;
+  height: 730px;
+  z-index: 1000;
+  display: none;
+}
+
+
+
+
