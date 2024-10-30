@@ -126,7 +126,7 @@ body {
 }
 #text-box2 span {
   color: #333;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   position: absolute; /* Mantém o texto sobre a imagem */
   text-align: center;
@@ -430,8 +430,8 @@ svg * {
   position: absolute;
   top: 146px; /* 20% de 730px */
   left: 30px; /* 2% de 1495px */
-  width: 575px;
-  height: 350px;
+  width: 550px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
