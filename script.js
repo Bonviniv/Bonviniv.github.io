@@ -550,6 +550,7 @@ if(!isTextVisible){
 }
   
   
+
 }
 
 function ativarTextoscasa (positionX, positionY){
