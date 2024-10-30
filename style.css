@@ -430,8 +430,8 @@ svg * {
   position: absolute;
   top: 146px; /* 20% de 730px */
   left: 30px; /* 2% de 1495px */
-  width: 550px;
-  height: 300px;
+  width: 575px;
+  height: 350px;
   display: flex;
   justify-content: center;
   align-items: center;
