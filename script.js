@@ -568,7 +568,7 @@ function ativarLinks(positionX, positionY) {
   }
 
   // Verifica a posição e a tecla pressionada para exibir ou ocultar os links
-  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 48) {
+  if (isWPressed && positionX >= 52 && positionX <= 54 && positionY >= 46.5 && positionY <= 49.5) {
     // Adiciona a classe "active" para exibir o overlay
     maplinks.style.display="flex"
     maplinksa.style.display="flex"
@@ -866,7 +866,9 @@ const factor=screenRatio*(0.063 + (dist*0.1))
 let scale = 1; // Escala padrão
 
 function moveCharacter() {
-  setCharacterScale(scale- (dist*2));
+
+  setCharacterScale(scale - (dist*1.5));
+
   const { mapWidth, mapHeight } = getMapDimensions();
 
   // Define as novas posições em porcentagem
