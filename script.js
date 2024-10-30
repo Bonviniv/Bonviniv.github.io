@@ -795,7 +795,7 @@ function applyResponsiveStyles() {
   textBox2.style.top = `${convertToPixel(20, mapHeight)}px`;
   textBox2.style.left = `${convertToPixel(2, mapWidth)}px`;
   textBox2.style.width = `${convertToPixel(36.8, mapWidth)}px`; // Aproximado para 550px em 1495px
-  textBox2.style.height = `${convertToPixel(41, mapHeight)}px`; // Aproximado para 300px em 730px
+  textBox2.style.height = `${convertToPixel(50, mapHeight)}px`; // Aproximado para 300px em 730px
 
   // Ajuste do #text-box3
   const textBox3 = document.getElementById('text-box3');
