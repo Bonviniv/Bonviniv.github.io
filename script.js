@@ -949,6 +949,8 @@ function moveCharacter() {
     if (currentDirection === 'right') newXPercentage += speed;
     let lines
    
+
+   
    if(contador==3){
   character.style.opacity=1
   }
@@ -985,7 +987,7 @@ function moveCharacter() {
 
     if (body.dataset.background == "town") {
       // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
-     
+      
       lines = adjustYValues(collisionLines,factor);
       cenario = 1;
       console.log("Cenário alterado para town.");
@@ -1057,7 +1059,7 @@ function moveCharacter() {
       }
 
       if(cenario==3){
-        if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 44 && positionY <= 46) {
+        if (isAPressed && positionX >= 54.4 && positionX <= 55 && positionY >= 42 && positionY <= 46) {
         window.location.href = "index.html";
         document.body.style.backgroundImage = "url('images/pallet-town.png')";
         newWindow()
@@ -1135,11 +1137,20 @@ textBox.style.animation = 'fadeOut 1s forwards'; // Ativa a animação fadeOut
   }
 });
 
-audio.volume=0.15
-// Atualizar o volume conforme o controle deslizante
+
+
+// Restaura o valor do volume salvo no localStorage (ou usa 0.15 como valor padrão)
+const savedVolume = localStorage.getItem('backgroundVolume');
+audio.volume = savedVolume ? parseFloat(savedVolume) : 0.15;
+volumeSlider.value = audio.volume;
+
+// Atualizar o volume conforme o controle deslizante e salvar no localStorage
 volumeSlider.addEventListener('input', (event) => {
-  audio.volume = event.target.value;
+  const newVolume = event.target.value;
+  audio.volume = newVolume;
+  localStorage.setItem('backgroundVolume', newVolume);
 });
+
 
 function preloadFrames() {
   for (let i = 0; i <= 15; i++) {
