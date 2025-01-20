@@ -1213,8 +1213,9 @@ function newWindow(){
  
 }
 
-window.onload = () => {
-  newWindow()
-  moveCharacter();
+window.onload = async () => {
+  await preloadFrames(); // Carregar todos os frames
+  newWindow(); // Configurar o personagem e o mapa
+  moveCharacter(); // Iniciar a animação
 };
 
