@@ -116,7 +116,19 @@ body {
 
 
 
-
+#text-box2 {
+  position: absolute;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
 
 #text-box2 img {
   flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
@@ -124,33 +136,51 @@ body {
   height: 100%; /* Faz a imagem ocupar toda a altura do container */
   object-fit: contain; /* Mantém a proporção e evita distorções */
 }
+
 #text-box2 span {
   color: #333;
-  font-size: 16px;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  font-size: 18px;
   font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 0%;
   text-align: center;
   z-index: 10;
+  
 }
 
 
 
-
-
-
+#text-box3 {
+  position: absolute;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
 
 #text-box3 img {
   flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
   width: 100%; /* Faz a imagem ocupar toda a largura do container */
   height: 100%; /* Faz a imagem ocupar toda a altura do container */
   object-fit: contain; /* Mantém a proporção e evita distorções */
-  
 }
+
 #text-box3 span {
   color: #333;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
   font-size: 18px;
   font-weight: bold;
-  position: absolute; /* Mantém o texto sobre a imagem */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 0%;
   text-align: center;
   z-index: 10;
   
@@ -425,20 +455,20 @@ svg * {
   align-items: center;
 }
 
-
-#text-box2 {
-  position: absolute;
-  top: 146px; /* 20% de 730px */
-  left: 30px; /* 2% de 1495px */
-  width: 550px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#text-box-big span {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute; /* Mantém o texto sobre a imagem */
   text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
+  z-index: 10;
+  
 }
+
+
+
+
+
 
 .text-background2 {
   position: absolute;
@@ -450,19 +480,7 @@ svg * {
   align-items: center;
 }
 
-#text-box3 {
-  position: absolute;
-  top: 146px; /* 20% de 730px */
-  left: 30px; /* 2% de 1495px */
-  width: 550px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 100;
-  animation: fadeIn 0.5s ease-in-out;
-}
+
 
 #text-box4 {
   position: absolute;
@@ -475,6 +493,7 @@ svg * {
   align-items: center;
   text-align: center;
   z-index: 100;
+  font-weight: bold;
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -547,7 +566,7 @@ svg * {
 }
 
 
-#map, #mapup, #town-map, #lab-map, #casa-map {
+#map, #mapup, #town-map, #lab-map, #casa-map, #casa2-map {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -591,5 +610,37 @@ svg * {
 }
 
 
+#virtual-keyboard {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.horizontal-keys {
+  display: flex;
+  gap: 10px;
+}
+
+.virtual-key {
+  width: 50px;
+  height: 50px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.virtual-key:active {
+  background-color: #388E3C;
+}
 
 
