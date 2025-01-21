@@ -21,7 +21,7 @@ const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
 
-const debug=true
+const debug=false
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
