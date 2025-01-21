@@ -21,7 +21,7 @@ const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
 
-const debug=false
+const debug=true
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
@@ -74,6 +74,7 @@ let lines
 let fadeTimeout; // Variável para armazenar o timeout de fade-out
 
 const changeFactor = 0.5; // Define o valor que será subtraído de y1 e y2
+
 
 const collisionLines = [
   { x1: 42, y1: 35.5, x2: 58, y2: 35.5 },
@@ -241,6 +242,10 @@ const collisionLines3 = [
   { x1: 49, y1: 59 , x2:51, y2: 59 },
 ];
 
+const collisionLines4 = [
+ 
+];
+
 let lastWidth = window.innerWidth;
 let lastHeight = window.innerHeight;
 let zoom=false
@@ -266,7 +271,23 @@ function checkZoom() {
     lastHeight = currentHeight;
 }
 
+  // Simula os eventos de teclado para as teclas virtuais
+  document.querySelectorAll('.virtual-key').forEach(button => {
+    button.addEventListener('mousedown', () => {
+      const key = button.getAttribute('data-key');
+      document.dispatchEvent(new KeyboardEvent('keydown', { key }));
+    });
 
+    button.addEventListener('mouseup', () => {
+      const key = button.getAttribute('data-key');
+      document.dispatchEvent(new KeyboardEvent('keyup', { key }));
+    });
+
+    button.addEventListener('mouseleave', () => {
+      const key = button.getAttribute('data-key');
+      document.dispatchEvent(new KeyboardEvent('keyup', { key }));
+    });
+  });
 
 // Verifica a cada 500ms (ou ajuste conforme necessário)
 
@@ -932,6 +953,7 @@ function moveCharacter() {
 
   setCharacterScale(scale - (calcularY(map.offsetHeight)));
   textBoxCheck()
+        
 
   const { mapWidth, mapHeight } = getMapDimensions();
 
@@ -954,6 +976,22 @@ function moveCharacter() {
    if(contador==3){
   character.style.opacity=1
   }
+
+
+  if (body.dataset.background == "casa2") {
+    const spanText = document.querySelector("#text-box .text-background span");
+     spanText.style.color = "white";
+     
+    if(contador==0){
+      newXPercentage = 42.5;
+      newYPercentage = 71.5
+     }contador++
+    // Se o fundo já é "oaks-lab.png", altere as variáveis ou execute as ações
+    lines = adjustYValues(collisionLines4,factor);
+    cenario = 4;
+    console.log("Cenário alterado para o casa.");
+    ativarTextoscasa(newXPercentage,newYPercentage)
+  }  
 
 
   if (body.dataset.background == "casa") {
@@ -992,6 +1030,8 @@ function moveCharacter() {
       cenario = 1;
       console.log("Cenário alterado para town.");
       ativarTextos(newXPercentage,newYPercentage)
+
+
     } 
     
     // Checa colisão na nova posição
@@ -1039,6 +1079,17 @@ function moveCharacter() {
         newWindow()
       }
       }
+
+      
+      //if(cenario==1){
+       // if (isWPressed && positionX >= 51 && positionX <= 54 && positionY >= 45&& positionY <= 46) {       
+       // window.location.href = "casa2.html";
+       // document.body.style.backgroundImage = "url('images/casa2.1.png')";
+       // newWindow()
+      //}
+      //}
+
+
 
       if(cenario==1){
         if (isWPressed && positionX >= 53 && positionX <= 55 && positionY >= 55.5 && positionY <= 57) {
@@ -1209,13 +1260,13 @@ function newWindow(){
   //transformYCoordinates(collisionLines)
   //transformYCoordinates(collisionLines2)
   //transformYCoordinates(collisionLines3)
-
- 
 }
 
 window.onload = async () => {
   await preloadFrames(); // Carregar todos os frames
   newWindow(); // Configurar o personagem e o mapa
+  character.style.opacity=0
   moveCharacter(); // Iniciar a animação
 };
+
 
