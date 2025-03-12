@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         navigator.clipboard.writeText(codigo)
             .then(() => {
-                alert("Código copiado: " + codigo);
+               // alert("Código copiado: " + codigo);
             })
             .catch(err => {
                 console.error("Erro ao copiar código: ", err);
