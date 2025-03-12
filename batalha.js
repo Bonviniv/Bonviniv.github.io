@@ -278,7 +278,7 @@ class BatalhaManager {
             playerItem.innerHTML = `
                 <span class="player-name">${jogador.nome}</span>  
 
-                <span class="player-strik">Strik: ${jogador.strik || 0}</span>
+                <span class="player-strik">Strick: ${jogador.strik || 0}</span>
             `;
             container.appendChild(playerItem);
         });
