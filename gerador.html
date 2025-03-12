@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de CSV de Palavras Comuns</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- CDN do Axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script> <!-- CDN do PapaParse -->
+</head>
+<body>
+    <h1>Gerador de CSV de Palavras Comuns</h1>
+    <p>Clique no botão abaixo para gerar um arquivo CSV com as palavras mais comuns.</p>
+    <button onclick="gerarCSV()">Gerar CSV</button>
+
+    <script>
+        async function gerarCSV() {
+            try {
+                let palavras = [];
+                let pagina = 0;
+                let palavrasObtidas = 0;
+
+                // Requisição à API Datamuse para pegar palavras
+                while (palavrasObtidas < 10000) {  // Tentando pegar até 10.000 palavras
+                    const resposta = await axios.get('https://api.datamuse.com/words', {
+                        params: {
+                            max: 1000, // número máximo de palavras por requisição
+                            start: pagina * 1000  // controle de paginação
+                        }
+                    });
+
+                    // Verificando se há palavras na resposta
+                    if (resposta.data && resposta.data.length > 0) {
+                        // Adiciona as palavras da resposta à lista
+                        palavras = palavras.concat(resposta.data.map(item => item.word));
+                        palavrasObtidas += resposta.data.length;
+                        pagina++;
+                    } else {
+                        break; // Se não houver mais palavras, interrompe o loop
+                    }
+                }
+
+                // Verificando se conseguimos pegar alguma palavra
+                if (palavras.length === 0) {
+                    alert("Não foi possível obter palavras.");
+                    return;
+                }
+
+                // Processando as palavras (normalizando e substituindo "ç" por "c")
+                const palavrasProcessadas = palavras
+                    .map(palavra => palavra.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ç/g, "c"))
+                    .slice(0, 10000); // Garantir que pegamos até 10.000 palavras
+
+                // Gerando CSV com PapaParse
+                const csv = Papa.unparse(palavrasProcessadas.map(p => [p])); // Converte em formato de CSV
+
+                // Criando o arquivo Blob para download
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+                // Criando um link temporário para fazer o download
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'palavras_comuns.csv';
+                link.click();
+            } catch (erro) {
+                console.error('Erro ao gerar o CSV:', erro);
+                alert('Erro ao gerar o CSV. Verifique o console para mais detalhes.');
+            }
+        }
+    </script>
+</body>
+</html>

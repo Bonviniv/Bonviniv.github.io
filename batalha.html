@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalha - Jogo da Forca</title>
+    <link rel="stylesheet" href="hanging.css">
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-database.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="batalha.js"></script>
+    <script src="hanging.js"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="batalha-info">
+                <span class="codigo-label">Código da Sala:</span>
+                <span id="codigo-batalha" class="codigo-display"></span>
+            </div>
+            <div class="usuarios-online">
+                Jogadores: <span id="contador-usuarios">1</span>
+            </div>
+            <button id="sair-batalha" class="sair-batalha-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/1828/1828479.png" alt="Sair" class="sair-icon">
+                <span>Sair da Batalha</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="batalha-info">
+        <span class="codigo-label">Código da Sala:</span>
+        <span id="codigo-batalha" class="codigo-display">ABC123</span>
+        <button onclick="copiarCodigo()">Copiar Código</button>
+    </div>
+    <div id="battle-control" class="battle-control" style="display: none;">
+        <button id="battle-toggle" class="battle-toggle">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25239.png" alt="Lock" class="lock-icon">
+        </button>
+    </div>
+    
+   
+    <div class="strik-counter">
+        
+        Strik: <span id="strik-count"></span>
+        
+    </div>
+
+   
+
+    <div class="game-container">
+        <!-- Container do jogo à esquerda -->
+        <div class="game-area">
+           
+
+            <div class="forca-ascii">
+                <pre id="desenho-forca"></pre>
+            </div>
+
+            <div class="word-display" id="word-display">
+                <!-- ... espaços das letras ... -->
+            </div>
+
+            <!-- Nova div para tela de enforcado -->
+            <div id="tela-enforcado" class="tela-enforcado" style="display: none;">
+                <h2>ENFORCADO!</h2>
+                <button id="recomecar-jogo" class="botao-touch">Jogar Novamente</button>
+            </div>
+
+            <div id="palavra-container">
+                <div id="palavra-escondida" class="palavra-escondida"></div>
+            </div>
+            
+            <div class="teclado-virtual">
+                <div class="linha-teclado">
+                    <button class="tecla" data-letra="Q">Q</button>
+                    <button class="tecla" data-letra="W">W</button>
+                    <button class="tecla" data-letra="E">E</button>
+                    <button class="tecla" data-letra="R">R</button>
+                    <button class="tecla" data-letra="T">T</button>
+                    <button class="tecla" data-letra="Y">Y</button>
+                    <button class="tecla" data-letra="U">U</button>
+                    <button class="tecla" data-letra="I">I</button>
+                    <button class="tecla" data-letra="O">O</button>
+                    <button class="tecla" data-letra="P">P</button>
+                </div>
+                <div class="linha-teclado">
+                    <button class="tecla" data-letra="A">A</button>
+                    <button class="tecla" data-letra="S">S</button>
+                    <button class="tecla" data-letra="D">D</button>
+                    <button class="tecla" data-letra="F">F</button>
+                    <button class="tecla" data-letra="G">G</button>
+                    <button class="tecla" data-letra="H">H</button>
+                    <button class="tecla" data-letra="J">J</button>
+                    <button class="tecla" data-letra="K">K</button>
+                    <button class="tecla" data-letra="L">L</button>
+                    <button class="tecla" data-letra="Ç">Ç</button>
+                </div>
+                <div class="linha-teclado">
+                    <button class="tecla" data-letra="0"></button>
+                    <button class="tecla" data-letra="Z">Z</button>
+                    <button class="tecla" data-letra="X">X</button>
+                    <button class="tecla" data-letra="C">C</button>
+                    <button class="tecla" data-letra="V">V</button>
+                    <button class="tecla" data-letra="B">B</button>
+                    <button class="tecla" data-letra="N">N</button>
+                    <button class="tecla" data-letra="M">M</button>
+                    <button class="tecla" data-letra="0"></button>
+                    <button class="tecla" data-letra="0"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de jogadores à direita -->
+        <div class="players-list">
+            <div class="players-header">
+                <h3>Jogadores na Sala</h3>
+            </div>
+            <div id="players-container" class="players-container">
+                <!-- Jogadores serão adicionados aqui dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="gerador-palavras.js"></script>
+    <script src="hanging.js"></script>
+</body>
+</html>

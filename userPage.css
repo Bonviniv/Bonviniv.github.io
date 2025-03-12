@@ -1,0 +1,113 @@
+/* Estilos gerais */
+body {
+    background-color: #2e2e2e; /* Fundo cinza claro */
+    font-family: Arial, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Navbar */
+.nav-bar {
+    background-color: #333;
+    padding: 10px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.voltar-btn {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.voltar-icon {
+    width: 20px;
+    margin-right: 8px;
+}
+
+/* Perfil Container */
+.perfil-container {
+    background-color: #444;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Título de boas-vindas */
+.perfil-header h2 {
+    font-size: 24px;
+    text-align: center;
+    color: white;
+}
+
+/* Formulário */
+.form-container {
+    background-color: #555;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#label-nome {
+    display: block;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+#nome-usuario {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid #888;
+    margin-bottom: 10px;
+}
+
+#salvar-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#salvar-btn:hover {
+    background-color: #3d774b;
+}
+
+/* Perfil Info */
+.perfil-info {
+    background-color: #555;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+#nome-titulo {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#usuario-exibido {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff; /* Amarelo para destacar */
+}

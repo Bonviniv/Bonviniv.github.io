@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "user": "vitor",
+        "senha": "vitorSenha",
+        "vitoriasTotal": 0,
+        "maiorStrik": 0,
+        "batalhas": 0,
+        "vitoriasBatalhas": 0,
+        "strik": 0
+    }
+
+    ,{
+        "id": 2,
+        "user": "vitor2",
+        "senha": "vitorSenha",
+        "vitoriasTotal": 0,
+        "maiorStrik": 0,
+        "batalhas": 0,
+        "vitoriasBatalhas": 0,
+        "strik": 0
+    }
+]

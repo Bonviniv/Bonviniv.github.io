@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Perfil - Jogo da Forca</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="index.html" class="voltar-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Voltar" class="voltar-icon">
+                <span>Voltar ao Jogo</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container perfil-container">
+        <div id="perfil-info" class="perfil-info">
+            <div class="perfil-header">
+                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Avatar" class="perfil-avatar">
+                <h2>Bem-vindo(a), <span id="nome-usuario"></span>!</h2>
+            </div>
+            
+            <div class="estatisticas-container">
+                <div class="estatistica">
+                    <h3>Vitórias Totais</h3>
+                    <span id="vitorias-totais">0</span>
+                </div>
+                <div class="estatistica">
+                    <h3>Maior Strik</h3>
+                    <span id="maior-strik">0</span>
+                </div>
+            </div>
+
+            <button id="logout-btn" class="logout-btn">Sair</button>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>
