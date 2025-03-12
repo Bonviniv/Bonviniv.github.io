@@ -1078,7 +1078,7 @@ entrar
     
     .word-display {
         font-size: 22px; /* Tamanho base para iPhone 13/14 */
-        margin: 30px auto;
+        margin: 10px auto;
     }
 }
 
@@ -1103,6 +1103,37 @@ entrar
 @supports (-webkit-touch-callout: none) {
     input, select, textarea {
         font-size: 16px !important;
+    }
+}
+
+
+/* Ajustes específicos para iPhone 13/14 */
+@media screen and (width: 390px) and (height: 844px) {
+    .container {
+        padding-top: 120px; /* Aumentado proporcionalmente */
+    }
+
+    .container h1 {
+        margin-top: 45px;
+        margin-bottom: 30px;
+    }
+
+    .palavra-correta {
+        margin: 35px 0;
+    }
+
+    .error-counter {
+        margin: 35px 0;
+    }
+
+    .forca-ascii {
+        margin: 10px auto;
+        font-size: 12px;
+    }
+
+    .word-display {
+        margin-top: 10px;
+        margin-bottom: 40px;
     }
 }
 
@@ -1137,6 +1168,16 @@ entrar
     }
 }
 
+.forca-ascii {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 45px auto;
+    font-family: monospace;
+    color: white;
+    font-size: 14px;
+    line-height: 1.2;
+}
 /* Ajuste os estilos para garantir o espaçamento correto */
 .container h1 {
     margin-top: 50px; /* Aumentado */
@@ -1158,51 +1199,20 @@ entrar
     margin: 40px 0; /* Aumentado */
 }
 
-.forca-ascii {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 45px auto;
-    font-family: monospace;
-    color: white;
-    font-size: 14px;
-    line-height: 1.2;
-}
+
 
 .word-display {
-    margin-top: 45px; /* Aumentado */
+    margin-top: 20px; /* Aumentado */
     margin-bottom: 45px;
 }
 
-/* Ajustes específicos para iPhone 13/14 */
-@media screen and (width: 390px) and (height: 844px) {
-    .container {
-        padding-top: 120px; /* Aumentado proporcionalmente */
-    }
-
-    .container h1 {
-        margin-top: 45px;
-        margin-bottom: 30px;
-    }
-
-    .palavra-correta {
-        margin: 35px 0;
-    }
-
-    .error-counter {
-        margin: 35px 0;
-    }
-
-    .forca-ascii {
-        margin: 40px auto;
-        font-size: 12px;
-    }
-
-    .word-display {
-        margin-top: 40px;
-        margin-bottom: 40px;
-    }
+/* Ajuste para a página batalha.html */
+body[data-page="batalha"] .word-display {
+    margin-top: 10px; /* Reduzindo a margem superior */
+    margin-bottom: 10px; /* Aproximando da forca */
 }
+
+
 
 /* Estilo para o botão Jogar Novamente */
 #jogar-novamente {
