@@ -169,6 +169,13 @@ class JogoDaForca {
         this.strik = 0;
         this.carregarEstatisticas();
         this.desenhoForca = document.getElementById('desenho-forca');
+
+          this.userUndefined = this.gerarNomeAleatorio();
+      
+        if(localStorage.getItem('nomeUsuario') == undefined){
+            localStorage.setItem('nomeUsuario', this.userUndefined);
+        }
+
       
 
 
@@ -689,6 +696,17 @@ class JogoDaForca {
         
             // ... resto do código de vitória ...
         }
+    }
+
+        gerarNomeAleatorio() {
+        const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let nomeAleatorio = '';
+    
+        for (let i = 0; i < 4; i++) {
+            nomeAleatorio += letras.charAt(Math.floor(Math.random() * letras.length));
+        }
+    
+        return nomeAleatorio;
     }
 
     atualizarStrik() {
