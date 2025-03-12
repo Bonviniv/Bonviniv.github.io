@@ -4,7 +4,7 @@ import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCU9Qg49gLZTjwkdKXCuDGNFfHT-r3TNbw",
+  apiKey: ${{secrets.GOOGLE_API_KEY}}
   authDomain: "forca-a842a.firebaseapp.com",
   databaseURL: "https://forca-a842a-default-rtdb.firebaseio.com",
   projectId: "forca-a842a",
