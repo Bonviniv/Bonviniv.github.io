@@ -108,6 +108,7 @@ class BatalhaManager {
                         this.desabilitarTeclas(); // Atualiza as teclas
                         
                         setTimeout(() => {
+                             this.verificarPresencaCriador();
                             this.reiniciarJogo();
                         }, 10000);
                         
@@ -387,6 +388,32 @@ class BatalhaManager {
 
         } catch (error) {
             console.error('Erro ao verificar criador da sala:', error);
+        }
+    }
+
+
+        async verificarPresencaCriador() {
+        try {
+            const salaSnapshot = await get(this.salaRef);
+            const salaData = salaSnapshot.val() || {};
+    
+            if (!salaData.jogadores) return; // Se não houver jogadores, sai da função
+    
+            const jogadores = Object.keys(salaData.jogadores); // Lista de jogadores na sala
+            const criadorAtual = salaData.criador;
+    
+            // Verifica se o criador ainda está na sala
+            if (!jogadores.includes(criadorAtual)) {
+                // Se o criador saiu, escolher o jogador mais antigo (primeiro da lista)
+                const novoCriador = jogadores[0];
+    
+                if (novoCriador) {
+                    await update(this.salaRef, { criador: novoCriador });
+                    console.log(`Novo criador da sala: ${novoCriador}`);
+                }
+            }
+        } catch (error) {
+            console.error("Erro ao verificar presença do criador:", error);
         }
     }
 
