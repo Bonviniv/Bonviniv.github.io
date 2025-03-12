@@ -551,6 +551,23 @@ atualizarStrikSala() {
 
 }
 
+if (window.location.pathname.includes("batalha.html")) {
+    document.addEventListener("DOMContentLoaded", function () {
+        const wordDisplay = document.querySelector(".word-display");
+        if (wordDisplay) {
+            wordDisplay.style.marginTop = "-70px";
+            wordDisplay.style.marginBottom = "0px";
+        }
+
+        const gameArea = document.querySelector(".game-area");
+        if (gameArea) {
+            gameArea.style.marginTop = "0px";
+            gameArea.style.marginBottom = "-10px";
+        }
+    });
+}
+
+
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     window.batalhaManager = new BatalhaManager();
