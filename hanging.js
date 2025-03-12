@@ -678,6 +678,7 @@ class JogoDaForca {
 
     verificarVitoria() {
         if (this.palavraCompleta()) {
+            
             this.strik=strik+1;
             user.strik=this.strik;
             user.strik.update();
@@ -685,15 +686,27 @@ class JogoDaForca {
 
             this.atualizarStrik();
             this.pararAtualizacaoForca();
+        
             // ... resto do código de vitória ...
         }
     }
 
     atualizarStrik() {
-        
+
+        const username = localStorage.getItem('nomeUsuario');
+
+        const strikCount = document.getElementById('strik-count');
+        if(username == undefined){
+            username='*__*';
+        }
+
+        console.log('strik',this.strik, ' username - ', username );
         if (strikCount) {
             strikCount.textContent = this.strik;
         }
+
+    
+
     }
 }
 
