@@ -162,7 +162,7 @@ class JogoDaForca {
         this.palavraAtual = '';
         this.letrasReveladas = new Set();
         this.erros = 0;
-        this.maxErros = 6;
+        this.maxErros = 10;
         this.vitorias = 0;
         this.vitoriasTotal = 0;
         this.maiorStrik = 0;
@@ -601,7 +601,42 @@ class JogoDaForca {
  /|\\  |
  / \\  |
       |
-=========`;
+=========`;            } else if (this.erros === 6) {
+                desenho = `  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+      |
+=========`;            } else if (this.erros === 7) {
+                desenho = `  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+      |
+=========`;            } else if (this.erros === 8) {
+                desenho = `  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+*     |
+=========`;            } else if (this.erros === 9) {
+                desenho = `  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+*  *  |
+=========`;            } else if (this.erros === 10) {
+                desenho = `  +---+
+  |   |
+  X   |
+ /|\\  |
+ / \\  |
+*  *  |
+=========`;  
             }
             
             desenhoForca.textContent = desenho;
@@ -616,7 +651,7 @@ class JogoDaForca {
         console.log('Atualizando forca. Erros:', this.erros); // Debug
         this.atualizarDesenhoForca();
 
-        if (this.erros >= 6) {
+        if (this.erros >= 10) {
             this.mostrarTelaEnforcado();
         }
     }
