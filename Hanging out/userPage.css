@@ -1,0 +1,328 @@
+/* Estilos gerais */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background-color: #2f2f2f; /* Fundo cinza escuro */
+    color: white; /* Texto branco para todo o conteúdo */
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+
+.container {
+    margin: 0 auto;
+    padding: 15px;
+    padding-top: 140px; /* Aumentado significativamente */
+    width: 80%;
+    max-width: 600px;
+   
+}
+
+/* Barra de navegação */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #2f2f2f; /* Mesma cor do fundo */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 101;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 17px 25px;
+    width: 100%;
+}
+
+.right-buttons {
+    display: flex;
+    align-items: center;
+}
+.voltar-btn {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.voltar-icon {
+    width: 20px;
+    margin-right: 8px;
+    color: rgb(255, 255, 255);
+    align-items: center;
+}
+
+
+
+/* Perfil Container */
+.perfil-container {
+    background-color: #444;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 75px;
+}
+
+/* Título de boas-vindas */
+.perfil-header h2 {
+    font-size: 24px;
+    text-align: center;
+    color: white;
+}
+
+/* Formulário */
+.form-container {
+    background-color: #555;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#label-nome {
+    display: block;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+#nome-usuario {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid #888;
+    margin-bottom: 10px;
+   
+}
+
+
+#nome-btn{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+    background-color: #3d774b;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+#nome-btn:hover {
+    background-color: #203d27;
+}
+
+
+#salvar-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 12px;
+    background-color: #3d774b;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+#salvar-btn:hover {
+    background-color: #203d27;
+}
+
+/* Perfil Info */
+.perfil-info {
+    background-color: #555;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+#nome-titulo {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#usuario-exibido {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff; /* Amarelo para destacar */
+}
+
+.round-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 25%; /* Ajuste a posição vertical conforme necessário */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+
+.red-btn {
+    background-color: red;
+}
+
+
+.instrucoes-painel-texto {
+    height: 100%;
+    overflow-y: auto; /* Permite rolagem vertical */
+    padding-right: 20px; /* Adiciona espaço para a barra de rolagem */
+}
+
+.instrucoes-painel h2 {
+    margin-top: 0;
+}
+
+.instrucoes-painel p {
+    margin: 20px 0;
+}
+
+.instrucoes-painel .round-btn {
+    position: absolute;
+    bottom: 20px; /* Perto da parte inferior do painel */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.voltar-icon {
+    width: 24px; /* Ajuste o tamanho da imagem conforme necessário */
+    height: 24px;
+    display: block;
+    margin: auto;
+    scale: 2.3;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+
+#ImagensLink{
+    display: flex;
+    align-items: center;
+    padding-left: 20%;
+    position: fixed;
+    bottom: 8%;
+    right: 15%;
+    width: 50%;    
+    height: 10%;
+    background-color: rgb(59, 59, 59);
+    border-radius: 10px;
+}
+
+#fechar-instrucoes-btn{
+    position: fixed;
+    bottom: 8%;
+    right: 50%;
+}
+/* Remover a classe blink e a animação */
+
+/* Adiciona estilos para remover o efeito de foco e ativo */
+.voltar-btn:focus,
+.voltar-btn:active,
+#instrucoes-btn:focus,
+#instrucoes-btn:active,
+#fechar-instrucoes-btn:focus,
+#fechar-instrucoes-btn:active {
+    outline: none; /* Remove o contorno ao focar ou clicar */
+    box-shadow: none; /* Remove a sombra ao focar ou clicar */
+    background-color: inherit; /* Mantém a cor de fundo ao focar ou clicar */
+}
+
+
+
+@media (min-width: 768px) {
+    .nav-bar {
+        /* Ajuste a altura da barra de navegação */
+        height: 60px;
+    }
+
+    .round-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #4a4a4a;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        position: fixed;
+        bottom: 17%; /* Ajuste a posição vertical conforme necessário */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+    }
+
+  
+    
+#ImagensLink{
+    display: flex;
+    
+    padding-left: 16%;
+    padding-right: 16%;
+    position: fixed;
+    bottom: 5%;
+    right: 29%;
+    width: 10%;    
+    height: 10%;
+    background-color: rgb(59, 59, 59);
+    border-radius: 10px;
+}
+
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    display: none; /* Inicialmente escondido */
+    z-index: 1001; /* Certifique-se de que está acima do perfil-container */
+}
+
+/* Instruções Painel */
+.instrucoes-painel {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* 80% do tamanho total da tela */
+    height: 65%; /* 80% da altura total da tela */
+    max-width: 600px; /* Limite máximo de largura */
+    background-color: rgb(59, 59, 59);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden; /* Esconde o overflow */
+    z-index: 1002; /* Certifique-se de que está acima do overlay */
+}
+
+.instrucoes-painel-texto {
+    height: 100%;
+    overflow-y: auto; /* Permite rolagem vertical */
+    padding-right: 20px; /* Adiciona espaço para a barra de rolagem */
+}
+
+

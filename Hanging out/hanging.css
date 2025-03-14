@@ -19,15 +19,87 @@ html {
     height: -webkit-fill-available;
 }
 
-/* Container principal */
-.container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 15px;
-    padding-top: 140px; /* Aumentado significativamente */
-    padding-bottom: 250px; /* Espaço extra para o teclado virtual */
-    border-radius: 12px;
+
+/* ...existing code... */
+
+/* ...existing code... */
+/* ...existing code... */
+
+.toggle-container {
+    scale: 0.75;
+    position: absolute;
+    top: 24%; /* Ajuste conforme necessário */
+    right: 80%; /* Ajuste conforme necessário */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-bottom: 5px; /* Espaço entre o switch e o label */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #36815e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    font-size: 16px;
+    color: white;
+}
+
+/* ...existing code... */
+
+/* ...existing code... */
+  
+  /* ...existing code... */
+
+/* Container principal *
 
 /* Barra de navegação */
 .nav-bar {
@@ -40,7 +112,12 @@ html {
     z-index: 101;
 }
 
+.instrucoes-btn{
+    font:bold;
+}
+
 .nav-container {
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -63,7 +140,7 @@ html {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    background-color: #4CAF50;
+    background-color: #696969;
     color: white;
     text-decoration: none;
     border-radius: 20px;
@@ -443,27 +520,6 @@ html {
     gap: 5px;
 }
 
-.letra-espaco {
-    width: 30px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5em;
-    text-transform: uppercase;
-    margin: 0 5px;
-    transition: color 0.3s ease;
-    position: relative; /* Importante para as animações */
-    color: white;
-}
-
-@media (max-width: 480px) {
-    .letra-espaco {
-        width: 25px;
-        height: 35px;
-        font-size: 1.2em;
-    }
-}
 
 .palavra-correta {
     color: black;
@@ -571,9 +627,49 @@ html {
     color: white;
 }
 
+.l/* ...existing code... */
+
+.word-display {
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    margin: 20px auto;
+    padding: 0 15px;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap; /* Mantém em uma única linha */
+    -webkit-overflow-scrolling: touch;
+    letter-spacing: -2px; /* Ajuste o espaçamento entre letras */
+}
+
 .letra-espaco {
+    width: 30px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    margin: 0 2px; /* Ajuste a margem entre as letras */
+    transition: color 0.3s ease;
+    position: relative; /* Importante para as animações */
     color: white;
 }
+
+/* Ajuste para telas menores */
+@media (max-width: 480px) {
+    .letra-espaco {
+        width: 25px;
+        height: 35px;
+        font-size: 1.2em;
+        margin: 0 1px; /* Ajuste a margem entre as letras para telas menores */
+    }
+}
+
+/* ...existing code... */
+
 
 /* Ajuste a tela de enforcado para o novo esquema de cores */
 .tela-enforcado {
@@ -716,7 +812,7 @@ h1, h2, h3 {
 
 /* Estilos específicos para o perfil */
 .perfil-container {
-    padding-top: 80px;
+    padding-top: 200px;
     max-width: 600px;
     margin: 0 auto;
     padding-left: 20px;
@@ -988,6 +1084,7 @@ h1, h2, h3 {
 
 /* Ajuste para a palavra sendo completada */
 .word-display {
+    font: bold;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1289,7 +1386,7 @@ body[data-page="batalha"] .word-display {
 /* Adicione os estilos para o contador de Strik */
 .strik-counter {
     position: fixed;
-    top: 140px; /* Aumentado de 100px para 140px */
+    top: 24.5%; /* Aumentado de 100px para 140px */
     right: 20px;
     color: white;
     font-size: 18px;
@@ -1409,8 +1506,114 @@ body[data-page="batalha"] .word-display {
     z-index: -1;
 }
 
+
+/* ...existing code... */
+
+.round-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    bottom: 5%;
+    left: 40%;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    position: fixed;
+    z-index: 1000;
+    scale: 0.8;
+}
+
+.contador-dicas {
+    position: absolute;
+    left: 46.5%; /* Ajuste conforme necessário */
+    top: 72%; /* Ajuste conforme necessário */
+    transform: translateY(-50%);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font: bolder;
+}
+
+
+.avisos {
+    position: absolute;
+    left:20%; /* Ajuste conforme necessário */
+    top: 43%; /* Ajuste conforme necessário */
+    transform: translateY(-50%);
+    color: rgb(207, 207, 207);
+    font-size: 25px;
+    text-align: center;
+    font: bolder;
+}
+
+.robo-btn {
+    position: absolute;
+    left: 42%; /* Ajuste conforme necessário */
+    top: 67%; /* Ajuste conforme necessário */
+    transform: translateY(-50%);
+    scale: 1.2;
+}
+
+.voltar-icon {
+    width: 24px; /* Ajuste o tamanho da imagem conforme necessário */
+    height: 24px;
+    display: block;
+    margin: auto;
+    scale: 2.3;
+}
+
+.dica-robo-painel {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 87%; /* 80% do tamanho total da tela */
+    height: 70%; /* 80% da altura total da tela */
+    max-width: 600px; /* Limite máximo de largura */
+    background-color: rgb(59, 59, 59);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 1001;
+}
+
+/* ...existing code... */
+
+.piscar-vermelho {
+    animation: piscar-vermelho 0.5s infinite;
+}
+
+@keyframes piscar-vermelho {
+    0%, 100% { color: rgb(252, 102, 102); }
+    50% { color: transparent; }
+}
+
+
+.piscar-verde {
+    animation: piscar-verde 0.5s infinite;
+}
+
+@keyframes piscar-verde {
+    0%, 100% { color: rgb(163, 255, 135); }
+    50% { color: transparent; }
+}
+
+/* ...existing code... */
+
+/* ...existing code... */
+
 /* Ajustes para iPhone 13/14 */
 @media screen and (width: 390px) and (height: 844px) {
+
+
+   
+    
     .batalha-panel {
         width: 90%;
     }
@@ -1765,8 +1968,8 @@ body[data-page="batalha"] .word-display {
 
 .battle-control {
     position: fixed;
-    top: 140px; /* Mesma altura do contador de Strik */
-    left: 20px;
+    top: 100px; /* Mesma altura do contador de Strik */
+    left: 27px;
 }
 
 .battle-toggle {
@@ -1825,7 +2028,7 @@ body[data-page="batalha"] .word-display {
 /* Ajuste para iPhone 13/14 */
 @media screen and (width: 390px) and (height: 844px) {
     .battle-control {
-        top: 130px;
+        top: 110px;
         left: 15px;
     }
 
@@ -1852,6 +2055,8 @@ body[data-page="batalha"] .word-display {
     z-index: 1000;
 }
 
+
+
 /* Ajuste para iPhone 13/14 */
 @media screen and (width: 390px) and (height: 844px) {
     .vitorias-batalha {
@@ -1860,4 +2065,278 @@ body[data-page="batalha"] .word-display {
         font-size: 13px;
     }
 }
+@keyframes blink {
+    0% { background-color: rgb(179, 179, 179); }
+    100% { background-color: transparent; }
+}
 
+.blink {
+    animation: blink 0.25s ease-in-out;
+}
+
+.letra-erro {
+    color: red;
+    animation: puloLetraErro 600ms ease-in-out, fadeOutLetraErro 1000ms ease-in-out 600ms;
+}
+
+@keyframes puloLetraErro {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes fadeOutLetraErro {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.letra-vitoria {
+    color: #4CAF50;
+    animation: puloLetra 600ms ease-in-out, fadeOutLetra 1000ms ease-in-out 600ms;
+}
+
+@keyframes puloLetra {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes fadeOutLetra {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Estilos para desktop */
+@media (min-width: 768px) {
+
+
+    
+.toggle-container {
+    position: absolute;
+    top: 20%; /* Ajuste conforme necessário */
+    right: 90.5%; /* Ajuste conforme necessário */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-bottom: 5px; /* Espaço entre o switch e o label */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #36815e;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    font-size: 16px;
+    color: white;
+}
+  
+
+
+    .dica-robo-painel {
+        position: fixed;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 87%; /* 80% do tamanho total da tela */
+        height: 70%; /* 80% da altura total da tela */
+        max-width: 600px; /* Limite máximo de largura */
+        background-color: rgb(59, 59, 59);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        z-index: 1001;
+    }
+
+    .robo-btn {
+        left: 24%; /* Ajuste conforme necessário para mover mais para a esquerda */
+        top: 30%; /* Ajuste conforme necessário para mover mais para cima */
+    }
+
+    .contador-dicas {
+        left: 25.2%; /* Ajuste conforme necessário */
+        top: 36.5%; /* Ajuste conforme necessário */
+    }
+
+    .avisos {
+        left: 42%; /* Ajuste conforme necessário */
+        top: 42%; /* Ajuste conforme necessário */
+    }
+
+    .nav-bar {
+        /* Ajuste a altura da barra de navegação */
+        height: 60px;
+    }
+
+    .nav-container {
+        /* Ajuste o padding da barra de navegação */
+        padding: 0 20px;
+    }
+
+    .batalha-icon {
+        /* Ajuste o tamanho do ícone de batalha */
+        transform: scale(5);
+        margin-left: 60px;
+    }
+
+    .perfil-icon {
+        /* Ajuste o tamanho do ícone de perfil */
+        width: 50px;
+        height: 50px;
+        margin-right: 0;
+         
+    }
+
+    .perfil-btn {
+        /* Ajuste o tamanho do botão de perfil */
+        transform: scale(0.6);
+        margin-right: 60px;
+       
+    }
+
+    
+    .strik-counter {
+        /* Ajuste a posição e o tamanho do contador de strikes */
+        transform: scale(1);
+        position: absolute;
+        margin-right: 22%;
+    }
+
+    .container {
+        /* Ajuste o padding do container principal */
+        padding: 0px;
+    }
+
+    .forca-ascii {
+        /* Ajuste o tamanho da área de desenho da forca */
+        font-size: 1.25em;
+        margin-top: -10px;
+        
+        
+    }
+
+    .teclado-virtual {
+        /* Ajuste o tamanho do teclado virtual */
+        transform: scale(0.65);
+        bottom: -5%;
+        font-size: larger;
+    }
+
+    .word-display {
+        /* Ajuste o tamanho da palavra sendo adivinhada */
+        margin-top: -100px;
+        font-size: 2.5em;
+    
+    }
+
+    .batalha-button.entrar {
+        background-color: #666;
+        color: white;
+        flex: 1;
+        margin-left: 35px;
+        width: 150px;
+        
+    }
+
+    .batalha-panel {
+        /* Ajuste a posição e o tamanho do painel de batalha */
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .batalha-content {
+        /* Ajuste o padding do conteúdo de batalha */
+        padding: 20px;
+    }
+
+    .players-list {
+        width: 250px;
+        background-color: #2f2f2f;
+        border-radius: 12px;
+      
+        margin-top: -175px; /* Espaço para a nav-bar */
+        margin-left: 1050px;
+    }
+
+    .battle-control {
+        /* Ajuste a posição do controle de batalha */
+        margin-left: 65px;
+        margin-top: 120px; 
+    }
+
+     body[data-page="batalha"] .game-container {
+        margin-top: 100px; 
+        
+    }
+
+    body[data-page="batalha"]     .teclado-virtual {
+        /* Ajuste o tamanho do teclado virtual */
+        transform: scale(0.65);
+        bottom: -5%;
+        left: -15%;
+        font-size: larger;
+    }
+    
+    body[data-page="batalha"]     .nav-bar {
+        /* Ajuste o tamanho do teclado virtual */
+        margin-top: 10px;
+    }
+    
+    body[data-page="batalha"]     .strik-counter {
+        /* Ajuste o tamanho do teclado virtual */
+        margin-right: 500px;
+    }
+    
+    
+
+    
+
+}

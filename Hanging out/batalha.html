@@ -11,7 +11,7 @@
     <script type="module" src="batalha.js"></script>
     <script src="hanging.js"></script>
 </head>
-<body>
+<body data-page="batalha">
     <nav class="nav-bar">
         <div class="nav-container">
             <div class="batalha-info">
@@ -28,11 +28,7 @@
         </div>
     </nav>
 
-    <div class="batalha-info">
-        <span class="codigo-label">Código da Sala:</span>
-        <span id="codigo-batalha" class="codigo-display">ABC123</span>
-        <button onclick="copiarCodigo()">Copiar Código</button>
-    </div>
+   
     <div id="battle-control" class="battle-control" style="display: none;">
         <button id="battle-toggle" class="battle-toggle">
             <img src="https://cdn-icons-png.flaticon.com/512/25/25239.png" alt="Lock" class="lock-icon">
@@ -43,7 +39,7 @@
        <div class="strik-counter" style="transform: scale(0.75);">
 
         
-        Strick: <span id="strik-count"></span>
+        <span id="strik-count"></span> x
         
     </div>
 
@@ -53,6 +49,7 @@
         <!-- Container do jogo à esquerda -->
         <div class="game-area">
            
+            
 
             <div class="forca-ascii">
                 <pre id="desenho-forca"></pre>
@@ -60,8 +57,18 @@
 
             <div class="word-display" id="word-display">
                 <!-- ... espaços das letras ... -->
-            </div>
+            </div>                                                    
 
+                  <!-- Contêiner para o toggle switch -->
+        <div class="toggle-container" id="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="toggle-ptBr">
+                <span class="slider round"></span>
+            </label>
+            <label for="toggle-ptBr" class="toggle-label">Português</label>
+        </div>
+
+        
             <!-- Nova div para tela de enforcado -->
             <div id="tela-enforcado" class="tela-enforcado" style="display: none;">
                 <h2>ENFORCADO!</h2>

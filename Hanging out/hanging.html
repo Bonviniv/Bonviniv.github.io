@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+    <script type="module" src="firebase-config.js"></script>
+  
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</br>
+    <title>Just Hanging </title>
+    <link rel="stylesheet" href="hanging.css">
+</head>
+<body >
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <div class="left-buttons">
+                <button id="batalha-btn" class="batalha-btn">
+                    <img src="assets/batalhaSymbol.png" alt="Batalha" class="batalha-icon" style="transform: scale(1.5);">
+                </button>
+                
+            </div>
+            <div class="right-buttons">
+                <a href="user.html" class="perfil-btn" id="perfil-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Perfil" class="perfil-icon">
+                </a>
+            </div>
+        </div>
+    </nav>
+
+       <div class="strik-counter" style="transform: scale(0.75);">
+
+        
+         <span id="strik-count"></span> x
+        
+    </div>
+
+    <div class="container">
+        <h1>Just Hanging</h1>
+
+
+        <div class="forca-ascii">
+            <pre id="desenho-forca"></pre>
+        </div>
+
+        <div class="word-display" id="word-display">
+            <!-- ... espaços das letras ... -->
+        </div>
+
+        <!-- Contêiner para o toggle switch -->
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="toggle-ptBr">
+                <span class="slider round"></span>
+            </label>
+            <label for="toggle-ptBr" class="toggle-label">Português</label>
+        </div>
+
+
+                <!-- Botão de dica do robô -->
+                <button id="dica-robo-btn" class="round-btn robo-btn" style="display: block;">🤖</button>
+                
+                <div id="contador-dicas" class="contador-dicas" style="display: block;">0</div>
+
+                <div id="avisos" class="avisos" style="display: none;"></div>
+
+
+                <!-- Painel de dica do robô -->
+                <div id="dica-robo-painel" class="dica-robo-painel" style="display: none;">
+                    <h2>Dica do Wordsy </h2>
+                </br>
+                    <p>Aqui vai a dica do robô...</p>
+                    <button id="fechar-dica-robo-btn" class="round-btn red-btn">
+                        <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Voltar" class="voltar-icon">
+                    </button>
+                </div>
+
+        <!-- Nova div para tela de enforcado -->
+        <div id="tela-enforcado" class="tela-enforcado" style="display: none;">
+            <h2>ENFORCADO!</h2>
+            <button id="recomecar-jogo" class="botao-touch">Jogar Novamente</button>
+        </div>
+
+        <div id="palavra-container">
+            <div id="palavra-escondida" class="palavra-escondida"></div>
+        </div>
+        
+        <div class="teclado-virtual">
+            <div class="linha-teclado">
+                <button class="tecla" data-letra="Q">Q</button>
+                <button class="tecla" data-letra="W">W</button>
+                <button class="tecla" data-letra="E">E</button>
+                <button class="tecla" data-letra="R">R</button>
+                <button class="tecla" data-letra="T">T</button>
+                <button class="tecla" data-letra="Y">Y</button>
+                <button class="tecla" data-letra="U">U</button>
+                <button class="tecla" data-letra="I">I</button>
+                <button class="tecla" data-letra="O">O</button>
+                <button class="tecla" data-letra="P">P</button>
+            </div>
+            <div class="linha-teclado">
+                <button class="tecla" data-letra="A">A</button>
+                <button class="tecla" data-letra="S">S</button>
+                <button class="tecla" data-letra="D">D</button>
+                <button class="tecla" data-letra="F">F</button>
+                <button class="tecla" data-letra="G">G</button>
+                <button class="tecla" data-letra="H">H</button>
+                <button class="tecla" data-letra="J">J</button>
+                <button class="tecla" data-letra="K">K</button>
+                <button class="tecla" data-letra="L">L</button>
+                <button class="tecla" data-letra="Ç">Ç</button>
+            </div>
+            <div class="linha-teclado">
+                <button class="tecla" data-letra="0"></button>
+                <button class="tecla" data-letra="Z">Z</button>
+                <button class="tecla" data-letra="X">X</button>
+                <button class="tecla" data-letra="C">C</button>
+                <button class="tecla" data-letra="V">V</button>
+                <button class="tecla" data-letra="B">B</button>
+                <button class="tecla" data-letra="N">N</button>
+                <button class="tecla" data-letra="M">M</button>
+                <button class="tecla" data-letra="0"></button>
+                <button class="tecla" data-letra="0"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicione o painel de batalha -->
+    <div id="batalha-panel" class="batalha-panel" style="display: none;">
+        <div class="batalha-content">
+            <h2>Batalha</h2>
+            
+            <!-- Container para criar batalha -->
+            <div id="criar-batalha-container">
+                <div id="codigo-batalha" class="codigo-batalha" style="display: none;"></div>
+                <div id="aceitar-codigo-container" class="aceitar-codigo-container" style="display: none;">
+                    <button id="aceitar-codigo" class="batalha-button aceitar">Abrir arena</button>
+                </div>
+
+                <div class="batalha-buttons">
+                    
+                    <button id="iniciar-batalha" class="batalha-button iniciar">Batalhar</button>
+                    <button id="cancelar-batalha" class="batalha-button cancelar">Cancelar</button>
+                </div>
+                
+            </div>
+
+            <!-- Container para entrar em batalha -->
+            <div id="entrar-batalha-container" class="entrar-batalha-container">
+                <button id="entrar-batalha-btn" class="batalha-button entrar">Encontrar arena</button>
+                <div id="input-codigo-container" class="input-codigo-container" style="display: none;">
+                    <input type="text" id="input-codigo" maxlength="4" placeholder="Digite o código" class="codigo-input">
+                    <div class="codigo-buttons">
+                        <button id="voltar-batalha" class="batalha-button voltar">Voltar</button>
+                        <button id="confirmar-codigo" class="batalha-button confirmar">Confirmar</button>
+                    </div>
+                    <p id="erro-codigo" class="erro-mensagem" style="display: none;">Batalha não encontrada</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <script src="hanging.js"></script>
+</body>
+</html>

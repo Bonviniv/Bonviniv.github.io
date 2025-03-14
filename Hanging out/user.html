@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário - Jogo da Forca</title>
+    <link rel="stylesheet" href="userPage.css">
+</head>
+<body>
+    <nav class="nav-bar" id="nav-bar">
+        <div class="nav-container" id="nav-container">
+            <div class="right-buttons">
+            <a href="hanging.html" class="voltar-btn" id="voltar-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Voltar" class="voltar-icon" id="voltar-icon" style="transform: scale(0.7); filter: invert(1);">
+            </a>
+        </div>
+        </div>
+    </nav>
+    
+
+    <div class="container perfil-container" id="perfil-container">
+        <div class="perfil-header" id="perfil-header">
+            
+            <h2 id="boas-vindas">Bem-vind@!</h2>
+        </div>
+
+        <div class="form-container" id="form-container">
+            <label for="nome-usuario" id="label-nome">Digite seu nome:</label>
+            <input type="text" id="nome-usuario" placeholder="Seu nome" required>
+            <button id="salvar-btn">Salvar Nome</button>
+        </div>
+
+        </br>
+        <div class="perfil-info" id="perfil-info">
+            <h3 id="nome-titulo">Nome do Usuário:</h3>
+            <p id="usuario-exibido">Ainda não definido</p>
+        </div>
+
+        <!-- Botão de instruções -->
+        <button id="instrucoes-btn" class="round-btn">?</button>
+    </div>
+
+    <!-- Nova div para o painel de instruções -->
+    <div class="overlay" id="overlay">
+        <!-- Painel de instruções -->
+        <div id="instrucoes-painel" class="instrucoes-painel">
+            <div id="instrucoes-painel-texto" class="instrucoes-painel-texto">
+                <h2>Just Hanging</h2>
+                
+                <p>Neste jogo, você tem 9 chances de acertar a palavra. Na décima ☠️</p>
+            </br>
+            </br>
+            <h2>Dicas do Wordsy 🤖</h2>
+            
+            <p>A cada 5 vitórias consecutivas, você 
+                pode pedir uma dica para o Wordsy 🤖, 
+                a nossa IA feita para te ajudar.</br>
+                O Wordsy tem medo de batalhas, então 
+                não aparece nas arenas.</p>
+            
+            </br>
+            <h2>Batalhas</h2>
+            
+            <p>As batalhas são uma forma de jogar com amigos. 
+                Você pode criar uma arena e convidar amigos para 
+                jogar com você ou entrar em uma arena existente.</br>
+                Para ganhar uma batalha, o competidor 
+                deve conseguir acertar 5 palavras 
+                consecutivas, e somente um sai vitorioso.
+            </p>
+            
+            <h4>Seu nome</h4>
+            <p>Para que seu nome apareça na lista de jogadores, 
+                você deve salvá-lo no perfil. Caso contrário, 
+                seu nome será um código aleatório.</p>
+            
+            <h4>Abrir arena</h4>
+            <p>Você pode abrir uma arena clicando no botão de batalhas</br> na tela 
+                inicial > "Iniciar Batalha" > "Abrir Arena".  
+            </br>
+            Ao clicar no código da arena, ele será copiado para que você possa convidar amigos para a arena.
+            </p>
+            
+            <h4>Entrar em uma arena</h4>
+            <p>Você pode entrar em uma arena existente clicando  
+                no botão de batalhas na tela inicial > "Encontrar arena" >  
+                preenchendo o campo com o código da arena que deseja entrar > "Confirmar".</p>
+            </br> 
+            <h4>Não fique pendurado, </br>
+                boa sorte! </h4>
+            
+                
+            </br> 
+        </br> 
+            </div>
+            
+        </div>
+        <button id="fechar-instrucoes-btn" class="round-btn red-btn">
+                <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Voltar" class="voltar-icon">
+            </button>
+    </div>
+
+    <div id="ImagensLink" class="ImagensLink"  style="display: flex;">
+        <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" class="social-icon">
+        </a>
+        
+        <a href="https://github.com/Bonviniv" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" class="social-icon">
+        </a>
+    </div>
+
+    <script src="user.js"></script>
+</body>
+</html>

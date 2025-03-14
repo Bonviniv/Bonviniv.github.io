@@ -1,3 +1,12 @@
+const testeDebug = false;
+const darDica = true;
+let ptBr = true; 
+
+
+
+  // Adicionar listeners para o botão de dica do ro
+
+   
 const desenhoForca = document.getElementById('desenho-forca');
 const strikCount = document.getElementById('strik-count');
 // Lista de palavras em português (você pode expandir esta lista)
@@ -8,6 +17,15 @@ const palavras = [
     "papagaio", "quadrado", "rinoceronte", "serpente", "tartaruga"
 ];
 
+const letrasMapeadas = {
+    'a': ['a', 'á', 'à', 'ã', 'â'],
+    'e': ['e', 'é', 'è', 'ê'],
+    'i': ['i', 'í', 'ì', 'î'],
+    'o': ['o', 'ó', 'ò', 'õ', 'ô'],
+    'u': ['u', 'ú', 'ù', 'û'],
+    'c': ['c', 'ç']
+    // Adicione mais mapeamentos conforme necessário
+};
 // Filtra palavras com mais de 5 letras
 const palavrasFiltradas = palavras.filter(palavra => palavra.length > 5);
 
@@ -23,14 +41,6 @@ function atualizarPalavra() {
     document.getElementById('palavra-atual').textContent = palavraAtual;
 }
 
-// Adiciona evento ao botão quando a página carregar
-document.addEventListener('DOMContentLoaded', () => {
-    const botaoNovaPalavra = document.getElementById('nova-palavra');
-    botaoNovaPalavra.addEventListener('click', atualizarPalavra);
-    
-    // Mostra primeira palavra ao carregar a página
-    atualizarPalavra();
-});
 
 function copiarCodigo() {
     const codigoElemento = document.getElementById('codigo-batalha');
@@ -49,27 +59,12 @@ function copiarCodigo() {
             console.error('Erro ao copiar código: ', err);
         });
 }
+// ...existing code...
 
-document.addEventListener("DOMContentLoaded", function() {
-    const codigoElemento = document.getElementById("codigo-batalha");
+// Adicione esta classe CSS ao seu arquivo CSS ou dentro de uma tag <style> no HTML
 
-    codigoElemento.addEventListener("click", function() {
-        const codigo = codigoElemento.textContent.trim();
 
-        if (!codigo) { // Verifica se o código não está vazio
-            alert("Nenhum código disponível para copiar.");
-            return;
-        }
-
-        navigator.clipboard.writeText(codigo)
-            .then(() => {
-               // alert("Código copiado: " + codigo);
-            })
-            .catch(err => {
-                console.error("Erro ao copiar código: ", err);
-            });
-    });
-});
+// ...existing code...
 
 
 // Configuração da base de dados (usando GitHub Gist)
@@ -158,6 +153,7 @@ class UserManager {
 class JogoDaForca {
     constructor() {
         // Configurações do jogo
+        this.ptBr = true;
         this.palavras = [];
         this.palavraAtual = '';
         this.letrasReveladas = new Set();
@@ -167,10 +163,13 @@ class JogoDaForca {
         this.vitoriasTotal = 0;
         this.maiorStrik = 0;
         this.strik = 0;
+        this.dicasUsadaNoRound= false;
         this.carregarEstatisticas();
         this.desenhoForca = document.getElementById('desenho-forca');
-
-          this.userUndefined = this.gerarNomeAleatorio();
+        this.userUndefined = this.gerarNomeAleatorio();
+        this.dicasDisponiveis = 0;
+        this.avisoStrikCount=0;
+        this.firstReset=false;
       
         if(localStorage.getItem('nomeUsuario') == undefined){
             localStorage.setItem('nomeUsuario', this.userUndefined);
@@ -193,6 +192,8 @@ class JogoDaForca {
         this.adicionarEstilosAnimacao();
 
         this.configurarBotoes();
+
+       
 
         this.erros = 0;
         this.desenhosForca = {
@@ -257,7 +258,76 @@ class JogoDaForca {
         this.jogoTerminado = false;
         this.iniciarAtualizacaoForca();
         this.atualizarStrik();
+        this.atualizarContadorDicas();   
+        this.configurarPtBotao();
+        this.checkBatalhaLingua();
+        this.changeToogleByFirebase();
+        this.carregarPlavraIdiomaBatalha();
+        
+        
+        
+        
+       
     }
+
+    atualizarContadorDicas() {
+        const contadorDicasElement = document.getElementById('contador-dicas');
+        const dicaRoboBtn = document.getElementById('dica-robo-btn');
+
+        if(Math.floor(this.strik / 5) > this.avisoStrikCount){
+            this.avisoStrikCount++;
+            this.mostrarAviso('Você ganhou uma dica', 'piscar-verde');
+
+        }
+
+        if(this.dicasDisponiveis>=5){
+            if (contadorDicasElement) {
+                let dicasPerStrik = Math.floor(this.dicasDisponiveis / 5);
+               
+                dicaRoboBtn.style.display = 'block';
+                if(dicasPerStrik>1){
+                    contadorDicasElement.textContent = `${dicasPerStrik}`;
+                    contadorDicasElement.style.display = 'block';
+                }else{
+                    contadorDicasElement.style.display = 'none'
+                }
+                
+            }
+        }
+        
+        if (this.dicasDisponiveis<5){   
+            if (contadorDicasElement) {
+                dicaRoboBtn.style.display = 'none';
+                contadorDicasElement.style.display = 'none';
+            }
+        }
+    }
+
+    mostrarAviso(texto, cor) {
+        const avisosElement = document.getElementById('avisos');
+        if (avisosElement) {
+            avisosElement.textContent = texto;
+            avisosElement.style.display = 'block';
+            avisosElement.style.color = 'red';
+            avisosElement.style.opacity = '1';
+
+            // Piscar em vermelho
+            avisosElement.classList.add(cor);
+
+            setTimeout(() => {
+                // Voltar à cor original e remover a classe de piscar
+                avisosElement.style.color = '';
+                avisosElement.classList.remove(cor);
+
+                // Perder a transparência por 2 segundos
+                avisosElement.style.opacity = '1';
+                setTimeout(() => {
+                    avisosElement.style.display = 'none';
+                }, 2000);
+            }, 500); // Tempo de piscar em vermelho
+        }
+    }
+
 
     carregarEstatisticas() {
         const statsString = localStorage.getItem('estatisticas');
@@ -285,9 +355,9 @@ class JogoDaForca {
 
     async inicializarTestes() {
         // Palavras de exemplo para teste
-        this.palavras = ["aaaaabbbbb", "cccccddddd", "dddddeeee", "ffffffgggg"];
+        this.palavras = ["aáã", "aáã"];
         this.iniciarNovoJogo();
-        this.configurarTeclado();
+
     }
 
 
@@ -309,7 +379,7 @@ class JogoDaForca {
     
             // Inicia o jogo com as palavras carregadas
         this.iniciarNovoJogo();
-        this.configurarTeclado();
+
         } catch (error) {
             console.error("Erro ao carregar palavras:", error);
         }
@@ -329,22 +399,172 @@ class JogoDaForca {
         });
     }
 
+    async carregarPalavras(arquivo) {
+        try {
+            const response = await fetch(arquivo);
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar palavras: ${response.statusText}`);
+            }
+            const texto = await response.text();
+            this.palavras = texto.split("\n").map(palavra => palavra.trim()).filter(palavra => palavra.length > 0);
+
+            if (window.location.pathname.includes('batalha.html')){
+                return;
+            }else{
+            
+            this.jogoTerminado = true;
+            this.strik = 0;
+            
+            this.atualizarStrik();
+        
+            this.dicasDisponiveis=0;
+            this.dicasUsadaNoRound= false;
+            this.atualizarContadorDicas();
+            this.pararAtualizacaoForca();
+        
+            this.iniciarNovoJogo();
+
+            }
+
+
+
+
+                
+           
+        } catch (error) {
+            console.error("Erro ao carregar palavras:", error);
+        }
+    }
+
+
+    configurarPtBotao() {
+        const togglePtBr = document.getElementById('toggle-ptBr');
+        const toggleLabel = document.querySelector('label[for="toggle-ptBr"]');
+
+        toggleLabel.textContent = this.ptBr ? 'PT' : 'EN';
+
+        if (togglePtBr) {
+            togglePtBr.checked = this.ptBr; // Define o estado inicial do toggle switch
+
+            togglePtBr.addEventListener('change', async () => {
+                this.ptBr = togglePtBr.checked;
+                console.log('ptBr:', this.ptBr); // Debug para verificar a mudança
+                toggleLabel.textContent = this.ptBr ? 'PT' : 'EN';
+
+                if (this.ptBr) {
+                    await this.carregarPalavras('palavras.txt');
+                } else {
+                    await this.carregarPalavras('words.txt');
+                }
+            });
+        }
+    }
+
+
+
+    async carregarPlavraIdiomaBatalha(){
+        if (window.location.pathname.includes('batalha.html')){
+            
+            
+
+            const playersHeader = document.querySelector('.players-header h3');
+            const togglePtBrCheck = document.getElementById('toggle-ptBr');
+            //playersHeader.textContent!='Batalha prestes a começar'
+            let contadorFilho=0;
+
+            setInterval(async () => {
+                try {
+
+                    if(playersHeader.textContent!='Batalha prestes a começar' && contadorFilho<=3){
+
+                        if(togglePtBrCheck.checked){
+
+                            //emPT
+
+                            this.carregarPalavras('palavras.txt');
+                            this.letrasReveladas.clear();
+                            this.atualizarContadorErros();
+                            this.selecionarNovaPalavra();
+                       
+                            console.log('togglePtBrCheck ta checkado '); // Debug para verificar a mudança
+                           
+                        }
+                        if(!togglePtBrCheck.checked){
+
+                            //emEN
+                            console.log('togglePtBrCheck ta NÃO checkado ');
+                            this.carregarPalavras('words.txt');
+                            this.letrasReveladas.clear();
+                            this.atualizarContadorErros();
+                            this.selecionarNovaPalavra();
+                            
+                        }
+
+                        contadorFilho++;
+
+                    }
+
+                } catch (error) {
+                    console.error('Erro ao verificar o atributo isNotPt:', error);
+                }
+            }, 500); // Verifica a cada 1 segundo
+
+      
+        }
+    }
+    
+
+    changeToogleByFirebase(){
+        if (window.location.pathname.includes('batalha.html')){
+
+            const togglePtBr = document.getElementById('toggle-container');
+            const toggleLabel = document.querySelector('label[for="toggle-ptBr"]');
+            const togglePtBrCheck = document.getElementById('toggle-ptBr');
+
+                    setInterval(async () => {
+                        try {
+
+                            if(togglePtBr.opacity>=0.001){
+
+                                if(togglePtBrCheck.checked){
+                               
+                                    console.log('carregando palavras em pt'); // Debug para verificar a mudança
+                                     this.carregarPalavras('palavras.txt');
+                                }
+                                if(!togglePtBrCheck.checked){
+                                    console.log('carregando palavras em ingles');
+                                     this.carregarPalavras('words.txt');
+                                }
+
+                            }
+
+                        } catch (error) {
+                            console.error('Erro ao verificar o atributo isNotPt:', error);
+                        }
+                    }, 500); // Verifica a cada 1 segundo
+        }
+    }
+
+
     verificarLetra(letra, tecla) {
-        if (letra==='') return;
+        if (letra === '') return;
         if (this.letrasReveladas.has(letra)) return;
-        
-        this.letrasReveladas.add(letra);
-        const temLetra = this.palavraAtual.toLowerCase().includes(letra);
-        
+
+        // Adiciona a letra e suas variantes ao conjunto de letras reveladas
+        const letrasParaVerificar = letrasMapeadas[letra] || [letra];
+        letrasParaVerificar.forEach(l => this.letrasReveladas.add(l));
+
+        const temLetra = letrasParaVerificar.some(l => this.palavraAtual.toLowerCase().includes(l));
+
         if (temLetra) {
             tecla.style.backgroundColor = '#4CAF50';
             tecla.style.opacity = '0.5';
-            
+
             const espacos = document.querySelectorAll('.letra-espaco');
             let todasLetrasReveladas = true;
-            
+
             [...this.palavraAtual].forEach((letraPalavra, index) => {
-                if (letraPalavra.toLowerCase() === letra) {
+                if (letrasParaVerificar.includes(letraPalavra.toLowerCase())) {
                     espacos[index].textContent = letraPalavra;
                 }
                 // Verifica se todas as letras foram reveladas
@@ -361,9 +581,12 @@ class JogoDaForca {
             tecla.style.opacity = '0.5';
             this.erros++;
             this.atualizarContadorErros();
-            
+
             if (this.erros >= this.maxErros) {
                 this.mostrarTelaEnforcado();
+                this.dicasDisponiveis=0;
+                this.dicasUsadaNoRound= false;
+                this.atualizarContadorDicas();
             }
         }
     }
@@ -447,7 +670,110 @@ class JogoDaForca {
         this.palavraAtual = this.palavras[indiceAleatorio];
         this.atualizarPalavraCorreta();
         this.criarEspacosLetras();
+        
     }
+
+    atualizarDicaRobo(texto) {
+        const dicaRoboParagrafo = document.querySelector('#dica-robo-painel p');
+        if (dicaRoboParagrafo) {
+            dicaRoboParagrafo.textContent = texto;
+        }
+    }
+
+
+      
+      async  dica(palavraAtual) {
+
+        
+        const prompt = `Estou jogando forca com um amigo e ele tem que
+        adivinhar, escolhi a palavra "${palavraAtual}". Me dê uma dica
+        para passar para ele, a dica não deve fazer com que
+        adivinhar seja muito facil, a dica pode ser vaga. 
+        Responda somentecom a dica.`;
+
+        if(!this.ptBr){
+
+             prompt =`Im playing hangman with a friend,
+             and they have to guess. I chose the word "${palavraAtual}". 
+             Give me a hint to pass to them. The hint should not 
+             make guessing too easy; it can be vague. 
+             Respond with the hint only.`;
+
+
+            
+        }
+
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+        
+        try {
+          const configResponse = await fetch('config.json');
+          const config = await configResponse.json();
+          const apiKey = config.apiKeyGemini;
+      
+          let tentativas = 5;
+          let espera = 2000;
+      
+          for (let i = 0; i < tentativas; i++) {
+            try {
+              const response = await fetch(`${apiUrl}?key=${apiKey}`, {  // Melhor forma de passar a chave
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  contents: [{
+                    parts: [{ text: prompt }]  // Formato correto para a API Gemini
+                  }],
+                  generationConfig: {
+                    maxOutputTokens: 50  // Usar generationConfig para definir parâmetros de geração
+                  }
+                })
+              });
+      
+              if (response.status === 429) {
+                console.warn(`Muitas requisições. Tentando novamente em ${espera / 1000} segundos...`);
+                await new Promise(resolve => setTimeout(resolve, espera));
+                espera *= 2;
+                continue;
+              }
+      
+              if (!response.ok) {
+                console.error(`Erro na requisição: ${response.status} - ${response.statusText}`);
+                return null; // Indica que a requisição falhou
+              }
+      
+              const data = await response.json();
+      
+              if (data && data.candidates && data.candidates.length > 0 && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts.length > 0) {
+                const dica = data.candidates[0].content.parts[0].text.trim();
+                console.log('Dica obtida da API:', dica);
+                this.atualizarDicaRobo(dica);
+
+                
+
+                return dica;
+              } else {
+                console.error('Resposta da API não contém dicas válidas:', data);
+                return null; // Indica que não foi possível obter a dica
+              }
+      
+            } catch (error) {
+              console.error('Erro na tentativa de obter dica:', error);
+              await new Promise(resolve => setTimeout(resolve, espera)); // Espera antes de tentar novamente
+              espera *= 2; // Aumenta o tempo de espera
+            }
+          }
+          console.error('Falha ao obter dica após várias tentativas.');
+          return null; // Retorna null após todas as tentativas falharem
+      
+        } catch (error) {
+          console.error('Erro ao carregar configuração ou API Key:', error);
+          return null; // Retorna null em caso de erro na configuração
+        }
+      }
+      
+       
+    
 
     criarEspacosLetras() {
         const container = document.getElementById('palavra-escondida');
@@ -477,31 +803,41 @@ class JogoDaForca {
         });
     }
 
-    mostrarTelaEnforcado() {
-        this.jogoTerminado = true;
-        this.strik=0;
-        this.atualizarStrik();
-        this.pararAtualizacaoForca();
-        //verificarVitoria();
+
+    // ...existing code...
+
+
+// ...existing code...
+
+mostrarTelaEnforcado() {
+    this.jogoTerminado = true;
+    this.strik = 0;
+    
+    this.atualizarStrik();
+
+    this.dicasDisponiveis=0;
+    this.dicasUsadaNoRound= false;
+    this.atualizarContadorDicas();
+    this.pararAtualizacaoForca();
+
+    // Completa a palavra e aplica a animação
+    const espacos = document.querySelectorAll('.letra-espaco');
+    espacos.forEach((espaco, index) => {
+        espaco.textContent = this.palavraAtual[index];
+        espaco.style.animationDelay = `${index * 0.1}s`; // Adiciona um atraso de 0.1s para cada letra
+        espaco.classList.add('letra-erro');
+    });
+
+    // Espera a animação terminar antes de mostrar o painel
+    setTimeout(() => {
         const telaEnforcado = document.querySelector('.tela-enforcado');
         if (telaEnforcado) {
-            // Atualiza o conteúdo para incluir a palavra correta
-            telaEnforcado.innerHTML = `
-                <div class="enforcado-content">
-                    <h2>Enforcado!</h2>
-                    <p class="palavra-correta">A palavra era: ${this.palavraAtual}</p>
-                    <button id="jogar-novamente">Jogar Novamente</button>
-                </div>
-            `;
-            telaEnforcado.style.display = 'flex';
-            
-            // Reconecta o evento do botão jogar novamente
-            const botaoJogarNovamente = document.getElementById('jogar-novamente');
-            if (botaoJogarNovamente) {
-                botaoJogarNovamente.addEventListener('click', () => this.iniciarNovoJogo());
-            }
+            this.iniciarNovoJogo();
         }
-    }
+    }, 1600 + espacos.length * 100); // Tempo total da animação (600ms + 1000ms + delay por letra)
+}
+
+// ...existing code...
 
     esconderTelaEnforcado() {
         const telaEnforcado = document.getElementById('tela-enforcado');
@@ -511,6 +847,7 @@ class JogoDaForca {
     }
 
     iniciarNovoJogo() {
+        this.firstReset=false;
         this.jogoTerminado = false;
         this.erros = 0;
         this.iniciarAtualizacaoForca();
@@ -521,21 +858,34 @@ class JogoDaForca {
         this.esconderTelaEnforcado();
         this.atualizarDesenhoForca();
         this.atualizarStrik();
+       
+        this.configurarTeclado();
+        this.configurarBotaoDica();
+        console.log('Nova rodada iniciada. Palavra:', this.palavraAtual); // Debug
+        this.checkBatalhaLingua();
+        
     }
 
     iniciarNovaRodada() {
         // Continua o jogo mantendo as vitórias
+
+        this.dicasUsadaNoRound= false;
         this.strik++;
+        this.dicasDisponiveis++;
         this.atualizarStrik();
         this.letrasReveladas.clear();
         this.erros = 0;
         this.atualizarContadorErros();
         this.selecionarNovaPalavra();
         this.resetarTeclado();
-
+       
+        this.configurarBotaoDica();
+        
         document.querySelectorAll('.letra-vitoria').forEach(elemento => {
             elemento.classList.remove('letra-vitoria');
         });
+
+        console.log('Nova rodada iniciada. Palavra:', this.palavraAtual); // Debug
     }
 
     configurarBotoes() {
@@ -546,7 +896,78 @@ class JogoDaForca {
                 this.iniciarNovoJogo();
             });
         }
+
+        
     }
+
+
+
+    async checkBatalhaLingua() {    
+    if (window.location.pathname.includes('batalha.html') ){
+
+        const playersHeader = document.querySelector('.players-header h3');
+       
+
+
+        let contador=0;
+
+        setInterval(() => {    
+            const battleControl = document.getElementById('battle-control');   
+            const togglePtBr = document.getElementById('toggle-container');
+        
+            if (playersHeader.textContent!='Batalha prestes a começar' && contador<3) {
+                contador++;
+                this.letrasReveladas.clear();
+                this.atualizarContadorErros();
+                this.selecionarNovaPalavra();
+            }
+        }, 100); // Verifica a cada 0.1 segundo
+        
+     }
+        
+    }
+
+configurarBotaoDica() {
+
+    if (window.location.pathname.includes('batalha.html')){
+       return;
+    }
+    const dicaRoboBtn = document.getElementById('dica-robo-btn');
+    const dicaRoboPainel = document.getElementById('dica-robo-painel');
+    const fecharDicaRoboBtn = document.getElementById('fechar-dica-robo-btn');   
+
+       dicaRoboBtn.addEventListener('click', () => {
+
+
+        if(this.dicasDisponiveis>=5){
+
+            if(!this.dicasUsadaNoRound){
+                this.dica(this.palavraAtual);
+                dicaRoboPainel.style.display = 'block'; 
+                let aux=this.dicasDisponiveis;
+                this.dicasDisponiveis=aux-5;
+                this.dicasUsadaNoRound= true;
+                
+                this.atualizarContadorDicas();
+
+              }else{
+                this.mostrarAviso('Uma dica por rodada', 'piscar-vermelho');
+              }
+
+        }else{
+                return;}
+        });
+
+        fecharDicaRoboBtn.addEventListener('click', () => {
+            if(dicaRoboPainel){
+                dicaRoboPainel.style.display = 'none'; 
+              }
+        });
+    
+}
+
+
+
 
     atualizarDesenhoForca() {
         const desenhoForca = document.getElementById('desenho-forca');
@@ -615,20 +1036,27 @@ class JogoDaForca {
  /|\\  |
  / \\  |
       |
-=========`;            } else if (this.erros === 7) {
+=========`;            } else if (this.erros === 6) {
                 desenho = `  +---+
   |   |
   O   |
  /|\\  |
  / \\  |
       |
-=========`;            } else if (this.erros === 8) {
+=========`;            } else if (this.erros === 7) {
                 desenho = `  +---+
   |   |
   O   |
  /|\\  |
  / \\  |
 *     |
+=========`;            } else if (this.erros === 8) {
+                desenho = `  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+*  *  |
 =========`;            } else if (this.erros === 9) {
                 desenho = `  +---+
   |   |
@@ -636,15 +1064,8 @@ class JogoDaForca {
  /|\\  |
  / \\  |
 *  *  |
-=========`;            } else if (this.erros === 10) {
-                desenho = `  +---+
-  |   |
-  X   |
- /|\\  |
- / \\  |
-*  *  |
-=========`;  
-            }
+=========
+LAST BREATH`;       }
             
             desenhoForca.textContent = desenho;
         }
@@ -660,6 +1081,8 @@ class JogoDaForca {
 
         if (this.erros >= 10) {
             this.mostrarTelaEnforcado();
+            this.dicasDisponiveis=0;
+            this.atualizarContadorDicas();
         }
     }
 
@@ -673,6 +1096,8 @@ class JogoDaForca {
         this.intervaloForca = setInterval(() => {
             this.atualizarDesenhoForca();
             this.atualizarStrik();
+            this.configurarBotaoDica();
+            this.atualizarContadorDicas();
         }, 1000);
     }
 
@@ -731,7 +1156,13 @@ class JogoDaForca {
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     const jogo = new JogoDaForca();
-    jogo.inicializar();
+
+    if(testeDebug){
+        jogo.inicializarTestes();
+    }else{
+        jogo.inicializar();
+    }
+    //jogo.inicializar();
    
 });
 
@@ -764,13 +1195,23 @@ function inicializarBatalha() {
 
     // Evento do botão principal de batalha
     batalhaBtn.addEventListener('click', () => {
-        batalhaPanel.style.display = 'block';
+
+
+        if(batalhaPanel.style.display == 'block'){
+
+            batalhaPanel.style.display = 'none';
+
+        }else{
+            batalhaPanel.style.display = 'block';
         codigoDiv.style.display = 'none';
         aceitarContainer.style.display = 'none';
         inputCodigoContainer.style.display = 'none';
         criarBatalhaContainer.style.display = 'block';
         entrarBatalhaBtn.style.display = 'block';
         iniciarBtn.textContent = 'Iniciar Batalha';
+        }
+
+        
     });
 
     // Evento do botão Entrar em Batalha
@@ -853,6 +1294,33 @@ function inicializarBatalha() {
         }
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const codigoElemento = document.getElementById("codigo-batalha");
+
+    codigoElemento.addEventListener("click", function() {
+        const codigo = codigoElemento.textContent.trim();
+
+        if (!codigo) { // Verifica se o código não está vazio
+            alert("Nenhum código disponível para copiar.");
+            return;
+        }
+
+        navigator.clipboard.writeText(codigo)
+            .then(() => {
+                // Adiciona a classe de animação
+                codigoElemento.classList.add('blink');
+                // Remove a classe de animação após 0.25 segundos
+                setTimeout(() => {
+                    codigoElemento.classList.remove('blink');
+                }, 250);
+            })
+            .catch(err => {
+                console.error("Erro ao copiar código: ", err);
+            });
+    });
+});
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {

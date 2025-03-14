@@ -29,6 +29,7 @@ class BatalhaManager {
         this.salaRef = ref(database, `salas/${this.codigoBatalha}`);
         this.jogadoresRef = ref(database, `salas/${this.codigoBatalha}/jogadores`);
         
+        this.isNotPt=true;
         this.inBattle = false;
         this.isCriador = false;
         this.toRestart = false;
@@ -44,6 +45,9 @@ class BatalhaManager {
         this.monitorarSalaTrancada(urlParams.get('codigo'));
         this.configurarBotaoBatalha();
         this.atualizarEstadoTeclas(); 
+        this.configurarPtBotao();
+        this.checkFirebaseLang();
+
         
 
 
@@ -63,6 +67,9 @@ class BatalhaManager {
         this.iniciarMonitoramentoJogadores();
         this.verificarStrikVencedor();
     }
+
+    
+  
 
     reiniciarJogo() {
         console.log("Reiniciando jogo...");
@@ -276,12 +283,25 @@ class BatalhaManager {
                 playerItem.classList.add('current-player');
             }
 
-            playerItem.innerHTML = `
+            if(jogador.strik >= 1) {
+
+                playerItem.innerHTML = `
                 <span class="player-name">${jogador.nome}</span>  
 
-                <span class="player-strik">Strick: ${jogador.strik || 0}</span>
+                <span class="player-strik">Combo: ${jogador.strik || 0}</span>
             `;
             container.appendChild(playerItem);
+
+            }else{
+                playerItem.innerHTML = `
+                <span class="player-name">${jogador.nome}</span>  
+
+               
+            `;
+            container.appendChild(playerItem);
+            }
+
+          
         });
     }
 
@@ -417,11 +437,72 @@ class BatalhaManager {
         }
     }
 
+
+    checkFirebaseLang() {
+        const roomRef = this.salaRef; // Usando a mesma referência correta
+    
+        setInterval(async () => {
+            try {
+                console.log('procurando linguagem');
+                const snapshot = await get(roomRef); // Usando get() como na outra função
+                const roomData = snapshot.val();
+                if (roomData && 'isNotPt' in roomData) {
+                    const isNotPt = roomData.isNotPt;
+                    const togglePtBr = document.getElementById('toggle-ptBr');
+                    const toggleLabel = document.querySelector('label[for="toggle-ptBr"]');
+                    if (togglePtBr) {
+                        togglePtBr.checked = !isNotPt;
+                        toggleLabel.textContent = isNotPt ? 'EN' : 'PT';
+                        
+                        console.log('Idioma da sala:', isNotPt ? 'Inglês' : 'Português');
+                    }
+                } else {
+                    console.warn('Atributo isNotPt não encontrado na sala');
+                }
+            } catch (error) {
+                console.error('Erro ao verificar o atributo isNotPt:', error);
+            }
+        }, 1000); // Verifica a cada 1 segundo
+    }
+    
+    
+    
+    async changeLinguaSala() {
+        try {
+            const snapshot = await get(this.salaRef);
+            const salaData = snapshot.val() || {};
+
+            const isNotPt = salaData.isNotPt || false; // Pega o valor atual de isPt, padrão é false se não existir
+            const novoIsNotPt = !isNotPt; // Alterna o valor de isPt
+
+            await update(this.salaRef, { isNotPt: novoIsNotPt });
+            console.log(`Idioma da sala atualizado para: ${novoIsNotPt ? 'Português' : 'Inglês'}`);
+        } catch (error) {
+            console.error('Erro ao atualizar o idioma da sala:', error);
+        }
+    }
+
+
+    configurarPtBotao() {
+        const togglePtBr = document.getElementById('toggle-ptBr');
+       
+        if (togglePtBr) {
+            togglePtBr.addEventListener('click', async () => {
+                console.log('Botão Linguagem!');
+                this.changeLinguaSala();
+            });
+        }
+    }
+ 
+ 
+
 async configurarBotaoBatalha() {
+    
     console.log('configurarBotaoBatalha');
 
     const divBotaoBatalha = document.getElementById('battle-control');
     const botaoBatalha = document.getElementById('battle-toggle');
+    const togglePtBr = document.getElementById('toggle-container');
         
     if (!divBotaoBatalha || !botaoBatalha) {
         console.error('Elementos do botão de batalha não encontrados!');
@@ -435,9 +516,20 @@ async configurarBotaoBatalha() {
         if (salaData && salaData.criador === this.meuNome) {
             this.isCriador = true;
             divBotaoBatalha.style.display = 'block';
+            togglePtBr.style.opacity = '1';
+
+
+            //criador muda a lingua -> manda pro server
+            //cada un da sinc com o idioma do server
+
+
+
+
         } else {
             this.isCriador = false;
             divBotaoBatalha.style.display = 'none';
+            togglePtBr.style.opacity = '0.002';
+           
             console.log('Usuário não é o criador da sala, botão ocultado.');
             return;
         }
@@ -452,7 +544,10 @@ async configurarBotaoBatalha() {
                 .then(() => console.log("Batalha iniciada e sala trancada na Firebase"))
                 .catch(error => console.error("Erro ao atualizar Firebase:", error));
 
+            
+
             divBotaoBatalha.style.display = 'none';
+            togglePtBr.style.opacity = '0.00';
         });
 
     } catch (error) {
@@ -504,6 +599,12 @@ checkInBattle() {
 
 atualizarEstadoTeclas() {
     const teclas = document.querySelectorAll('.tecla');
+    const togglePtBr = document.getElementById('toggle-container');
+
+    if(this.inBattle){
+        togglePtBr.style.opacity = '0';
+    }
+
     teclas.forEach(tecla => {
         tecla.disabled = !this.inBattle; // Habilita se inBattle for true
         tecla.style.opacity = this.inBattle ? '1' : '0.5'; // Dá um efeito visual
