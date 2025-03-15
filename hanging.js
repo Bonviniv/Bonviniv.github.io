@@ -870,6 +870,9 @@ mostrarTelaEnforcado() {
         this.configurarBotaoDica();
         console.log('Nova rodada iniciada. Palavra:', this.palavraAtual); // Debug
         this.checkBatalhaLingua();
+        if(localStorage.getItem('nomeUsuario') == 'carol'){
+            this.mostrarAviso('OI ASMORRRRR', 'piscar-verde');
+        }
         
     }
 
@@ -893,6 +896,11 @@ mostrarTelaEnforcado() {
         });
 
         console.log('Nova rodada iniciada. Palavra:', this.palavraAtual); // Debug
+        console.log('nomeUsuario:', localStorage.getItem('nomeUsuario')); 
+
+        if(localStorage.getItem('nomeUsuario') == 'carol'){
+            this.mostrarAviso('OI ASMORRRRR', 'piscar-verde');
+        }
     }
 
     configurarBotoes() {
