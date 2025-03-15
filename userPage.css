@@ -240,8 +240,8 @@ html {
     padding-left: 20%;
     position: fixed;
     bottom: 0%;
-    right: 15%;
-    width: 50%;    
+    right: 19%;
+    width: 40%;    
     height: 10%;
     background-color: rgb(59, 59, 59);
     border-radius: 10px;
@@ -294,8 +294,8 @@ html {
         font-size: 24px;
         cursor: pointer;
         position: fixed;
-        bottom: 17%; /* Ajuste a posição vertical conforme necessário */
-        left: 50%;
+        bottom: 18%; /* Ajuste a posição vertical conforme necessário */
+        left: 49%;
         transform: translateX(-50%);
         z-index: 1000;
     }
@@ -314,8 +314,8 @@ html {
     padding-right: 16%;
     position: fixed;
     bottom: 5%;
-    right: 29%;
-    width: 10%;    
+    right: 30.5%;
+    width: 7%;    
     height: 10%;
     background-color: rgb(59, 59, 59);
     border-radius: 10px;
