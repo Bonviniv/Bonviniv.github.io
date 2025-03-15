@@ -65,8 +65,9 @@ html {
 .perfil-container {
     background-color: #444;
     border-radius: 12px;
-    padding: 20px;
-    margin-top: 75px;
+    padding: 10px;
+    margin-top: 65px;
+   
 }
 
 /* Título de boas-vindas */
@@ -155,7 +156,8 @@ html {
 .round-btn {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
+    width: 80px;
+    border-radius: 35px;
     background-color: #4a4a4a;
     color: white;
     border: none;
@@ -165,7 +167,7 @@ html {
     font-size: 24px;
     cursor: pointer;
     position: fixed;
-    bottom: 25%; /* Ajuste a posição vertical conforme necessário */
+    bottom: 20%; /* Ajuste a posição vertical conforme necessário */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
@@ -173,7 +175,7 @@ html {
 
 
 .red-btn {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.575);
 }
 
 
@@ -206,6 +208,25 @@ html {
     scale: 2.3;
 }
 
+#instrucoes-btn {
+    width: 75px;
+    height: 50px;
+    border-radius: 35px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    display: flex;
+
+    font-size: 24px;
+    cursor: pointer;
+    
+    bottom: 12%; /* Ajuste a posição vertical conforme necessário */
+    right: 50%;
+    
+   
+    z-index: 1000;
+}
+
 .social-icon {
     width: 40px;
     height: 40px;
@@ -217,7 +238,7 @@ html {
     align-items: center;
     padding-left: 20%;
     position: fixed;
-    bottom: 8%;
+    bottom: 0%;
     right: 15%;
     width: 50%;    
     height: 10%;
@@ -246,16 +267,23 @@ html {
 
 
 
+
+
 @media (min-width: 768px) {
+
+
     .nav-bar {
         /* Ajuste a altura da barra de navegação */
         height: 60px;
     }
 
+    
+
     .round-btn {
         width: 50px;
         height: 50px;
-        border-radius: 50%;
+        width: 80px;
+        border-radius: 35px;
         background-color: #4a4a4a;
         color: white;
         border: none;
@@ -269,6 +297,10 @@ html {
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
+    }
+
+    .red-btn {
+        background-color: rgba(255, 0, 0, 0.575);
     }
 
   
@@ -285,6 +317,25 @@ html {
     height: 10%;
     background-color: rgb(59, 59, 59);
     border-radius: 10px;
+}
+
+#instrucoes-btn {
+    width: 75px;
+    height: 50px;
+    border-radius: 35px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    display: flex;
+
+    font-size: 24px;
+    cursor: pointer;
+    
+    bottom: 17%; /* Ajuste a posição vertical conforme necessário */
+    right: 50%;
+    
+   
+    z-index: 1000;
 }
 
 }
