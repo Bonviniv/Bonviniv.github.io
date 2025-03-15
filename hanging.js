@@ -686,7 +686,7 @@ class JogoDaForca {
       async  dica(palavraAtual) {
 
         
-        const prompt = `Estou jogando forca com um amigo e ele tem que
+        let prompt = `Estou jogando forca com um amigo e ele tem que
         adivinhar, escolhi a palavra "${palavraAtual}". Me dê uma dica
         para passar para ele, a dica não deve fazer com que
         adivinhar seja muito facil, a dica pode ser vaga. 
