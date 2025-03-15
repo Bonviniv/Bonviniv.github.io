@@ -21,7 +21,7 @@ const letrasMapeadas = {
     'a': ['a', 'á', 'à', 'ã', 'â'],
     'e': ['e', 'é', 'è', 'ê'],
     'i': ['i', 'í', 'ì', 'î'],
-    'o': ['o', 'ó', 'ò', 'õ', 'ô'],
+    'o': ['o', 'ó', 'ò', 'õ', 'ô', 'o’'],
     'u': ['u', 'ú', 'ù', 'û'],
     'c': ['c', 'ç']
     // Adicione mais mapeamentos conforme necessário
@@ -355,7 +355,7 @@ class JogoDaForca {
 
     async inicializarTestes() {
         // Palavras de exemplo para teste
-        this.palavras = ["aáã", "aáã"];
+        this.palavras = ["a", "a"];
         this.iniciarNovoJogo();
 
     }
@@ -564,11 +564,11 @@ class JogoDaForca {
             let todasLetrasReveladas = true;
 
             [...this.palavraAtual].forEach((letraPalavra, index) => {
-                if (letrasParaVerificar.includes(letraPalavra.toLowerCase())) {
+                if (letrasParaVerificar.includes(letraPalavra.toLowerCase()) || letraPalavra === ' ' || letraPalavra === '-') {
                     espacos[index].textContent = letraPalavra;
                 }
                 // Verifica se todas as letras foram reveladas
-                if (!this.letrasReveladas.has(letraPalavra.toLowerCase())) {
+                if (!this.letrasReveladas.has(letraPalavra.toLowerCase()) && letraPalavra !== ' ' && letraPalavra !== '-') {
                     todasLetrasReveladas = false;
                 }
             });
@@ -590,6 +590,7 @@ class JogoDaForca {
             }
         }
     }
+
 
     async animarVitoria() {
         const espacos = document.querySelectorAll('.letra-espaco');
@@ -775,17 +776,23 @@ class JogoDaForca {
        
     
 
-    criarEspacosLetras() {
+      criarEspacosLetras() {
         const container = document.getElementById('palavra-escondida');
         container.innerHTML = '';
         
-        [...this.palavraAtual].forEach(() => {
+        [...this.palavraAtual].forEach(letra => {
             const espaco = document.createElement('div');
             espaco.className = 'letra-espaco';
-            espaco.textContent = '_';
+            if (letra === ' ' || letra === '-') {
+                espaco.textContent = letra;
+                this.letrasReveladas.add(letra);
+            } else {
+                espaco.textContent = '_';
+            }
             container.appendChild(espaco);
         });
     }
+
 
     atualizarPalavraCorreta() {
         const elementoPalavraCorreta = document.getElementById('palavra-correta');

@@ -176,6 +176,7 @@ html {
 
 .red-btn {
     background-color: rgba(255, 0, 0, 0.575);
+    position: fixed;
 }
 
 
@@ -301,6 +302,7 @@ html {
 
     .red-btn {
         background-color: rgba(255, 0, 0, 0.575);
+        
     }
 
   
