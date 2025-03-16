@@ -40,7 +40,11 @@
         <!-- Botão de instruções -->
         
     </div>
-          <button id="instrucoes-btn" class="round-btn">?</button>
+    <div class="cod-bat-container" style="display: none; align-items: center; margin-top: 10px;">
+        <input type="text" id="input-codigo" maxlength="4" placeholder="Digite o código" class="codigo-input">
+        <button id="cod-bat-btn" class="round-btn">cod bat</button>
+    </div>
+    <button id="instrucoes-btn" class="round-btn">?</button>
     <!-- Nova div para o painel de instruções -->
     <div class="overlay" id="overlay">
         <!-- Painel de instruções -->
@@ -81,6 +85,13 @@
             </br>
             Ao clicar no código da arena, ele será copiado para que você possa convidar amigos para a arena.
             </p>
+
+            <h4>Convidar para a sua arena</h4>
+            <p>Você pode compartilhar o link da sua arena clicando no código da 
+                arena.  
+            
+         
+            </p>
             
             <h4>Entrar em uma arena</h4>
             <p>Você pode entrar em uma arena existente clicando  
@@ -105,8 +116,7 @@
         <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">
             <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" class="social-icon">
         </a>
-        
-      
+        <button id="share-btn" class="round-btn">Share</button>
     </div>
 
     <script src="user.js"></script>

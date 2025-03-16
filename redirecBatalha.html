@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionar para Batalha</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const codigo = urlParams.get('codigo');
+            if (codigo) {
+                const redirectUrl = `hanging.html?codeRedirectBatalha=${codigo}`;
+                window.location.href = redirectUrl;
+            } else {
+                console.error('Código de batalha não encontrado na URL.');
+            }
+        });
+    </script>
+</head>
+<body>
+    <p>Redirecionando para a batalha...</p>
+</body>
+</html>

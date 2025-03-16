@@ -167,6 +167,7 @@ class JogoDaForca {
         this.carregarEstatisticas();
         this.desenhoForca = document.getElementById('desenho-forca');
         this.userUndefined = this.gerarNomeAleatorio();
+        this.codeRedirectBatalha =document.getElementById('codeRedirectBatalha');
         this.dicasDisponiveis = 0;
         this.avisoStrikCount=0;
         this.firstReset=false;
@@ -263,10 +264,8 @@ class JogoDaForca {
         this.checkBatalhaLingua();
         this.changeToogleByFirebase();
         this.carregarPlavraIdiomaBatalha();
-        
-        
-        
-        
+              
+       
        
     }
 
@@ -853,7 +852,13 @@ mostrarTelaEnforcado() {
         }
     }
 
+     printCodeRedirectBatalha() {
+        console.log("codeRedirectBatalha controle1 =", codeRedirectBatalha);
+    }
+
     iniciarNovoJogo() {
+
+        this.printCodeRedirectBatalha();
         this.firstReset=false;
         this.jogoTerminado = false;
         this.erros = 0;
@@ -873,7 +878,27 @@ mostrarTelaEnforcado() {
         if(localStorage.getItem('nomeUsuario') == 'carol'){
             this.mostrarAviso('OI ASMORRRRR', 'piscar-verde');
         }
+
+        this.verificarCodeRedirectBatalha();
         
+    }
+
+
+    verificarCodeRedirectBatalha() {
+
+        console.log("O código redirect : ",codeRedirectBatalha);
+        const userRedirect = localStorage.getItem('nomeUsuario');
+        
+        if(codeRedirectBatalha){
+             if (codeRedirectBatalha.length === 4) {
+                
+            console.log("O código tem o tamanho certo");
+            window.location.href = `batalha.html?codigo=${codeRedirectBatalha}&username=${userRedirect}`;
+        }else{
+            return;
+        }
+        }
+       
     }
 
     iniciarNovaRodada() {
@@ -930,7 +955,7 @@ mostrarTelaEnforcado() {
             const battleControl = document.getElementById('battle-control');   
             const togglePtBr = document.getElementById('toggle-container');
         
-            if (playersHeader.textContent!='Batalha prestes a começar' && contador<3) {
+            if (playersHeader.textContent!='Batalha prestes a começar' && contador<2) {
                 contador++;
                 this.letrasReveladas.clear();
                 this.atualizarContadorErros();
@@ -1166,6 +1191,7 @@ LAST BREATH`;       }
     
 
     }
+
 }
 
 // Inicialização
@@ -1189,6 +1215,11 @@ function gerarCodigoBatalha() {
     }
     return codigo;
 }
+
+
+
+
+
 
 function inicializarBatalha() {
     const batalhaBtn = document.getElementById('batalha-btn');
@@ -1311,6 +1342,17 @@ function inicializarBatalha() {
 }
 
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const codigo = urlParams.get('codeRedirectBatalha');
+    if (codigo) {
+        codeRedirectBatalha = codigo;
+        console.log('codeRedirectBatalha:', codeRedirectBatalha);
+    }
+});
+
+
 document.addEventListener("DOMContentLoaded", function() {
     const codigoElemento = document.getElementById("codigo-batalha");
 
@@ -1324,6 +1366,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         navigator.clipboard.writeText(codigo)
             .then(() => {
+               
                 // Adiciona a classe de animação
                 codigoElemento.classList.add('blink');
                 // Remove a classe de animação após 0.25 segundos

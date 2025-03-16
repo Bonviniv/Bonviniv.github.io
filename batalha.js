@@ -669,6 +669,53 @@ if (window.location.pathname.includes("batalha.html")) {
 }
 
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sendInvitationBtn = document.getElementById('codigo-batalha');
+
+    if (sendInvitationBtn) {
+        sendInvitationBtn.addEventListener('click', async () => {
+
+
+            const inputCodigo = document.getElementById('codigo-batalha');
+
+
+            const codigo = inputCodigo.textContent;
+
+            //http://127.0.0.1:5500/redirecBatalha.html?codigo=ACPK
+            //http://127.0.0.1:5500/redirectBatalha.html?codigo=ACPK
+
+            
+
+            console.log("codigo ", codigo);
+
+            let url = `redirecBatalha.html?codigo=${codigo}`;
+
+            try {
+                await navigator.clipboard.writeText(url);
+                console.log('URL copiada para a área de transferência:', url);
+
+                if (navigator.share) {
+                    await navigator.share({
+                        title: 'Just Hanging',
+                        text: `Junte-se à minha batalha com o código: ${codigo}`,
+                        url: url
+                    });
+                    console.log('Compartilhamento bem-sucedido');
+                    console.log('Codigo : ',codigo);
+                } else {
+                    alert('Compartilhamento não suportado neste navegador.');
+                }
+            } catch (error) {
+                console.error('Erro ao copiar ou compartilhar a URL:', error);
+            }
+        });
+    }
+});
+
+
+
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
     window.batalhaManager = new BatalhaManager();

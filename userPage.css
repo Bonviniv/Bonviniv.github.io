@@ -12,6 +12,37 @@ html {
 }
 
 
+
+#share-btn{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    position: fixed;
+    bottom: 1.85%;
+    margin-left: -7%;
+    right: 0%;
+    width: 20%;
+    height: 7%;
+    background-color: rgb(80, 79, 79);
+    border-radius: 10px;
+}
+
+
+#ImagensLink{
+    display: flex;
+    align-items: center;
+    padding-left: 50%;
+    position: fixed;
+    bottom: 0%;
+    right: 2%;
+    width: 45%;    
+    height: 10%;
+    background-color: rgb(59, 59, 59);
+    border-radius: 10px;
+}
+
 .container {
     margin: 0 auto;
     padding: 15px;
@@ -173,6 +204,12 @@ html {
     z-index: 1000;
 }
 
+#cod-bat-btn{
+    background-color: rgba(255, 0, 0, 0.575);
+     left: 5%;
+}
+
+
 
 .red-btn {
     background-color: rgba(255, 0, 0, 0.575);
@@ -234,18 +271,7 @@ html {
     margin: 10px;
 }
 
-#ImagensLink{
-    display: flex;
-    align-items: center;
-    padding-left: 20%;
-    position: fixed;
-    bottom: 0%;
-    right: 19%;
-    width: 40%;    
-    height: 10%;
-    background-color: rgb(59, 59, 59);
-    border-radius: 10px;
-}
+
 
 #fechar-instrucoes-btn{
     position: fixed;
@@ -305,17 +331,32 @@ html {
         
     }
 
-  
+  #share-btn{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    position: fixed;
+    bottom: 6.8%;
+    margin-left: 3%;
+    right: 0%;
+    width: 5%;
+    height: 7%;
+    background-color: rgb(68, 67, 67);
+    border-radius: 10px;
+   
+}
     
 #ImagensLink{
     display: flex;
     
     padding-left: 16%;
-    padding-right: 16%;
+    padding-right: 20%;
     position: fixed;
     bottom: 5%;
     right: 30.5%;
-    width: 7%;    
+    width: 4.5%;    
     height: 10%;
     background-color: rgb(59, 59, 59);
     border-radius: 10px;

@@ -19,6 +19,16 @@ html {
     height: -webkit-fill-available;
 }
 
+.batalha-button.share {
+    background-color: #666;
+    color: white;
+    flex: 1;
+    margin-left: -10px;
+    width: 75px;
+    scale: 0.7;
+    font-size: larger;
+}
+
 
 /* ...existing code... */
 
@@ -2333,6 +2343,15 @@ input:checked + .slider:before {
         color: white;
         flex: 1;
         margin-left: 35px;
+        width: 150px;
+        
+    }
+
+    .batalha-button.share {
+        background-color: #666;
+        color: white;
+        flex: 1;
+        margin-left: 5px;
         width: 150px;
         
     }
