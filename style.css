@@ -76,7 +76,7 @@ body {
 
 
 #text-boxfix span {
-  color: #333;
+  color: #000000;
   font-size: 18px;
   font-weight: bold;
   position: absolute; /* Mantém o texto sobre a imagem */
@@ -86,7 +86,7 @@ body {
 
 
 #text-boxfix a {
-  color: #171244;             /* Cor dos links */
+  color: #0a034b;             /* Cor dos links */
   text-decoration: none;      /* Remove o sublinhado dos links */
   padding: 5px 10px;          /* Espaçamento ao redor do texto */
   border-radius: 5px;         /* Bordas arredondadas para os links */
@@ -108,11 +108,86 @@ body {
 }
 
 #text-box span {
-  color: #333;
+  color: #000000;
   font-size: 18px;
   font-weight: bold;
   z-index: 10;
 }
+
+
+#text-boxPlacaInicial {
+  position: absolute;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+ 
+}
+
+#text-boxPlacaInicial img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+  
+}
+
+#text-boxPlacaInicial span {
+  color: #000000;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 0%;
+  text-align: center;
+  z-index: 10;
+  
+}
+
+
+
+
+#text-boxPlacaLab {
+  position: absolute;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  width: 1000px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 100;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+#text-boxPlacaLab img {
+  flex-grow: 1; /* Permite que a imagem ocupe o espaço vertical disponível */
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 100%; /* Faz a imagem ocupar toda a altura do container */
+  object-fit: contain; /* Mantém a proporção e evita distorções */
+}
+
+#text-boxPlacaLab span {
+  color: #000000;
+  top: 50%; /* 20% de 730px */
+  left: 75%; /* 2% de 1495px */
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%; /* Faz a imagem ocupar toda a largura do container */
+  height: 0%;
+  text-align: center;
+  z-index: 10;
+  
+}
+
 
 
 
@@ -138,7 +213,7 @@ body {
 }
 
 #text-box2 span {
-  color: #333;
+  color: #000000;
   top: 50%; /* 20% de 730px */
   left: 75%; /* 2% de 1495px */
   font-size: 18px;
@@ -174,7 +249,7 @@ body {
 }
 
 #text-box3 span {
-  color: #333;
+  color: #000000;
   top: 50%; /* 20% de 730px */
   left: 75%; /* 2% de 1495px */
   font-size: 18px;

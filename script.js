@@ -1,3 +1,7 @@
+
+const debug=true;
+
+
 const character = document.getElementById('character');
 const map = document.getElementById('map');
 const initialTextBox = document.getElementById('text-box-initial');
@@ -21,7 +25,6 @@ const url1 = 'https://github.com/Bonviniv'; // Substitua pelo seu link
 const url2 = 'https://www.linkedin.com/in/vitorsantosbarbosa/'; // Substitua pelo seu link
 const pdfUrl = 'pdf/VitorBarbosaCV.pdf'; // Substitua pelo caminho do seu PDF
 
-const debug=false;
 
 const directions = {
   down: [0, 1, 2, 3],    // Frames de 0 a 3 para ir para baixo
@@ -31,6 +34,8 @@ const directions = {
 };
 
 const frames = [];
+const textBoxPlacaInicial = document.getElementById('text-boxPlacaInicial');
+const textBoxPlacaLab = document.getElementById('text-boxPlacaLab');
 const textBox = document.getElementById('text-box');
 const textBox2 = document.getElementById('text-box2');
 const textBox3 = document.getElementById('text-box3');
@@ -59,7 +64,10 @@ let frame = 0; // Para controlar as animações
 let isMoving = false; // Controla se o personagem está se movendo
 let isTextBoxcasaVisible = false; // Controle se o text-box está visível
 
+
 let isTextBoxVisible = false; // Controle se o text-box está visível
+let isTextBoxInicialVisible = false; // Controle se o text-box está visível
+let isTextBoxLabVisible = false; // Controle se o text-box está visível
 let isTextBox3Visible = false; // Controle se o text-box está visível
 let isTextBox4Visible = false; // Controle se o text-box está visível
 let isTextBox5Visible = false; // Controle se o text-box está visível
@@ -255,6 +263,10 @@ function checkZoom() {
     const currentHeight = window.innerHeight;
 
     if (currentWidth !== lastWidth || currentHeight !== lastHeight) {
+
+
+      textBoxPlacaInicial.style.display="none";
+      textBoxPlacaLab.style.display="none";
       textBoxcasa.style.display="none" 
       textBox.style.display="none" 
       textBox2.style.display="none" 
@@ -305,7 +317,7 @@ function adjustYValuesWithFactor(lines, change) {
 }
 
 function textBoxCheck(){
-  if(isTextBoxVisible&&isTextBox3Visible&&isTextBox4Visible&&isTextBox5Visible&&isTextBox6Visible&&isTextBox7Visible&&isTextBox8Visible&&isTextBoxcasaVisible){
+  if(isTextBoxLabVisible&&isTextBoxInicialVisible&&isTextBoxVisible&&isTextBox3Visible&&isTextBox4Visible&&isTextBox5Visible&&isTextBox6Visible&&isTextBox7Visible&&isTextBox8Visible&&isTextBoxcasaVisible){
     isTextVisible=true
   }else{
     isTextVisible=false
@@ -346,15 +358,70 @@ function transformYCoordinates(lines) {
 }
 
 volumeSlider.addEventListener('input', function () {
+   
   const value = this.value * 100; // Converte o valor para porcentagem
   this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #ccc ${value}%)`;
-
+  console.log("vol = ",this.value)
   if (this.value == 0) {
     volumeIcon.textContent = '🔇'; // Ícone de sem som
-  } else {
-    volumeIcon.textContent = '🔊'; // Ícone de som
+  }
+   else if (0 >= this.value > 0.25) {
+    volumeIcon.textContent = '🔈'; // Ícone de sem som
+  }
+  else if (0.25 >=this.value > 0.50) {
+    volumeIcon.textContent = '🔈'; // Ícone de sem som
+  }
+  else if (0.50 >=this.value){
+    volumeIcon.textContent = '🔊'; // Ícone de sem som
   }
 });
+
+
+
+// Função para mostrar a caixa de texto 2
+function showTextBoxPlacaInicial() {
+  textBoxPlacaInicial.style.display = 'flex'; // Mostra a caixa de texto
+  textBoxPlacaInicial.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBoxInicialVisible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBoxPlacaInicialWithFade() {
+  if (isTextBoxInicialVisible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBoxPlacaInicial.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBoxPlacaInicial.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBoxPlacaInicial.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBoxInicialVisible = false;
+      }, 100); // Tempo para o fade-out completar (1 segundo)
+    }, 0);// 5 segundos de atraso antes do fade-out
+  }
+}
+
+// Função para mostrar a caixa de texto 2
+function showTextBoxPlacaLab() {
+  textBoxPlacaLab.style.display = 'flex'; // Mostra a caixa de texto
+  textBoxPlacaLab.style.opacity = '1'; // Restaura a opacidade se estiver em fade-out
+  isTextBoxLabVisible = true;
+}
+
+// Função para esconder a caixa de texto 2 com fade-out após 5 segundos
+function hideTextBoxPlacaLabWithFade() {
+  if (isTextBoxLabVisible) {
+    // Inicia o fade-out após 5 segundos
+    fadeTimeout = setTimeout(() => {
+      textBoxPlacaLab.style.transition = 'opacity 1s'; // Define a duração do fade-out
+      textBoxPlacaLab.style.opacity = '0'; // Reduz a opacidade para 0
+      setTimeout(() => {
+        textBoxPlacaLab.style.display = 'none'; // Oculta a caixa de texto após o fade-out
+        isTextBoxLabVisible = false;
+      }, 100); // Tempo para o fade-out completar (1 segundo)
+    }, 0);// 5 segundos de atraso antes do fade-out
+  }
+}
+
 
 
 // Função para mostrar a caixa de texto 2
@@ -374,8 +441,8 @@ function hideTextBox2WithFade() {
       setTimeout(() => {
         textBox2.style.display = 'none'; // Oculta a caixa de texto após o fade-out
         isTextBoxVisible = false;
-      }, 1500); // Tempo para o fade-out completar (1 segundo)
-    }, 3000);// 5 segundos de atraso antes do fade-out
+      }, 500); // Tempo para o fade-out completar (1 segundo)
+    }, 100);// 5 segundos de atraso antes do fade-out
   }
 }
 
@@ -396,8 +463,8 @@ function hideTextBox3WithFade() {
       setTimeout(() => {
         textBox3.style.display = 'none'; // Oculta a caixa de texto após o fade-out
         isTextBox3Visible = false;
-      }, 1500); // Tempo para o fade-out completar (1 segundo)
-    }, 3000); // 5 segundos de atraso antes do fade-out
+      }, 1000); // Tempo para o fade-out completar (1 segundo)
+    }, 1000); // 5 segundos de atraso antes do fade-out
   }
 }
 
@@ -539,6 +606,9 @@ if(!isTextVisible){
       isTextBox3Visible=false
   }
 
+
+
+
   if (calcularDistancia(positionX,positionY,pontoX=44.25,pontoY=adjustYValue(56))){
     if(!isTextBoxVisible){
       showTextBox2()
@@ -549,6 +619,35 @@ if(!isTextVisible){
       // Quando o personagem sair da posição específica, iniciar o fade-out
       hideTextBox2WithFade();
       isTextBoxVisible=false
+  }
+
+  //boxPlacaInicial
+
+  if (calcularDistancia(positionX,positionY,pontoX=47.97,pontoY=adjustYValue(51.72))){
+    if(!isTextBoxInicialVisible){
+      showTextBoxPlacaInicial();
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBoxInicialVisible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBoxPlacaInicialWithFade();
+      isTextBoxInicialVisible=false
+  }
+
+
+  //boxPlacaLab
+
+  if (calcularDistancia(positionX,positionY,pontoX=53.90,pontoY=adjustYValue( 58.62))){
+    if(!isTextBoxLabVisible){
+      showTextBoxPlacaLab()
+      clearTimeout(fadeTimeout);
+      // Cancelar qualquer fade-out em andamento
+    }
+    } else if (isTextBoxLabVisible) {
+      // Quando o personagem sair da posição específica, iniciar o fade-out
+      hideTextBoxPlacaLabWithFade();
+      isTextBoxLabVisible=false
   }
 }
 
@@ -810,6 +909,22 @@ function applyResponsiveStyles() {
   textBox.style.left = `${convertToPixel(15, mapWidth)}px`;
   textBox.style.width = `${convertToPixel(20, mapWidth)}px`;
   textBox.style.height = `${convertToPixel(34.3, mapHeight)}px`;
+
+
+
+  //Ajuste boxInicial
+  const textBoxPlacaInicial = document.getElementById('text-boxPlacaInicial');
+  textBoxPlacaInicial.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBoxPlacaInicial.style.left = `${convertToPixel(2, mapWidth)}px`;
+  textBoxPlacaInicial.style.width = `${convertToPixel(36.8, mapWidth)}px`; // Aproximado para 550px em 1495px
+  textBoxPlacaInicial.style.height = `${convertToPixel(41, mapHeight)}px`; // Aproximado para 300px em 730px
+
+  //Ajuste boxLab 
+  const textBoxPlacaLab = document.getElementById('text-boxPlacaLab');
+  textBoxPlacaLab.style.top = `${convertToPixel(20, mapHeight)}px`;
+  textBoxPlacaLab.style.left = `${convertToPixel(2, mapWidth)}px`;
+  textBoxPlacaLab.style.width = `${convertToPixel(36.8, mapWidth)}px`; // Aproximado para 550px em 1495px
+  textBoxPlacaLab.style.height = `${convertToPixel(41, mapHeight)}px`; // Aproximado para 300px em 730px
 
   // Ajuste do #text-box2
   const textBox2 = document.getElementById('text-box2');
@@ -1262,7 +1377,14 @@ function newWindow(){
   //transformYCoordinates(collisionLines3)
 }
 
+function redirectToHangingIfMobile() {
+  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      window.location.href = "https://bonviniv.github.io/hanging.html";
+  }
+}
+
 window.onload = async () => {
+  redirectToHangingIfMobile();
   await preloadFrames(); // Carregar todos os frames
   newWindow(); // Configurar o personagem e o mapa
   character.style.opacity=0
