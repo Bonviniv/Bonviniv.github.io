@@ -1238,6 +1238,40 @@ function moveCharacter() {
   requestAnimationFrame(moveCharacter);
 }
 
+document.addEventListener('keydown', (event) => {
+  const keyMap = {
+      'w': 'virtual-key-w',
+      'a': 'virtual-key-a',
+      's': 'virtual-key-s',
+      'd': 'virtual-key-d'
+  };
+
+  const virtualKeyId = keyMap[event.key.toLowerCase()];
+  if (virtualKeyId) {
+      const virtualKey = document.getElementById(virtualKeyId);
+      if (virtualKey) {
+          virtualKey.dispatchEvent(new Event('mousedown')); // Simulate key press
+      }
+  }
+});
+
+document.addEventListener('keyup', (event) => {
+  const keyMap = {
+      'w': 'virtual-key-w',
+      'a': 'virtual-key-a',
+      's': 'virtual-key-s',
+      'd': 'virtual-key-d'
+  };
+
+  const virtualKeyId = keyMap[event.key.toLowerCase()];
+  if (virtualKeyId) {
+      const virtualKey = document.getElementById(virtualKeyId);
+      if (virtualKey) {
+          virtualKey.dispatchEvent(new Event('mouseup')); // Simulate key release
+      }
+  }
+});
+
 // Mantém a lógica de colisão e ativação das caixas de texto
 document.addEventListener('keydown', (event) => {
   switch (event.key) {
