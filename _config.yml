@@ -1,0 +1,5 @@
+exclude:
+  - tetris-web/
+  - node_modules/
+include:
+  - public/**/*
