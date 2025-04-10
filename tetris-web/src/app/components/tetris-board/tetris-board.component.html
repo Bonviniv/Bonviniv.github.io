@@ -1,0 +1,30 @@
+<div class="tetris-container" tabindex="0" (focus)="onFocus()" #gameContainer>
+  <div class="game-board">
+    <div class="row" *ngFor="let row of board; let i = index">
+      <div class="cell" *ngFor="let cell of row; let j = index"
+           [ngClass]="{'filled': cell !== 0}"
+           [style.--piece-color]="getPieceColor(cell, i, j)">
+      </div>
+    </div>
+  </div>
+  <div class="game-info">
+    <div class="next-pieces">
+      <h3>{{ gameOver ? 'Game Over' : 'Next Pieces:' }}</h3>
+      <div class="next-piece-container">
+        <div class="next-piece" *ngFor="let piece of nextPieces; let i = index">
+          <div class="next-piece-grid">
+            <div class="row" *ngFor="let row of [0,1,2,3]">
+              <div class="cell" *ngFor="let col of [0,1,2,3]"
+                   [ngClass]="{'filled': isPieceCell(piece, row, col, i)}"
+                   [style.--piece-color]="piece.color">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="score">Score: {{score}}</div>
+    <div class="high-score">High Score: {{highScore}}</div>
+    <button class="restart-btn" (click)="restartGame()">Restart</button>
+  </div>
+</div>
