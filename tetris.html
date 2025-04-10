@@ -4,35 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tetris Game</title>
-    <base href="/tetris-dist/">
+    <base href="/public/tetris/">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: #8b8b8b;
-        }
-        .back-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: #306230;
-            background: #8bac0f;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 2px solid #2c2c2c;
-            z-index: 1000;
-            font-family: 'Courier New', monospace;
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-    <a href="index.html" class="back-link">Back to Main Site</a>
     <app-root></app-root>
     
-    <script src="runtime.js" type="module"></script>
+    <!-- Load the compiled Angular application -->
+    
     <script src="polyfills.js" type="module"></script>
     <script src="main.js" type="module"></script>
 </body>
