@@ -30,6 +30,11 @@ export class TetrisBoardComponent implements OnInit {
     { shape: [[0, 1, 1], [1, 1, 0]], color: '#f00000' }  // Z
   ];
 
+  // Add these new properties
+  comboText: string = '';
+  showCombo: boolean = false;
+  isFlashing: boolean = false;
+
   constructor() {
     this.initializeBoard();
     this.spawnNewPiece();
@@ -279,18 +284,56 @@ export class TetrisBoardComponent implements OnInit {
       }
     }
 
-    // Update score based on lines cleared
+    // Update score and show combo animation
+    let comboName = '';
     switch (linesCleared) {
-      case 1: this.score += 100; break;
-      case 2: this.score += 300; break;
-      case 3: this.score += 500; break;
-      case 4: this.score += 800; break;
+      case 1: 
+        this.score += 100;
+        comboName = 'SINGLE!';
+        break;
+      case 2: 
+        this.score += 300;
+        comboName = 'DOUBLE!';
+        break;
+      case 3: 
+        this.score += 500;
+        comboName = 'TRIPLE!';
+        break;
+      case 4: 
+        this.score += 800;
+        comboName = 'TETRIS!';
+        break;
+    }
+
+    if (comboName) {
+      this.showComboAnimation(comboName);
     }
 
     // Update high score if needed
     if (this.score > this.highScore) {
       this.highScore = this.score;
     }
+  }
+
+  private showComboAnimation(comboName: string): void {
+    this.comboText = comboName;
+    this.showCombo = true;
+    this.isFlashing = true;
+
+    // Flash twice
+    setTimeout(() => {
+      this.isFlashing = false;
+      setTimeout(() => {
+        this.isFlashing = true;
+        setTimeout(() => {
+          this.isFlashing = false;
+          // Show normal for 2 seconds then hide
+          setTimeout(() => {
+            this.showCombo = false;
+          }, 2000);
+        }, 250);
+      }, 250);
+    }, 250);
   }
 
   getPieceColor(cell: number, row: number, col: number): string {

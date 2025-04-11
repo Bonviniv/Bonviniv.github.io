@@ -1,3 +1,27 @@
+.tetris-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  
+}
+
+@font-face {
+  font-family: 'Tetrominoes';
+  src: url('../../../../../fonte/tetrominoes.ttf') format('truetype');
+}
+
+// Add this at the top level of your component
+.svg-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
 :host {
   display: flex;
   justify-content: center;
@@ -11,26 +35,85 @@
   padding: 0;
   overflow: hidden;
   background: #8b8b8b;
+
+  
 }
 
-.tetris-container {
+
+.crt-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  animation: flicker 0.15s infinite;
+}
+
+.crt-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../../../assets/staticEffect.png");
+  background-size: cover;
+  opacity: 0.05;
+  mix-blend-mode: screen;
+  animation: verticalNoise 0.3s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.35; }
+}
+
+@keyframes verticalNoise {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-5%); }
+  40% { transform: translateY(-20%); }
+  60% { transform: translateY(20%); }
+  80% { transform: translateY(40%); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.flash {
+  animation: flash 0.25s;
+}
+
+.game-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 50px;
   padding: 40px;
   min-width: 800px;
   border-radius: 20px;
-  background: #8b8b8b;
- 
+  font-family: 'Tetrominoes', 'Courier New', monospace;
+  
 }
 
+
 .game-board {
-  border: 5px solid #2c2c2c;
+  border: 4px solid #2c2c2cdb;
   background-color: #9bbc0f;
   padding: 2px;
   border-radius: 10px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  transform: perspective(800px);
+  transform-origin: center center;
+  padding:5px;
 }
 
 .row {
@@ -55,21 +138,28 @@
 }
 
 .game-info {
+  align-self: center;
   height: auto;
   margin: 0;
   padding: 20px;
   background-color: #8bac0f;
-  border: 5px solid #2c2c2c;
+  border: 4px solid #2c2c2cdb;
   border-radius: 10px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
   color: #306230;
-  font-family: 'Courier New', monospace;
+  font-family: 'Tetrominoes', 'Courier New', monospace;
   text-transform: uppercase;
   font-weight: 900;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  //game over and next pieces
+  h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 
   .score, .high-score {
     font-size: 20px;
@@ -82,15 +172,16 @@
   }
 
   .restart-btn {
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #306230;
     color: #9bbc0f;
-    border: 2px solid #2c2c2c;
+    border: 2px solid #2c2c2cdb;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: 'Tetrominoes', 'Courier New', monospace;
     text-transform: uppercase;
     text-transform: bold;
+    font-size: 20px;
 
     &:hover {
       background-color: #407040;
@@ -103,8 +194,8 @@
   width: 120px;
   height: 360px;
   background-color: #8bac0f;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 5px;
+  margin: 15px 0;
   border-radius: 10px;
   border: 2px solid rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
