@@ -217,3 +217,168 @@
     }
   }
 }
+
+.virtual-controls {
+  display: none; // Hidden by default
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 1000;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+
+  .game-content {
+
+    gap: 40px;
+    
+  }  
+
+  .crt-effect {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 500%;
+    height: 500%;
+   
+  }
+  
+
+.tetris-container {
+  scale: 0.55;
+  transform: translateY(-20%);
+  padding-left: 18%;
+  }
+
+  .game-info {
+    scale: 0.8;
+    transform: translateX(4%);
+  }  
+
+  .score, .high-score {
+    transform: translateY(300%);
+  }
+
+  .score {
+    scale: 1.2;
+    transform: translateY(250%);
+  }
+
+  //game over and next pieces
+  h3 {
+    transform: translateY(-70%);
+  }
+
+  
+.game-board {
+  scale: 1.38;
+  transform: translateX(2%);
+  transform: translateY(-1%);
+  margin-left: 10px;;
+}
+
+.restart-btn {
+  scale: 2;
+  transform: translateY(160%);
+
+}
+
+.next-piece-container {
+  transform: translateX(5%);
+  margin-left: 4%;
+  transform: translateY(5%);
+  scale: 1.2;
+}
+
+  .virtual-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .d-pad {
+    position: relative;
+    width: 150px;
+    height: 150px;
+
+    .arrow {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #303030;
+      border: 2px solid #2c2c2cdb;
+      color: #646464;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border-bottom: 0px; }
+      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border-left:0px ; }
+      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border-top: 0px;}
+      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border-right: 0px;}
+      &.center-up { 
+        pointer-events: none;
+        top: 10px; 
+        left: 50px;
+        height: 100px;
+        
+        border: 0px ;
+        cursor: default;
+        &:active {
+          background: #303030;
+        }
+      }
+      &.center-side { 
+      pointer-events: none;
+        top: 50px; 
+        left: 20px; 
+        width: 100px;
+        border: 0px ;
+        cursor: default;
+        &:active {
+          background: #303030;
+        }
+      }
+
+
+      &:active {
+        background: #303030;
+      }
+      transform: translate(20%, 60%);
+      scale: 0.75;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 20px;
+    
+
+    .round-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #751717;
+      border: 2px solid #2c2c2cdb;
+      
+      color: #f85555;
+      font-size: 24px;
+      font-style: bolder;
+      font-family: 'Tetrominoes', 'Courier New', monospace;
+
+      &:active {
+        background: #a02020;
+      }
+
+      transform: translate(-50%, 80%);
+
+      &.drop {
+        transform: translate(-90%, -20%);
+      }
+    }
+  }
+}

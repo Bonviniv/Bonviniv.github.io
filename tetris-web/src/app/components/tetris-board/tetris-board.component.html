@@ -26,7 +26,7 @@
     </div>
     <div class="game-info">
       <div class="next-pieces">
-        <h3>{{ gameOver ? 'Game Over' : 'Next Pieces:' }} <style> </style></h3>
+        <h3>{{ gameOver ? '-Game Over-' : 'Next Pieces' }} <style> </style></h3>
         <div class="next-piece-container">
           <div class="next-piece" *ngFor="let piece of nextPieces; let i = index">
             <div class="next-piece-grid">
@@ -42,17 +42,54 @@
       </div>
       <div class="score">
         <ng-container *ngIf="!showCombo">
-          SCORE: {{ score }}
+          <ng-container *ngIf="score > 0; else zeroScore">
+            SCORE: {{ score }}
+          </ng-container>
+          <ng-template #zeroScore>
+            SCORE: 000
+          </ng-template>
         </ng-container>
         <ng-container *ngIf="showCombo">
           <span [class.flash]="isFlashing">{{ comboText }}</span>
         </ng-container>
       </div>
-      <div class="high-score">High Score: {{highScore}}</div>
+
+      <ng-container *ngIf="highScore > 0; else zeroHighScore">
+        <ng-container *ngIf="highScore > 1000; else less1000HighSacore">
+          <div class="high-score">High Score: {{highScore}}</div>
+        </ng-container>
+        <ng-template #less1000HighSacore>
+          <div class="high-score">High Score: 0{{highScore}}</div>
+        </ng-template>
+        </ng-container>
+      <ng-template #zeroHighScore>
+        <div class="high-score">High Score: 0000</div>
+      </ng-template>
+
+      
+
+    
+     
       <button class="restart-btn" (click)="restartGame()">Restart</button>
     </div>
   </div>
 </div>
+</div>
+
+<div class="virtual-controls">
+  <div class="d-pad">
+    <button class="arrow up" (touchstart)="handleVirtualKey('ArrowUp')">▲</button>
+    <button class="arrow left" (touchstart)="handleVirtualKey('ArrowLeft')">◄</button>
+    <button class="arrow center-up">·</button>
+    <button class="arrow center-side"></button>
+
+    <button class="arrow right" (touchstart)="handleVirtualKey('ArrowRight')">►</button>
+    <button class="arrow down" (touchstart)="handleVirtualKey('ArrowDown')">▼</button>
+  </div>
+  <div class="action-buttons">
+    <button class="round-btn rotate" (touchstart)="handleVirtualKey('ArrowUp')">A</button>
+    <button class="round-btn drop" (touchstart)="handleHardDrop()">B</button>
+  </div>
 </div>
 
 

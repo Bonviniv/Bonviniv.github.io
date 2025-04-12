@@ -190,10 +190,20 @@ export class TetrisBoardComponent implements OnInit {
   // Update handleKeyboardEvent method
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (!this.currentPiece || this.gameOver) return;
-    
     // Prevent default browser scrolling behavior
     event.preventDefault();
+    
+    if (event.key === ' ') { // Space bar
+      this.handleHardDrop();
+      return;
+    }
+  
+    if (event.key === 'Enter') {
+      this.restartGame();
+      return;
+    }
+  
+    if (!this.currentPiece || this.gameOver) return;
     
     switch (event.key) {
       case 'ArrowLeft':
@@ -399,6 +409,24 @@ export class TetrisBoardComponent implements OnInit {
         });
       });
     }
+
+  public handleVirtualKey(key: string): void {
+    // Create a synthetic keyboard event
+    const event = new KeyboardEvent('keydown', { key });
+    this.handleKeyboardEvent(event);
+  }
+
+  public handleHardDrop(): void {
+    if (!this.currentPiece) return;
+    
+    const ghostPos = this.getGhostPosition();
+    const movesNeeded = ghostPos.y - this.currentPiece.y;
+    
+    // Execute exactly the number of moves needed to reach the ghost position
+    for(let i = 0; i < movesNeeded; i++) {
+      this.handleVirtualKey('ArrowDown');
+    }
+  }
 }
 
 
