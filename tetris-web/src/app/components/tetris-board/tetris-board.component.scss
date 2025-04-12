@@ -35,7 +35,7 @@
   padding: 0;
   overflow: hidden;
   background: #8b8b8b;
-
+  
   
 }
 
@@ -62,7 +62,7 @@
   height: 100%;
   background-image: url("../../../../../assets/staticEffect.png");
   background-size: cover;
-  opacity: 0.05;
+  opacity: 0.06;
   mix-blend-mode: screen;
   animation: verticalNoise 0.3s infinite;
 }
@@ -329,10 +329,10 @@
       align-items: center;
       justify-content: center;
       
-      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border-bottom: 0px;color: #777777; background: #f5000000; z-index: 10;}
-      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border-left:0px ; color: #777777; background: #f5000000;z-index: 10;}
-      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border-top: 0px;color: #777777; background: #f5000000;z-index: 10;}
-      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border-right: 0px;color: #777777; background: #f5000000;z-index: 10;}
+      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border: 0px;color: #777777; background: #f5000000; z-index: 9;}
+      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border:0px ; color: #777777; background: #f5000000;z-index: 9;}
+      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border: 0px;color: #777777; background: #f5000000;z-index: 9;}
+      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border: 0px;color: #777777; background: #f5000000;z-index: 9;}
       &.center-up { 
         pointer-events: none;
         top: -65px; 
