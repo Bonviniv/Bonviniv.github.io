@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Tetris</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link rel="icon" href="images/tetrisIcon.png" type="image/png">
+
   <!--<link rel="stylesheet" href="/Bonviniv.github.io/tetris-web/dist/tetris-web/browser/styles-5INURTSO.css">
 
   <link rel="icon" type="image/x-icon" href="https://bonviniv.github.io/public/tetris/favicon.ico">-->
@@ -19,8 +20,19 @@
   <script src="/Bonviniv.github.io/tetris-web/dist/tetris-web/browser/main-HQI2SSDD.js"></script>-->
 
   <script type="module" nomodule src="https://bonviniv.github.io/public/tetris/polyfills-FFHMD2TL.js"></script>
-  <script type="module" nomodule src="https://bonviniv.github.io/public/tetris/main-HQI2SSDD.js"></script>
+  <script type="module" nomodule src="https://bonviniv.github.io/public/tetris/main-SXEEPIXW.js"></script>
 
 </body>
 </html>
 
+<!-- 
+Passos  
+
+1. cd C:\Users\vitor\cloneGit\Bonviniv.github.io\tetris-web
+2. ng build --configuration production
+3. cd C:\Users\vitor\cloneGit\Bonviniv.github.io
+4. rmdir /s /q public\tetris
+5. xcopy /s /y tetris-web\dist\tetris-web\browser\* public\tetris\
+6. Mudar o link do main e polyfills para o caminho correto que apareceu no cmd
+
+-->

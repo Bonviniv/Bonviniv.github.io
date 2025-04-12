@@ -297,6 +297,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .d-pad .arrow, 
+  .action-buttons .round-btn,
+  .restart-btn {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .d-pad {
@@ -316,15 +329,16 @@
       align-items: center;
       justify-content: center;
       
-      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border-bottom: 0px; }
-      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border-left:0px ; }
-      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border-top: 0px;}
-      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border-right: 0px;}
+      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border-bottom: 0px;color: #777777; background: #f5000000; z-index: 10;}
+      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border-left:0px ; color: #777777; background: #f5000000;z-index: 10;}
+      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border-top: 0px;color: #777777; background: #f5000000;z-index: 10;}
+      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border-right: 0px;color: #777777; background: #f5000000;z-index: 10;}
       &.center-up { 
         pointer-events: none;
-        top: 10px; 
+        top: -65px; 
         left: 50px;
-        height: 100px;
+        height: 175px;
+        border-radius: 5px ;
         
         border: 0px ;
         cursor: default;
@@ -335,9 +349,10 @@
       &.center-side { 
       pointer-events: none;
         top: 50px; 
-        left: 20px; 
-        width: 100px;
+        left: -32px; 
+        width: 175px;
         border: 0px ;
+        border-radius: 5px ;
         cursor: default;
         &:active {
           background: #303030;
@@ -364,7 +379,9 @@
       border-radius: 50%;
       background: #751717;
       border: 2px solid #2c2c2cdb;
-      
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #f85555;
       font-size: 24px;
       font-style: bolder;
