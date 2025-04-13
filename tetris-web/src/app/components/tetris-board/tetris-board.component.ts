@@ -478,6 +478,10 @@ export class TetrisBoardComponent implements OnInit {
     // Add final moveDown to lock the piece
     this.moveDown();
   }
+
+  public handleVirtualKeyUp(key: string): void {
+    this.stopKeyRepeat(key);
+  }
 }
 
 

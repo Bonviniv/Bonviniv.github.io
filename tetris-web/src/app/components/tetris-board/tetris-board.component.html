@@ -78,17 +78,27 @@
 
 <div class="virtual-controls">
   <div class="d-pad">
-    <button class="arrow up" (touchstart)="handleVirtualKey('ArrowUp')">▲</button>
-    <button class="arrow left" (touchstart)="handleVirtualKey('ArrowLeft')">◄</button>
+    <button class="arrow up" 
+      (touchstart)="handleVirtualKey('ArrowUp')"
+      (touchend)="handleVirtualKeyUp('ArrowUp')">▲</button>
+    <button class="arrow left" 
+      (touchstart)="handleVirtualKey('ArrowLeft')"
+      (touchend)="handleVirtualKeyUp('ArrowLeft')">◄</button>
     <button class="arrow center-up">·</button>
     <button class="arrow center-side"></button>
-
-    <button class="arrow right" (touchstart)="handleVirtualKey('ArrowRight')">►</button>
-    <button class="arrow down" (touchstart)="handleVirtualKey('ArrowDown')">▼</button>
+    <button class="arrow right" 
+      (touchstart)="handleVirtualKey('ArrowRight')"
+      (touchend)="handleVirtualKeyUp('ArrowRight')">►</button>
+    <button class="arrow down" 
+      (touchstart)="handleVirtualKey('ArrowDown')"
+      (touchend)="handleVirtualKeyUp('ArrowDown')">▼</button>
   </div>
   <div class="action-buttons">
-    <button class="round-btn rotate" (touchstart)="handleVirtualKey('ArrowUp')">A</button>
-    <button class="round-btn drop" (touchstart)="handleHardDrop()">B</button>
+    <button class="round-btn rotate" 
+      (touchstart)="handleVirtualKey('ArrowUp')"
+      (touchend)="handleVirtualKeyUp('ArrowUp')">A</button>
+    <button class="round-btn drop" 
+      (touchstart)="handleHardDrop()">B</button>
   </div>
 </div>
 
