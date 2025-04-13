@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { interval, Subscription } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
 import { NameValidator } from '../../utils/name-validator';
-const debug = true;
+const debug = false;
 // Add this interface at the top with other imports
 interface LeaderboardEntry {
   name: string;
