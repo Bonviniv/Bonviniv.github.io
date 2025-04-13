@@ -1,12 +1,22 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { interval, Subscription } from 'rxjs';
-
+import { FirebaseService } from '../../services/firebase.service';
+import { NameValidator } from '../../utils/name-validator';
+const debug = true;
+// Add this interface at the top with other imports
+interface LeaderboardEntry {
+  name: string;
+  position: number;
+  score: number;
+  displayText?: string;
+}
 
 @Component({
   selector: 'app-tetris-board',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './tetris-board.component.html',
   styleUrls: ['./tetris-board.component.scss']
 })
@@ -40,10 +50,34 @@ export class TetrisBoardComponent implements OnInit {
   private keyRepeatTimers: { [key: string]: any } = {};
   private isHardDropping = false;
 
-  constructor() {
+  // Add to class properties
+  public isCellFading: boolean = false;
+
+  // Add these properties
+  showHighScoreInput: boolean = false;
+  playerName: string = '';
+  highScores: { name: string, score: number }[] = [
+    { name: 'AAA', score: 5000 },
+    { name: 'BBB', score: 4000 },
+    { name: 'CCC', score: 3000 },
+    { name: 'DDD', score: 2000 },
+    { name: 'EEE', score: 1000 }
+  ];
+  // Update leaderboard property type
+  leaderboard: LeaderboardEntry[] = [];
+
+  // Add this property at the top with other properties
+  // Change from private to public
+  public gameOver: boolean = false;
+
+  // Add this property
+  private isInputFocused: boolean = false;
+
+  constructor(private firebaseService: FirebaseService) {
     this.initializeBoard();
     this.spawnNewPiece();
     this.generateNextPieces();
+    this.loadLeaderboard();
   }
 
   private initializeBoard(): void {
@@ -144,10 +178,6 @@ export class TetrisBoardComponent implements OnInit {
     }
   }
 
-  // Add this property at the top with other properties
-  // Change from private to public
-  public gameOver: boolean = false;
-
   // Update the lockPiece method
   private lockPiece(): void {
     if (!this.currentPiece) return;
@@ -174,6 +204,90 @@ export class TetrisBoardComponent implements OnInit {
     if (shouldGameOver) {
       this.gameOver = true;
       this.stopFalling();
+      this.dealGameOver(); // Add this line
+    }
+  }
+
+  // Update dealGameOver method
+  private async dealGameOver(): Promise<void> {
+    if(debug){
+     localStorage.setItem('userName', "");
+    } 
+    console.log('Game Over!');
+    const savedUsername = localStorage.getItem('userName');
+    const playerNameElement = document.getElementById('playerName');
+    const labelElement = document.querySelector('label[for="playerName"]');
+    const submitButton = document.getElementById('submitButton');
+  
+    if (savedUsername) {
+      // Existing user flow
+      this.playerName = savedUsername;
+      if (playerNameElement) playerNameElement.style.display = 'none';
+      if (labelElement) labelElement.textContent = '';
+  
+      const data = await this.firebaseService.getLeaderboard();
+      const userEntry = data?.find(entry => entry.name === savedUsername);
+      
+      if (submitButton) {
+        submitButton.style.display = userEntry && this.score <= userEntry.score ? 'none' : 'block';
+      }
+    } else {
+      // New user flow
+      if (playerNameElement) playerNameElement.style.display = 'block';
+      if (labelElement) labelElement.textContent = 'Enter your name:';
+      if (submitButton) submitButton.style.display = 'block';
+    }
+  
+    if (!this.gameOver) return;
+    
+    let flashCount = 0;
+    const maxFlashes = 3;
+    const flashInterval = 200;
+  
+    const flash = () => {
+      this.isCellFading = !this.isCellFading;
+      
+      flashCount++;
+      if (flashCount < maxFlashes * 2) {
+        setTimeout(flash, flashInterval);
+      } else {
+        // Clear board after flashing
+        for (let y = 0; y < this.ROWS; y++) {
+          for (let x = 0; x < this.COLS; x++) {
+            this.board[y][x] = 4; // 4 represents empty cell without border
+          }
+        }
+        // Show high score input if player made it to the list
+        this.changeHighScoreModalDisplay();
+      }
+    };
+  
+    flash();
+  }
+  
+
+  public changeHighScoreModalDisplay(): void {
+    const highScoreModal = document.getElementById('highScoreModal');
+    const inputElement = document.getElementById('playerName') as HTMLInputElement;
+    
+    if (highScoreModal) {
+      const savedUsername = localStorage.getItem('userName');
+      
+      if (highScoreModal.style.display === 'none') {
+        highScoreModal.style.display = 'flex';
+        if (savedUsername) {
+          this.playerName = savedUsername;
+          if (inputElement) {
+            inputElement.style.display = 'none';
+          }
+        } else {
+          if (inputElement) {
+            inputElement.style.display = 'block';
+          }
+        }
+      } else if (highScoreModal.style.display === 'flex') {
+        highScoreModal.style.display = 'none';
+      }
     }
   }
 
@@ -198,6 +312,7 @@ export class TetrisBoardComponent implements OnInit {
   // Update handleKeyboardEvent method
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
+    if (this.isInputFocused) return; // Skip game controls if input is focused
     event.preventDefault();
     
     if (event.key === ' ') {
@@ -269,6 +384,19 @@ export class TetrisBoardComponent implements OnInit {
 
   // Update restartGame method
   restartGame(): void {
+
+    const highScoreModal = document.getElementById('highScoreModal');
+    if(highScoreModal) {
+      console.log('High Score Modal found');
+      console.log('user name'+ localStorage.getItem('userName'));
+
+
+      if(highScoreModal.style.display === 'flex') {
+        this.changeHighScoreModalDisplay();
+
+      }
+    }
+    
     this.stopFalling();
     this.gameOver = false;
     this.score = 0;
@@ -385,9 +513,11 @@ export class TetrisBoardComponent implements OnInit {
   }
 
   getPieceColor(cell: number, row: number, col: number): string {
+    if (cell === 4) return 'transparent'; // Empty cell without border
     if (cell === 0) return '';
     if (cell === 2) return '#808080'; // gray color for locked pieces
     if (cell === 3) return '#404040'; // darker color for ghost piece
+    if (cell === 5) return '#80808050'; // Fading effect for game over animation
     if (cell === 1 && this.currentPiece) {
       const pieceRow = row - this.currentPiece.y;
       const pieceCol = col - this.currentPiece.x;
@@ -429,36 +559,34 @@ export class TetrisBoardComponent implements OnInit {
     this.drawPiece();
   }
 
-
-
   private getGhostPosition(): { x: number, y: number } {
-      if (!this.currentPiece) return { x: 0, y: 0 };
-  
-      let ghostY = this.currentPiece.y;
-      while (this.canMove(this.currentPiece.x, ghostY + 1)) {
-        ghostY++;
-      }
-      return { x: this.currentPiece.x, y: ghostY };
+    if (!this.currentPiece) return { x: 0, y: 0 };
+
+    let ghostY = this.currentPiece.y;
+    while (this.canMove(this.currentPiece.x, ghostY + 1)) {
+      ghostY++;
     }
-  
-    private drawGhostPiece(): void {
-      if (!this.currentPiece) return;
-      
-      const ghostPos = this.getGhostPosition();
-      const { shape } = this.currentPiece;
-      
-      shape.forEach((row: number[], i: number) => {
-        row.forEach((cell: number, j: number) => {
-          if (cell === 1) {
-            const boardX = ghostPos.x + j;
-            const boardY = ghostPos.y + i;
-            if (this.isWithinBounds(boardX, boardY) && this.board[boardY][boardX] === 0) {
-              this.board[boardY][boardX] = 3; // 3 represents ghost piece
-            }
+    return { x: this.currentPiece.x, y: ghostY };
+  }
+
+  private drawGhostPiece(): void {
+    if (!this.currentPiece) return;
+    
+    const ghostPos = this.getGhostPosition();
+    const { shape } = this.currentPiece;
+    
+    shape.forEach((row: number[], i: number) => {
+      row.forEach((cell: number, j: number) => {
+        if (cell === 1) {
+          const boardX = ghostPos.x + j;
+          const boardY = ghostPos.y + i;
+          if (this.isWithinBounds(boardX, boardY) && this.board[boardY][boardX] === 0) {
+            this.board[boardY][boardX] = 3; // 3 represents ghost piece
           }
-        });
+        }
       });
-    }
+    });
+  }
 
   public handleVirtualKey(key: string): void {
     // Create a synthetic keyboard event
@@ -481,6 +609,145 @@ export class TetrisBoardComponent implements OnInit {
 
   public handleVirtualKeyUp(key: string): void {
     this.stopKeyRepeat(key);
+  }
+
+  // Update loadLeaderboard method with proper typing
+  async loadLeaderboard(): Promise<void> {
+    const data = await this.firebaseService.getLeaderboard();
+    if (!data) {
+      this.leaderboard = [];
+      return;
+    }
+  
+    this.leaderboard = (Object.values(data) as LeaderboardEntry[])
+      .sort((a, b) => a.position - b.position)
+      .map(entry => ({
+        position: entry.position,
+        name: entry.name,
+        score: entry.score,
+        displayText: `${entry.position}. ${entry.name} - ${entry.score}`
+      }));
+  }
+
+  async submitHighScore() {
+    if (!this.playerName || !NameValidator.validateUsername(this.playerName)) {
+      const input = document.getElementById('playerName');
+      if (input) {
+        input.classList.add('invalid-name');
+        setTimeout(() => {
+          input.classList.remove('invalid-name');
+          this.playerName = '';
+        }, 500);
+      }
+      return;
+    }
+    
+    // Convert to uppercase and limit to 5 characters
+    this.playerName = this.playerName.toUpperCase().slice(0, 5);
+    
+    // Save to localStorage
+    localStorage.setItem('userName', this.playerName);
+    console.log('Saving to database:', { name: this.playerName, score: this.score });
+  
+    try {
+      // First update the current player's score
+      await this.firebaseService.updateLeaderboard(
+        this.playerName,
+        this.score,
+        1  // Temporary position, will be fixed by reordering
+      );
+  
+      // Reload the leaderboard to get updated positions
+      await this.loadLeaderboard();
+      
+      // Hide modal and input
+      this.showHighScoreInput = false;
+      
+      
+      // Clear input
+      this.playerName = '';
+  const submitButton = document.getElementById('submitButton');
+      const playerNameInput = document.getElementById('playerName') as HTMLInputElement;
+      const labelElement = document.querySelector('label[for="playerName"]');
+      if (submitButton && playerNameInput) {
+        playerNameInput.style.display = 'none';
+        submitButton.style.display = 'none';
+        if (labelElement) labelElement.textContent = '';
+
+      }
+    } catch (error) {
+      console.error('Error submitting score:', error);
+    }
+  }
+
+  // Update method return types
+  getTopThreeScores(): LeaderboardEntry[] {
+    return this.leaderboard.slice(0, 3);
+  }
+
+  getUserPosition(): LeaderboardEntry | null {
+    if (!this.playerName) return null;
+    const userEntry = this.leaderboard.find(entry => entry.name === this.playerName);
+    if (!userEntry) {
+      return {
+        position: this.leaderboard.length + 1,
+        name: this.playerName,
+        score: this.score
+      };
+    }
+    return userEntry;
+  }
+
+  // Add method to handle input changes
+  onNameInput(event: any): void {
+    let value = event.target.value;
+    value = value.toUpperCase();
+    value = value.replace(/[^A-Z]/g, ''); // Only allow uppercase letters
+    event.target.value = value.slice(0, 5);
+    this.playerName = value;
+
+    // Check for restricted patterns
+    const isInvalid = this.restrictedPatterns.some(pattern => 
+      value.includes(pattern)
+    );
+
+    if (isInvalid) {
+      const input = event.target;
+      input.classList.add('invalid-name');
+      setTimeout(() => {
+        input.classList.remove('invalid-name');
+        input.value = '';
+        this.playerName = '';
+      }, 500);
+    }
+  }
+
+  // Add restricted patterns array
+  private restrictedPatterns = [
+    'ADM',
+    'ADMIN',
+    'MOD',
+    'ROOT',
+    'HACK',
+    'NULL',
+    'VOID'
+  ];
+
+  handleInputKeydown(event: KeyboardEvent): void {
+    // Only allow letters and prevent event propagation
+    if (!/^[a-zA-Z]$/.test(event.key) && !['Backspace', 'Delete'].includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    event.stopPropagation();
+  }
+
+  onInputFocus(): void {
+    this.isInputFocused = true;
+  }
+
+  onInputBlur(): void {
+    this.isInputFocused = false;
   }
 }
 

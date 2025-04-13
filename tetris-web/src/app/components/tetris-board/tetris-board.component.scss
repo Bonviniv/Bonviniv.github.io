@@ -8,6 +8,89 @@
   
 }
 
+
+.high-score-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-90%, -50%);
+  width: fit-content;
+  height: fit-content;
+  font-family: 'Tetrominoes', monospace;
+
+  z-index: 100;
+
+  .modal-content {
+    width: 300px; // Match game board width
+    min-height: 600px; // Match game board height
+    background: #9bbc0f;
+    color: #306230;
+    font-weight: bolder;
+
+    padding: 20px;
+    border: 5px solid #2c2c2cdb;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Tetrominoes', monospace;
+
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bolder;
+
+    }
+    p{
+      font-size: 20px;
+     
+      font-weight: bolder;
+    }
+
+    .scores-list {
+      margin: 20px 0;
+      font-size: 20px;
+      font-family: 'Tetrominoes', monospace;
+      color: #306230;
+
+
+      div {
+        margin: 5px 0;
+      }
+    }
+
+    input {
+      background: #8bac0f;
+      border: 2px solid #306230;
+      padding: 5px;
+      font-family: 'Tetrominoes', monospace;
+      color: #306230;
+      font-size: 20px;
+      text-transform: uppercase;
+      width: 100px;
+      margin: 10px 0;
+      font-weight: bolder;
+
+    }
+
+    button {
+      background: #306230;
+      color: #9bbc0f;
+      border: 2px solid #2c2c2cdb;
+      padding: 5px 15px;
+      font-family: 'Tetrominoes', monospace;
+      font-size: 20px;
+      cursor: pointer;
+
+      &:hover {
+        background: #407040;
+      }
+    }
+  }
+}
+
 @font-face {
   font-family: 'Tetrominoes';
   src: url('../../../../../fonte/tetrominoes.ttf') format('truetype');
@@ -47,7 +130,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 101;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
   background-size: 100% 4px;
   animation: flicker 0.15s infinite;
@@ -84,6 +167,15 @@
 @keyframes flash {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+@keyframes invalidName {
+  0%, 100% { background: #8bac0f; }
+  50% { background: #ff0000; }
+}
+
+.invalid-name {
+  animation: invalidName 0.5s ease-in-out;
 }
 
 .flash {
@@ -127,6 +219,7 @@
   background-color: #8bac0f;
   border-radius: 2px;
   image-rendering: pixelated;
+  transition: opacity 0.2s ease-in-out;
 
   &.filled {
     background-color: #306230;
@@ -134,6 +227,20 @@
     &[style*="--piece-color: #404040"] {
       opacity: 0.5;
     }
+  }
+
+  &.fading {
+    opacity: 0.5;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+
+  }
+
+  &[style*="transparent"] {
+    background-color: #8bac0f;
+    border: 1px solid rgba(0, 0, 0, 0);
+   
+    transition: opacity 0.2s ease-in-out;
+    opacity: 1;
   }
 }
 
@@ -395,6 +502,72 @@
 
       &.drop {
         transform: translate(-90%, -20%);
+      }
+    }
+  }
+
+  .high-score-modal {
+    scale: 0.54;
+    transform: translate(-114%, -109%);
+    border: none;
+
+   
+    
+    .modal-content {
+      background: #a5ca0200;
+      color: #306230;
+      border: none;
+      width: 400px;
+      min-height: 800px;
+      padding: 30px;
+      
+      h2 {
+        font-size: 36px;
+        margin-bottom: 30px;
+      }
+      
+      p {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      
+      .scores-list {
+        margin: 30px 0;
+        font-size: 32px;
+        
+        div {
+          margin: 15px 0;
+          padding: 5px;
+        }
+      }
+      
+      input {
+        width: 200px;
+        height: 50px;
+        font-size: 32px;
+        margin: 20px 0;
+        padding: 10px;
+      }
+      
+      button {
+        font-size: 32px;
+        padding: 15px 30px;
+        margin-top: 20px;
+        z-index: 9999;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+
+      label {
+        font-size: 32px;
+        margin: 15px 0;
+        display: block;
       }
     }
   }

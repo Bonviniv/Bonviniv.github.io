@@ -19,7 +19,10 @@
     <div class="game-board">
       <div class="row" *ngFor="let row of board; let i = index">
         <div class="cell" *ngFor="let cell of row; let j = index"
-             [ngClass]="{'filled': cell !== 0}"
+             [ngClass]="{
+               'filled': cell !== 0,
+               'fading': cell === 2 && isCellFading
+             }"
              [style.--piece-color]="getPieceColor(cell, i, j)">
         </div>
       </div>
@@ -74,6 +77,41 @@
     </div>
   </div>
 </div>
+</div>
+
+<div class="high-score-modal" id="highScoreModal" style="display: none;">
+  <div class="modal-content">
+    <ng-container *ngIf="score >= highScore; else notHighScore">
+      <h2>HIGH SCORE!</h2>    </ng-container>
+    <ng-template #notHighScore>
+      
+    </ng-template>
+    
+    <p>Your Score: {{score}}</p>
+    <div class="scores-list">
+      <!-- Top 3 scores -->
+      <div *ngFor="let entry of getTopThreeScores()">
+        {{entry.position}}. {{entry.name}} - {{entry.score}}
+      </div>
+      <!-- Ellipsis -->
+      <div>...</div>
+      <!-- User's position -->
+      <ng-container *ngIf="getUserPosition() as userPos">
+        <div>{{userPos.position}}. {{userPos.name}} - {{userPos.score}}</div>
+      </ng-container>
+    </div>
+    <label for="playerName">Enter your name:</label>
+    <input id="playerName" 
+           type="text" 
+           maxlength="5" 
+           [(ngModel)]="playerName" 
+           (input)="onNameInput($event)"
+           (keydown)="handleInputKeydown($event)"
+           (focus)="onInputFocus()"
+           (blur)="onInputBlur()"
+           style="text-transform: uppercase;">
+    <button id= submitButton (click)="submitHighScore()">Submit</button>
+  </div>
 </div>
 
 <div class="virtual-controls">
