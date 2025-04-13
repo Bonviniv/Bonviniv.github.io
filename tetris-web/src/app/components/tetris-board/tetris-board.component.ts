@@ -475,6 +475,8 @@ export class TetrisBoardComponent implements OnInit {
     for(let i = 0; i < movesNeeded; i++) {
       this.moveDown();
     }
+    // Add final moveDown to lock the piece
+    this.moveDown();
   }
 }
 
