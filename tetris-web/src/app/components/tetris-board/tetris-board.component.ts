@@ -35,6 +35,11 @@ export class TetrisBoardComponent implements OnInit {
   showCombo: boolean = false;
   isFlashing: boolean = false;
 
+  // Add new properties for key repeat
+  private keyRepeatDelay = 150; // milliseconds
+  private keyRepeatTimers: { [key: string]: any } = {};
+  private isHardDropping = false;
+
   constructor() {
     this.initializeBoard();
     this.spawnNewPiece();
@@ -122,6 +127,9 @@ export class TetrisBoardComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.stopFalling();
+    Object.keys(this.keyRepeatTimers).forEach(key => {
+      this.stopKeyRepeat(key);
+    });
   }
 
   private startFalling(): void {
@@ -190,22 +198,52 @@ export class TetrisBoardComponent implements OnInit {
   // Update handleKeyboardEvent method
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    // Prevent default browser scrolling behavior
     event.preventDefault();
     
-    if (event.key === ' ') { // Space bar
+    if (event.key === ' ') {
       this.handleHardDrop();
       return;
     }
-  
+    if (event.key === '0') {
+      this.handleHardDrop();
+      return;
+    }
+
     if (event.key === 'Enter') {
       this.restartGame();
       return;
     }
-  
+
     if (!this.currentPiece || this.gameOver) return;
-    
-    switch (event.key) {
+
+    // Start key repeat for movement keys
+    if (!event.repeat) {
+      this.handleMove(event.key);
+      this.startKeyRepeat(event.key);
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyUp(event: KeyboardEvent): void {
+    this.stopKeyRepeat(event.key);
+  }
+
+  private startKeyRepeat(key: string): void {
+    this.stopKeyRepeat(key); // Clear existing timer if any
+    this.keyRepeatTimers[key] = setInterval(() => {
+      this.handleMove(key);
+    }, this.keyRepeatDelay);
+  }
+
+  private stopKeyRepeat(key: string): void {
+    if (this.keyRepeatTimers[key]) {
+      clearInterval(this.keyRepeatTimers[key]);
+      delete this.keyRepeatTimers[key];
+    }
+  }
+
+  private handleMove(key: string): void {
+    switch (key) {
       case 'ArrowLeft':
         this.erasePiece();
         if (this.canMove(this.currentPiece.x - 1, this.currentPiece.y)) {
@@ -370,10 +408,22 @@ export class TetrisBoardComponent implements OnInit {
     );
     
     const originalShape = [...this.currentPiece.shape];
+    const originalX = this.currentPiece.x;
     this.currentPiece.shape = rotated;
     
+    // Try to adjust position if rotation is blocked
     if (!this.canMove(this.currentPiece.x, this.currentPiece.y)) {
-      this.currentPiece.shape = originalShape;
+      // Try moving left first
+      this.currentPiece.x--;
+      if (!this.canMove(this.currentPiece.x, this.currentPiece.y)) {
+        // If left doesn't work, try moving right
+        this.currentPiece.x = originalX + 1;
+        if (!this.canMove(this.currentPiece.x, this.currentPiece.y)) {
+          // If neither works, revert everything
+          this.currentPiece.x = originalX;
+          this.currentPiece.shape = originalShape;
+        }
+      }
     }
     
     this.drawPiece();
@@ -417,14 +467,13 @@ export class TetrisBoardComponent implements OnInit {
   }
 
   public handleHardDrop(): void {
-    if (!this.currentPiece) return;
+    if (!this.currentPiece || this.gameOver) return;
     
     const ghostPos = this.getGhostPosition();
     const movesNeeded = ghostPos.y - this.currentPiece.y;
     
-    // Execute exactly the number of moves needed to reach the ghost position
     for(let i = 0; i < movesNeeded; i++) {
-      this.handleVirtualKey('ArrowDown');
+      this.moveDown();
     }
   }
 }
