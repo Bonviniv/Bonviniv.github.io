@@ -10,7 +10,7 @@
   }
 </style>
 
-<div class="tetris-container" tabindex="0" (focus)="onFocus()" #gameContainer>
+<div class="tetris-container" tabindex="0" (focus)="onFocus()" #gameContainer translate="no" data-notranslate>
   <div class="crt-effect"></div>
   <!-- novo wrapper -->
   <div class="crt-wrapper">
@@ -27,9 +27,9 @@
         </div>
       </div>
     </div>
-    <div class="game-info">
+    <div class="game-info" data-notranslate>
       <div class="next-pieces">
-        <h3 translate="no">{{ gameOver ? '-Game Over-' : 'Next Pieces' }} <style> </style></h3>
+        <h3 translate="no" class="notranslate">{{ gameOver ? '-Game Over-' : 'Next Pieces' }} <style> </style></h3>
         <div class="next-piece-container">
           <div class="next-piece" *ngFor="let piece of nextPieces; let i = index">
             <div class="next-piece-grid">
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="score" translate="no">
+      <div class="score notranslate" translate="no" data-notranslate>
         <ng-container *ngIf="!showCombo">
           <ng-container *ngIf="score > 0; else zeroScore">
             SCORE: {{ score }}
@@ -59,28 +59,28 @@
 
       <ng-container *ngIf="highScore > 0; else zeroHighScore">
         <ng-container *ngIf="highScore > 1000; else less1000HighSacore">
-          <div class="high-score" translate="no">High Score: {{highScore}}</div>
+          <div class="high-score notranslate" translate="no" data-notranslate>High Score: {{highScore}}</div>
         </ng-container>
         <ng-template #less1000HighSacore>
-          <div class="high-score" translate="no">High Score: 0{{highScore}}</div>
+          <div class="high-score notranslate" translate="no" data-notranslate>High Score: 0{{highScore}}</div>
         </ng-template>
         </ng-container>
       <ng-template #zeroHighScore>
-        <div class="high-score">High Score: 0000</div>
+        <div class="high-score notranslate" translate="no" data-notranslate>High Score: 0000</div>
       </ng-template>
 
       
 
     
      
-      <button class="restart-btn" translate="no" (click)="restartGame()">Restart</button>
+      <button class="restart-btn notranslate" translate="no" data-notranslate (click)="restartGame()">Restart</button>
     </div>
   </div>
 </div>
 </div>
 
 <div class="high-score-modal" id="highScoreModal" style="display: none;">
-  <div class="modal-content">
+  <div class="modal-content notranslate" translate="no" data-notranslate>
     <ng-container *ngIf="score >= highScore; else notHighScore">
       <h2>HIGH SCORE!</h2>    </ng-container>
     <ng-template #notHighScore>
