@@ -180,6 +180,14 @@
 
 .flash {
   animation: flash 0.25s;
+  font-family: 'Tetrominoes', monospace !important;
+  white-space: nowrap !important;
+}
+
+[translate="no"] {
+  font-family: 'Tetrominoes', monospace !important;
+  letter-spacing: 2px !important;
+  white-space: nowrap !important;
 }
 
 .game-content {

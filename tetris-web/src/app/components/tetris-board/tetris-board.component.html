@@ -29,7 +29,7 @@
     </div>
     <div class="game-info">
       <div class="next-pieces">
-        <h3>{{ gameOver ? '-Game Over-' : 'Next Pieces' }} <style> </style></h3>
+        <h3 translate="no">{{ gameOver ? '-Game Over-' : 'Next Pieces' }} <style> </style></h3>
         <div class="next-piece-container">
           <div class="next-piece" *ngFor="let piece of nextPieces; let i = index">
             <div class="next-piece-grid">
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="score">
+      <div class="score" translate="no">
         <ng-container *ngIf="!showCombo">
           <ng-container *ngIf="score > 0; else zeroScore">
             SCORE: {{ score }}
@@ -53,16 +53,16 @@
           </ng-template>
         </ng-container>
         <ng-container *ngIf="showCombo">
-          <span [class.flash]="isFlashing">{{ comboText }}</span>
+          <span [class.flash]="isFlashing" translate="no">{{ comboText }}</span>
         </ng-container>
       </div>
 
       <ng-container *ngIf="highScore > 0; else zeroHighScore">
         <ng-container *ngIf="highScore > 1000; else less1000HighSacore">
-          <div class="high-score">High Score: {{highScore}}</div>
+          <div class="high-score" translate="no">High Score: {{highScore}}</div>
         </ng-container>
         <ng-template #less1000HighSacore>
-          <div class="high-score">High Score: 0{{highScore}}</div>
+          <div class="high-score" translate="no">High Score: 0{{highScore}}</div>
         </ng-template>
         </ng-container>
       <ng-template #zeroHighScore>
@@ -73,7 +73,7 @@
 
     
      
-      <button class="restart-btn" (click)="restartGame()">Restart</button>
+      <button class="restart-btn" translate="no" (click)="restartGame()">Restart</button>
     </div>
   </div>
 </div>
