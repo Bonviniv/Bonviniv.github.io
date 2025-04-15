@@ -8,19 +8,6 @@
   
 }
 
-// Add these rules at the top level
-[translate="no"],
-[data-notranslate],
-.notranslate {
-  font-family: 'Tetrominoes', monospace !important;
-  letter-spacing: 2px !important;
-  white-space: nowrap !important;
-  -webkit-font-smoothing: none !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: geometricPrecision !important;
-  transform: none !important;
-}
-
 // Prevent Google Translate widget from appearing
 .goog-te-banner-frame,
 .goog-te-balloon-frame {
@@ -204,12 +191,6 @@
 .flash {
   animation: flash 0.25s;
   font-family: 'Tetrominoes', monospace !important;
-  white-space: nowrap !important;
-}
-
-[translate="no"] {
-  font-family: 'Tetrominoes', monospace !important;
-  letter-spacing: 2px !important;
   white-space: nowrap !important;
 }
 
