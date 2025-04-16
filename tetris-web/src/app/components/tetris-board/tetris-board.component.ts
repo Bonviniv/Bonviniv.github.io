@@ -73,6 +73,29 @@ export class TetrisBoardComponent implements OnInit {
   // Add this property
   private isInputFocused: boolean = false;
 
+  // Add these properties
+  gestureMode: boolean = false;
+  private touchStartX: number = 0;
+  private touchStartY: number = 0;
+  private lastMoveX: number = 0;
+  private moveThreshold: number = 5; // Reduced from 10
+  private moveSpeedMultiplier: number = 0.2; // Reduced from 0.5
+  private gestureTimer: any;
+
+  // Add these properties
+  private lastHardDrop: number = 0;
+  private hardDropCooldown: number = 750; // miliseconds
+  private maxSpeed: number = 100; // Minimum delay between moves
+  private minSpeed: number = 200; // Maximum delay between moves
+
+  // Add new property
+  private wasDragging: boolean = false;
+
+  // Add these properties after other properties
+  private verticalDeadzone: number = 15;
+  private isMovingDown: boolean = false;
+  private horizontalDeadzone: number = 10;
+
   constructor(private firebaseService: FirebaseService) {
     this.initializeBoard();
     this.spawnNewPiece();
@@ -343,11 +366,11 @@ export class TetrisBoardComponent implements OnInit {
     this.stopKeyRepeat(event.key);
   }
 
-  private startKeyRepeat(key: string): void {
+  private startKeyRepeat(key: string, delay?: number): void {
     this.stopKeyRepeat(key); // Clear existing timer if any
     this.keyRepeatTimers[key] = setInterval(() => {
       this.handleMove(key);
-    }, this.keyRepeatDelay);
+    }, delay || this.keyRepeatDelay);
   }
 
   private stopKeyRepeat(key: string): void {
@@ -629,22 +652,33 @@ export class TetrisBoardComponent implements OnInit {
       }));
   }
 
+  private async isNameTaken(name: string): Promise<boolean> {
+    const data = await this.firebaseService.getLeaderboard();
+    if (!data) return false;
+    
+    return Object.values(data).some(
+      (entry: any) => entry.name.toUpperCase() === name.toUpperCase()
+    );
+  }
+
   async submitHighScore() {
     if (!this.playerName || !NameValidator.validateUsername(this.playerName)) {
-      const input = document.getElementById('playerName');
-      if (input) {
-        input.classList.add('invalid-name');
-        setTimeout(() => {
-          input.classList.remove('invalid-name');
-          this.playerName = '';
-        }, 500);
-      }
+      this.showInvalidNameError('Invalid name format');
       return;
     }
+  
+    // Convert to uppercase
+    const upperName = this.playerName.toUpperCase().slice(0, 5);
     
-    // Convert to uppercase and limit to 5 characters
-    this.playerName = this.playerName.toUpperCase().slice(0, 5);
-    
+    // Check for existing name, unless it's the same player
+    const savedName = localStorage.getItem('userName');
+    if (upperName !== savedName && await this.isNameTaken(upperName)) {
+      this.showInvalidNameError('Name already taken');
+      return;
+    }
+  
+    this.playerName = upperName;
+    // ...rest of existing submitHighScore code...
     // Save to localStorage
     localStorage.setItem('userName', this.playerName);
     console.log('Saving to database:', { name: this.playerName, score: this.score });
@@ -677,6 +711,17 @@ export class TetrisBoardComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error submitting score:', error);
+    }
+  }
+
+  private showInvalidNameError(message: string): void {
+    const input = document.getElementById('playerName');
+    if (input) {
+      input.classList.add('invalid-name');
+      setTimeout(() => {
+        input.classList.remove('invalid-name');
+        this.playerName = '';
+      }, 500);
     }
   }
 
@@ -748,6 +793,78 @@ export class TetrisBoardComponent implements OnInit {
 
   onInputBlur(): void {
     this.isInputFocused = false;
+  }
+
+  toggleGestureMode(): void {
+    this.gestureMode = !this.gestureMode;
+  }
+
+  handleGestureStart(event: TouchEvent): void {
+    event.preventDefault();
+    this.touchStartX = event.touches[0].clientX;
+    this.touchStartY = event.touches[0].clientY;
+    this.lastMoveX = this.touchStartX;
+    this.wasDragging = false;
+    this.isMovingDown = false;  // Reset vertical movement flag
+  }
+
+  handleGestureMove(event: TouchEvent): void {
+    event.preventDefault();
+    const currentX = event.touches[0].clientX;
+    const currentY = event.touches[0].clientY;
+    const deltaY = currentY - this.touchStartY;
+    const deltaX = Math.abs(currentX - this.touchStartX);
+
+    // Check for vertical movement first
+    if (deltaY > this.verticalDeadzone) {
+      this.isMovingDown = true;
+    }
+
+    // Handle horizontal movement only if not moving down and within horizontal deadzone
+    if (!this.isMovingDown && Math.abs(deltaX) > this.moveThreshold) {
+      const boardRect = document.querySelector('.game-board')?.getBoundingClientRect();
+      if (boardRect) {
+        const relativeX = (currentX - boardRect.left) / boardRect.width;
+        const targetCol = Math.floor(relativeX * this.COLS);
+        const currentCol = this.currentPiece.x;
+        
+        if (Math.abs(currentX - this.lastMoveX) < this.horizontalDeadzone) {
+          if (targetCol < currentCol) {
+            this.handleMove('ArrowLeft');
+          } else if (targetCol > currentCol) {
+            this.handleMove('ArrowRight');
+          }
+        }
+      }
+    }
+
+    // Handle hard drop with deadzone
+    if (this.isMovingDown && deltaY > 30 && Math.abs(deltaX) < this.horizontalDeadzone) {
+      const now = Date.now();
+      if (now - this.lastHardDrop >= this.hardDropCooldown) {
+        this.handleHardDrop();
+        this.lastHardDrop = now;
+      }
+    }
+
+    this.lastMoveX = currentX;
+  }
+
+  handleGestureEnd(event: TouchEvent): void {
+    // Clear any active movement
+    Object.keys(this.keyRepeatTimers).forEach(key => {
+      this.stopKeyRepeat(key);
+    });
+
+    // Only rotate if there was no significant drag
+    if (!this.wasDragging) {
+      const deltaX = Math.abs(event.changedTouches[0].clientX - this.touchStartX);
+      const deltaY = Math.abs(event.changedTouches[0].clientY - this.touchStartY);
+      
+      if (deltaX < this.moveThreshold && deltaY < this.moveThreshold) {
+        this.rotatePiece();
+      }
+    }
   }
 }
 
