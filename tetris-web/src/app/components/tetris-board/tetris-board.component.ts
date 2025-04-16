@@ -92,9 +92,9 @@ export class TetrisBoardComponent implements OnInit {
   private wasDragging: boolean = false;
 
   // Add these properties after other properties
-  private verticalDeadzone: number = 15;
+  private verticalDeadzone: number = 35; // Increased from 15 to require more deliberate downward motion
   private isMovingDown: boolean = false;
-  private horizontalDeadzone: number = 10;
+  private horizontalDeadzone: number = 25; // Increased from 10 to be more forgiving with slight horizontal movement
 
   constructor(private firebaseService: FirebaseService) {
     this.initializeBoard();
