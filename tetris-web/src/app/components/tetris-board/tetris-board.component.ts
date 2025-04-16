@@ -96,6 +96,13 @@ export class TetrisBoardComponent implements OnInit {
   private isMovingDown: boolean = false;
   private horizontalDeadzone: number = 25; // Increased from 10 to be more forgiving with slight horizontal movement
 
+  // Add new property to track last piece
+  private lastGeneratedPiece: number = -1;
+
+  // Add property to track piece history
+  private pieceHistory: number[] = [];
+  private readonly HISTORY_LENGTH = 4;
+
   constructor(private firebaseService: FirebaseService) {
     this.initializeBoard();
     this.spawnNewPiece();
@@ -133,8 +140,18 @@ export class TetrisBoardComponent implements OnInit {
   
   private generateNextPieces(): void {
     while (this.nextPieces.length < 3) {
-      const randomPiece = this.PIECES[Math.floor(Math.random() * this.PIECES.length)];
-      this.nextPieces.push({ ...randomPiece });
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * this.PIECES.length);
+      } while (this.pieceHistory.includes(randomIndex));
+      
+      // Add new piece to history and remove old ones
+      this.pieceHistory.push(randomIndex);
+      if (this.pieceHistory.length > this.HISTORY_LENGTH) {
+        this.pieceHistory.shift();
+      }
+      
+      this.nextPieces.push({ ...this.PIECES[randomIndex] });
     }
   }
 
