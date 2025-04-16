@@ -10,7 +10,7 @@
   }
 </style>
 
-<div class="tetris-container" tabindex="0" (focus)="onFocus()" #gameContainer translate="no" data-notranslate>
+<div class="tetris-container" [class.gesture-mode]="gestureMode" tabindex="0" (focus)="onFocus()" #gameContainer translate="no" data-notranslate>
   <div class="crt-effect"></div>
   <!-- novo wrapper -->
   <div class="crt-wrapper">
