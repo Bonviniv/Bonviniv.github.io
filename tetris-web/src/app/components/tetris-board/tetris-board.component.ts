@@ -108,6 +108,7 @@ export class TetrisBoardComponent implements OnInit {
     this.spawnNewPiece();
     this.generateNextPieces();
     this.loadLeaderboard();
+    this.loadAllScores(); // Add this line
   }
 
   private initializeBoard(): void {
@@ -882,6 +883,35 @@ export class TetrisBoardComponent implements OnInit {
         this.rotatePiece();
       }
     }
+  }
+
+  // Add the allScores property to the class
+  allScores: { name: string, score: number }[] = [
+    { name: 'AAA', score: 5000 },
+    { name: 'BBB', score: 4000 },
+    { name: 'CCC', score: 3000 },
+    { name: 'DDD', score: 2000 },
+    { name: 'EEE', score: 1000 }
+  ];
+
+  private async loadAllScores(): Promise<void> {
+    const data = await this.firebaseService.getLeaderboard();
+    if (data) {
+      this.allScores = Object.values(data).map(entry => ({
+        name: entry.name,
+        score: entry.score
+      }));
+    }
+  }
+
+  getTopTenScores() {
+    return this.allScores
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10)
+      .map((score, index) => ({
+        ...score,
+        position: index + 1
+      }));
   }
 }
 

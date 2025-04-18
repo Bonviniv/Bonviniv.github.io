@@ -88,16 +88,35 @@
     </ng-template>
     
     <p>Your Score: {{score}}</p>
-    <div class="scores-list">
-      <!-- Top 3 scores -->
-      <div *ngFor="let entry of getTopThreeScores()">
-        {{entry.position}}. {{entry.name}} - {{entry.score}}
+    <div class="scores-list" style="height: 150px; overflow-y: auto; margin: 10px 0; padding: 5px; border: 0px solid #444; scrollbar-color: #666 transparent;">
+      <style>
+        .scores-list::-webkit-scrollbar {
+          width: 8px;
+        }
+        .scores-list::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .scores-list::-webkit-scrollbar-thumb {
+          background-color: #306230;
+          border-radius: 4px;
+        }
+      </style>
+      <div *ngFor="let entry of getTopTenScores()" 
+           [style.background-color]="score === entry?.score && playerName === entry?.name ? '#333' : 'transparent'"
+           style="padding: 4px; border-bottom: 1px solid #333; font-family: 'Tetrominoes', monospace;">
+        {{entry?.position || '-'}}. {{entry?.name || 'Unknown'}} - {{(entry?.score || 0) < 1000 ? '0' + (entry?.score || 0) : entry?.score}}
       </div>
-      <!-- Ellipsis -->
-      <div>...</div>
-      <!-- User's position -->
+      <!-- Add ellipsis if user is not in top 10 -->
+      <div *ngIf="getUserPosition()?.position! > 10" 
+           style="padding: 4px; text-align: center; font-family: 'Tetrominoes', monospace;">
+        ...
+      </div>
+      <!-- Show user position if not in top 10 -->
       <ng-container *ngIf="getUserPosition() as userPos">
-        <div>{{userPos.position}}. {{userPos.name}} - {{userPos.score}}</div>
+        <div *ngIf="userPos?.position! > 10" 
+             style="padding: 4px; border-top: 2px solid #555; font-family: 'Tetrominoes', monospace;">
+          {{userPos?.position}}. {{userPos?.name}} - {{(userPos?.score || 0) < 1000 ? '0' + (userPos?.score || 0) : userPos?.score}}
+        </div>
       </ng-container>
     </div>
     <label for="playerName">Enter your name:</label>
