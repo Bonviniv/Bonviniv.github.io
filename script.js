@@ -1413,7 +1413,7 @@ function newWindow(){
 
 function redirectToHangingIfMobile() {
   if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-      window.location.href = "https://bonviniv.github.io/hanging.html";
+      window.location.href = "https://bonviniv.github.io/projects.html";
   }
 }
 
