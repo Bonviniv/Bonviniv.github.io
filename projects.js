@@ -23,7 +23,7 @@ const projects = [
         title: " Scriptown",
         description: "My personal website featuring a Pokémon-style demo game designed to introduce myself. Not yet supported on mobile.",
         technologies: ["HTML", "CSS", "JavaScript"],
-        link: "index.html"
+        link: "https://bonviniv.github.io"
     },
     {
         id: "hangman",
@@ -31,7 +31,7 @@ const projects = [
         description: "A classic hangman game with a modern twist, featuring a real-time cloud-hosted battle royale-style multiplayer mode and API-powered word hint suggestions.",
         technologies: ["HTML", "JavaScript", "Firebase"],
         link: "hanging.html",
-        repoUrl: "https://github.com/Bonviniv/hangman-game"
+        repoUrl: "https://bonviniv.github.io/hanging.html"
     },
     {
         id: "stackhunt",
@@ -39,7 +39,7 @@ const projects = [
         description: "Job search application for developers, featuring a custom bot for web scraping job boards and integration with public APIs to gather developer-focused job listings.",
         technologies: ["React", "TailwindCSS", "Python"],
         link: "stackhunt.html",
-        repoUrl: "https://github.com/Bonviniv/StackHunt"
+        repoUrl: "https://bonviniv.github.io/StackHunt.html"
     },
     {
         id: "tetris",
@@ -47,7 +47,7 @@ const projects = [
         description: "Classic Tetris game with modern features, including a cloud-hosted leaderboard and mobile-exclusive control modes: one emulating a classic Game Boy layout and another using modern touch gesture controls.",
         technologies: ["Angular", "TypeScript", "Firebase"],
         link: "tetris.html",
-        repoUrl: "https://github.com/Bonviniv/tetris-web"
+        repoUrl: "https://bonviniv.github.io/tetris.html"
     },
     {
         id: "github",
