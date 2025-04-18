@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StackHunt - Job Search</title>
-    <meta http-equiv="refresh" content="0; url=stackhunt/index.html">
+    <meta http-equiv="refresh" content="0;url=http://localhost:3000">
+    <script>
+        window.onload = function() {
+            const manualLink = document.getElementById('manual-link');
+            if (manualLink) {
+                setTimeout(() => {
+                    manualLink.style.display = 'block';
+                }, 2000);
+            }
+        };
+    </script>
 </head>
 <body>
-    <p>Redirecting to StackHunt...</p>
+    <div style="text-align: center; padding: 20px;">
+        <h1>StackHunt</h1>
+        <p>Redirecting to application...</p>
+        <p id="manual-link" style="display: none">
+            If you are not redirected automatically, please click here:<br>
+            <a href="http://localhost:3000" style="color: blue; text-decoration: underline;">Launch StackHunt</a>
+        </p>
+    </div>
 </body>
 </html>
-
-<!-- 
-
-cd C:\Users\vitor\cloneGit\Bonviniv.github.io\stackhunt
-npm start
-
--->
