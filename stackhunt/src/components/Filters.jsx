@@ -3,14 +3,12 @@ import { useState } from 'react';
 function Filters({ onSearch, isLoading }) {
   const [keywords, setKeywords] = useState('');
   const [location, setLocation] = useState('');
-  const [jobType, setJobType] = useState('all');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch({
       keywords: keywords.trim(),
-      location: location.trim(),
-      jobType
+      location: location.trim()
     });
   };
 

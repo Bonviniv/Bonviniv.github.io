@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 function SortingSidebar({ onSortChange, currentSort, sortOrder }) {
   const getSortIcon = (option) => {
     if (option !== currentSort) return null;

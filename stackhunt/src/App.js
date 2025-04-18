@@ -61,33 +61,9 @@ function App() {
 
     if (jobs.length > 0) {
       const currentJobs = getSortedJobs();
-      console.group('Current Job List View - First 10 Offers:');
-      currentJobs.slice(0, 10).forEach((job, index) => {
-        console.group(`Job #${index + 1} - ${job.title}`);
-        console.log({
-          id: job.id,
-          title: job.title,
-          company: job.company,
-          location: job.location,
-          type: job.type,
-          salary: job.salary,
-          postedDate: job.postedDate,
-          description: job.description,
-          requirements: job.requirements,
-          benefits: job.benefits,
-          technologies: job.technology_stack,
-          experienceLevel: job.experience_level,
-          source: job.source,
-          applyLink: job.applyLink,
-          isPreferred: preferredCompanies.some(company => 
-            job.company.toLowerCase().includes(company.toLowerCase())
-          )
-        });
-        console.groupEnd();
-      });
-      console.groupEnd();
+      // Remove console logging
     }
-  }, [preferredCompanies]); // Only re-run when preferred companies change
+  }, [jobs, preferredCompanies]); // Add jobs to dependency array
 
   const handleSearch = async (filters) => {
     setIsLoading(true);
