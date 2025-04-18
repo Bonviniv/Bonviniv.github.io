@@ -1,4 +1,4 @@
-export function matchesKeywords(job, keywords) {
+1export function matchesKeywords(job, keywords) {
   if (!keywords) return true;
   const searchTerms = keywords.toLowerCase().split(' ');
   const searchText = `${job.title} ${job.description || ''}`.toLowerCase();

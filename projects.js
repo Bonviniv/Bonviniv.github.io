@@ -39,7 +39,7 @@ const projects = [
         description: "Job search application for developers, featuring a custom bot for web scraping job boards and integration with public APIs to gather developer-focused job listings.",
         technologies: ["React", "TailwindCSS", "Python"],
         link: "stackhunt.html",
-        repoUrl: "https://github.com/Bonviniv/stackhunt"
+        repoUrl: "https://github.com/Bonviniv/StackHunt"
     },
     {
         id: "tetris",
