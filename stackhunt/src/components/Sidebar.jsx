@@ -43,6 +43,7 @@ function Sidebar({ onPreferredCompaniesChange }) {
         >
           Add Company
         </button>
+        
       </form>
       <div className="space-y-2">
         {preferredCompanies.map((company, index) => (

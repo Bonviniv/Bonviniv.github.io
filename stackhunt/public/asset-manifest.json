@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/stackhunt/static/css/main.6ba871c9.css",
+    "main.js": "/stackhunt/static/js/main.dabe79e9.js",
+    "index.html": "/stackhunt/index.html",
+    "main.6ba871c9.css.map": "/stackhunt/static/css/main.6ba871c9.css.map",
+    "main.dabe79e9.js.map": "/stackhunt/static/js/main.dabe79e9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ba871c9.css",
+    "static/js/main.dabe79e9.js"
+  ]
+}

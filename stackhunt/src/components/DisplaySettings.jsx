@@ -34,6 +34,7 @@ function DisplaySettings({ settings, onSettingsChange }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       </button>
+      
       <div className={`absolute right-0 mt-1 md:mt-2 w-36 md:w-48 bg-gray-800 rounded-md shadow-lg py-1 transition-opacity duration-150 ${
         isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}>

@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StackHunt - Job Search</title>
-    <meta http-equiv="refresh" content="0;url=http://localhost:3000">
-    <script>
-        window.onload = function() {
-            const manualLink = document.getElementById('manual-link');
-            if (manualLink) {
-                setTimeout(() => {
-                    manualLink.style.display = 'block';
-                }, 2000);
-            }
-        };
-    </script>
-</head>
-<body>
-    <div style="text-align: center; padding: 20px;">
-        <h1>StackHunt</h1>
-        <p>Redirecting to application...</p>
-        <p id="manual-link" style="display: none">
-            If you are not redirected automatically, please click here:<br>
-            <a href="http://localhost:3000" style="color: blue; text-decoration: underline;">Launch StackHunt</a>
-        </p>
-    </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StackHunter</title>
+    <link rel="icon" href="stackhunt/public/favicon.ico" />
+    <link rel="manifest" href="stackhunt/public/manifest.json" />
+    <link rel="stylesheet" href="stackhunt/public/static/css/main.6ba871c9.css" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script src="stackhunt/public/static/js/main.dabe79e9.js"></script>
+  </body>
 </html>
+
+<!--  
+npm run build
+cd C:\Users\vitor\cloneGit\Bonviniv.github.io\stackhunt
+rmdir /s /q public
+mkdir public
+xcopy /s /y /i build\* public\
+ -->

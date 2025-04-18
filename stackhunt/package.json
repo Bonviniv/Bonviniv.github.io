@@ -17,12 +17,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf ../stackhunt/* && cp -r build/* ../stackhunt/",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "start": "npx react-scripts start",
+    "build": "npx react-scripts build",
+    "test": "npx react-scripts test",
+    "eject": "npx react-scripts eject",
+    "predeploy": "npm run clean",
+    "deploy": "npm run build && xcopy /s /y /i build\\* ..\\stackhunt",
+    "clean": "rmdir /s /q ..\\stackhunt 2>nul || echo No directory to remove"
   },
   "eslintConfig": {
     "extends": [

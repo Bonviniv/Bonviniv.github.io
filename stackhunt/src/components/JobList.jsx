@@ -141,6 +141,7 @@ function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder,
   }
 
   return (
+    
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-4 md:mt-8 pl-0 md:pl-4 -ml-24 md:ml-0">
       {sortedJobs.map(job => (
         <div key={job.id} className="bg-gray-800 dark:bg-dark-secondary rounded-lg shadow-xl p-4 md:p-6 transform scale-75 md:scale-100 origin-top min-h-[250px] md:min-h-[300px] -ml-14 md:ml-4 w-[350%] md:w-auto">

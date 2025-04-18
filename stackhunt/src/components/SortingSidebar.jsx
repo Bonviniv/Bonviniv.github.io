@@ -28,6 +28,7 @@ function SortingSidebar({ onSortChange, currentSort, sortOrder, selectedSource }
                   onClick={() => setShowSourceMenu(!showSourceMenu)}
                   className="w-full text-left px-2 md:px-3 py-1 md:py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded transition-colors flex justify-between items-center text-xs md:text-base"
                 >
+                  
                   <span>Source</span>
                   <span>{showSourceMenu ? '▼' : '▶'}</span>
                 </button>
