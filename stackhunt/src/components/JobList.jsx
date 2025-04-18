@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder, filters }) {
   const parseSalary = (salaryString) => {
     if (!salaryString) return 0;
