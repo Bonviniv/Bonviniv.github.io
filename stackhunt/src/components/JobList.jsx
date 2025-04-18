@@ -1,4 +1,4 @@
-function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder, filters }) {
+function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder, filters, selectedSource }) {
   const parseSalary = (salaryString) => {
     if (!salaryString) return 0;
     const numbers = salaryString.match(/\d+/g);
@@ -37,6 +37,16 @@ function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder,
 
   const sortJobs = (jobsToSort) => {
     let sorted = [...jobsToSort];
+
+    // Filter by selected source first
+    if (selectedSource && selectedSource !== 'All Sources') {
+      sorted = sorted.filter(job => job.source === selectedSource);
+    }
+
+    // Apply source filter
+    if (filters?.source && filters.source !== 'All Sources') {
+      sorted = sorted.filter(job => job.source === filters.source);
+    }
 
     // Apply keyword filter
     if (filters?.keywords?.trim()) {
@@ -131,40 +141,40 @@ function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder,
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-4 md:mt-8 pl-0 md:pl-4 -ml-24 md:ml-0">
       {sortedJobs.map(job => (
-        <div key={job.id} className="bg-gray-800 dark:bg-dark-secondary rounded-lg shadow-xl p-6">
-          <div className="flex flex-col space-y-3">
+        <div key={job.id} className="bg-gray-800 dark:bg-dark-secondary rounded-lg shadow-xl p-4 md:p-6 transform scale-75 md:scale-100 origin-top min-h-[250px] md:min-h-[300px] -ml-14 md:ml-4 w-[350%] md:w-auto">
+          <div className="flex flex-col space-y-2 md:space-y-3">
             <div className="flex justify-between items-start">
-              <h3 className="text-lg font-semibold text-white">{job.title}</h3>
-              <span className="text-sm text-gray-400 ml-2 whitespace-nowrap">
+              <h3 className="text-base md:text-lg font-semibold text-white">{job.title}</h3>
+              <span className="text-xs md:text-sm text-gray-400 ml-2 whitespace-nowrap">
                 {formatDate(job.postedDate || job.date)}
               </span>
             </div>
             
-            <div className="text-gray-300 font-medium">{job.company}</div>
+            <div className="text-sm md:text-base text-gray-300 font-medium">{job.company}</div>
             
             {displaySettings.showLocation && (
-              <p className="text-gray-400"><span className="text-gray-500">Location:</span> {job.location}</p>
+              <p className="text-xs md:text-sm text-gray-400"><span className="text-gray-500">Location:</span> {job.location}</p>
             )}
             {displaySettings.showType && (
-              <p className="text-gray-400"><span className="text-gray-500">Type:</span> {job.type}</p>
+              <p className="text-xs md:text-sm text-gray-400"><span className="text-gray-500">Type:</span> {job.type}</p>
             )}
             {displaySettings.showSalary && job.salary && (
-              <p className="text-gray-400"><span className="text-gray-500">Salary:</span> {job.salary}</p>
+              <p className="text-xs md:text-sm text-gray-400"><span className="text-gray-500">Salary:</span> {job.salary}</p>
             )}
             {displaySettings.showExperienceLevel && job.experience_level && (
-              <p className="text-gray-400"><span className="text-gray-500">Level:</span> {job.experience_level}</p>
+              <p className="text-xs md:text-sm text-gray-400"><span className="text-gray-500">Level:</span> {job.experience_level}</p>
             )}
-            <p className="text-gray-400"><span className="text-gray-500">Posted:</span> {formatDate(job.postedDate)}</p>
+            <p className="text-xs md:text-sm text-gray-400"><span className="text-gray-500">Posted:</span> {formatDate(job.postedDate)}</p>
           </div>
 
           {displaySettings.showTechnologies && job.technology_stack && (
-            <div className="mb-4">
-              <p className="text-gray-500 mb-2">Technologies:</p>
-              <div className="flex flex-wrap gap-2">
+            <div className="mb-2 md:mb-4">
+              <p className="text-xs md:text-sm text-gray-500 mb-1 md:mb-2">Technologies:</p>
+              <div className="flex flex-wrap gap-1 md:gap-2">
                 {job.technology_stack.map((tech, index) => (
-                  <span key={index} className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-sm">
+                  <span key={index} className="px-1.5 md:px-2 py-0.5 md:py-1 bg-gray-700 text-gray-300 rounded text-xs md:text-sm">
                     {tech}
                   </span>
                 ))}
@@ -172,9 +182,9 @@ function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder,
             </div>
           )}
 
-          <div className="flex justify-between items-center mt-4">
+          <div className="flex justify-between items-center mt-3 md:mt-4">
             {displaySettings.showSource && (
-              <span className="text-sm text-gray-400">
+              <span className="text-xs md:text-sm text-gray-400">
                 {job.source}
               </span>
             )}
@@ -182,7 +192,7 @@ function JobList({ jobs, displaySettings, preferredCompanies, sortBy, sortOrder,
               href={job.applyLink || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-block px-4 py-2 rounded transition-colors ${
+              className={`inline-block px-3 md:px-4 py-1.5 md:py-2 rounded text-sm md:text-base transition-colors ${
                 job.applyLink 
                   ? 'bg-blue-600 text-white hover:bg-blue-700' 
                   : 'bg-gray-600 text-gray-300 cursor-not-allowed'

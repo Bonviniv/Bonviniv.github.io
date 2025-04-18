@@ -6,6 +6,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import DisplaySettings from './components/DisplaySettings';
 import Sidebar from './components/Sidebar';
 import SortingSidebar from './components/SortingSidebar';
+import './styles/responsive.css';
 
 function App() {
   const [jobs, setJobs] = useState([]);
@@ -82,7 +83,6 @@ function App() {
   const handleSort = (sortType, sourceFilter) => {
     if (sortType === 'source') {
       setSelectedSource(sourceFilter);
-      setSortBy(sortType);
     } else if (sortType === sortBy) {
       setSortOrder(current => current === 'desc' ? 'asc' : 'desc');
     } else {

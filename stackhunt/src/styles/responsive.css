@@ -1,0 +1,107 @@
+/* Mobile Styles (devices smaller than 768px) */
+@media (min-width: 768px) {
+  /* Add a test style to verify CSS is working */
+  body {
+    background-color: #f0f0f0;
+  }
+
+  .job-card {
+    width: 100% !important;
+    margin: 10px 0 !important;
+    padding: 15px;
+  }
+
+  .search-container {
+    width: 95%;
+    margin: 10px auto;
+  }
+
+  .job-details {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .company-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .job-title {
+    font-size: 18px;
+  }
+
+  .job-location, .job-type, .job-salary {
+    font-size: 13px;
+  }
+
+  .apply-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .sort-jobs-container {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+  }
+
+  .sort-jobs-container select {
+    font-size: 14px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  .preferred-companies-list {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px auto;
+  }
+
+  .preferred-companies-list li {
+    font-size: 13px;
+    padding: 6px 10px;
+    margin: 4px 0;
+  }
+
+  .preferred-companies-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .sort-jobs-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .header {
+    height: 60px !important;
+    padding: 0 15px !important;
+    background-color: #fff; /* Add this to verify header styles are applied */
+    transform: scale(0.8) !important;
+  }
+
+  .header-logo {
+    font-size: 20px;
+  }
+
+  .header-nav {
+    gap: 15px;
+  }
+
+  .header-nav a {
+    font-size: 14px;
+    padding: 5px 8px;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  * {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;     /* Firefox */
+  }
+}

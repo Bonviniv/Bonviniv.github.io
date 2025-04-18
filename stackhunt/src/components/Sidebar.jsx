@@ -27,7 +27,7 @@ function Sidebar({ onPreferredCompaniesChange }) {
   };
 
   return (
-    <div className="w-64 border-l border-gray-700 p-4 min-h-screen fixed right-0 top-0 pt-32 bg-gray-800 dark:bg-dark-secondary">
+    <div className="w-64 border-l border-gray-700 p-4 min-h-screen fixed right-0 top-0 pt-32 bg-gray-800 dark:bg-dark-secondary hidden md:block">
       <h3 className="text-white font-semibold mb-4">Preferred Companies</h3>
       <form onSubmit={addCompany} className="mb-4">
         <input

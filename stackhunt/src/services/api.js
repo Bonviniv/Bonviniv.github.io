@@ -1,6 +1,6 @@
 import { searchITJobs } from './sources/itjobs';
 import { searchAdzuna } from './sources/adzuna';
-import { searchJooble } from './sources/jooble';
+import { searchLocalJobs } from './sources/localJobs';
 
 export async function searchJobs() {
   try {
@@ -9,20 +9,20 @@ export async function searchJobs() {
     const results = await Promise.allSettled([
       searchITJobs(),
       searchAdzuna(),
-      searchJooble()
+      searchLocalJobs()
     ]);
 
-    const [itJobs, adzunaJobs, joobleJobs] = results.map(result => 
+    const [itJobs, adzunaJobs, localJobs] = results.map(result => 
       result.status === 'fulfilled' ? result.value : []
     );
 
     console.log({
       itJobsCount: itJobs.length,
       adzunaJobsCount: adzunaJobs.length,
-      joobleJobsCount: joobleJobs.length
+      localJobsCount: localJobs.length
     });
 
-    return [...itJobs, ...adzunaJobs, ...joobleJobs];
+    return [...itJobs, ...adzunaJobs, ...localJobs];
   } catch (error) {
     console.error('Search failed:', error.message);
     return [];
