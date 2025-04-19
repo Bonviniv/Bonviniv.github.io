@@ -5,6 +5,11 @@
     src: url('https://fonts.cdnfonts.com/css/aptos') format('woff2');
 }
 
+body, * {
+    cursor: inherit !important;
+  }
+  
+
 body {
     background-color: #1a1a1a;
     color: white;
@@ -12,11 +17,11 @@ body {
     margin: 0;
     overflow-x: hidden;
     position: relative;
+   
 }
 
-body::before {
-    
-}
+
+
 
 .background-wrapper {
     position: fixed;
@@ -60,6 +65,7 @@ body::before {
 .icon-column i, .icon-column svg {
     font-size: 3rem;
     color: #333;
+    filter: grayscale(100%);
 }
 
 @keyframes slideBackground {
@@ -120,12 +126,21 @@ h1 {
     padding: 1.5rem;
     transition: transform 0.3s ease, filter 0.6s ease-in-out;
     filter: grayscale(100%);
+    
 }
 
 .project-card:hover {
     transform: translateY(-5px);
     filter: grayscale(0%);
 }
+
+.project-card:active,
+.project-link:active,
+.tech-tag:active {
+    animation: buttonClick 0.2s steps(1);
+}
+
+
 
 .project-title {
     font-size: 1.5rem;
@@ -185,6 +200,7 @@ h1 {
     font-family: 'Aptos', 'Outfit', sans-serif;
     transition: color 0.6s ease-in-out, background-color 0.6s ease-in-out;
     min-width: 60px; /* Reduced from 80px */
+    
 }
 
 .project-card[data-project="github"] .tech-tag {
@@ -230,6 +246,11 @@ h1 {
 
 .project-link:hover {
     background-color: #3182ce;
+}
+
+.project-card,
+.project-link,
+.tech-tag {
 }
 
 /* Remove these classes if they exist */
