@@ -36,7 +36,7 @@ const projects = [
         description: "A Netflix-style platform for retro games featuring in-browser emulation, game library management, and cloud save states. Play classic games directly in your browser.",
         technologies: ["JavaScript", "CSS", "Firebase"],
         link: "gameflix.html",
-        repoUrl: "https://bonviniv.github.io/gameflix.html"
+        repoUrl: "https://bonviniv.github.io/gameflixautentification.html"
     },
     {
         id: "hangman",
