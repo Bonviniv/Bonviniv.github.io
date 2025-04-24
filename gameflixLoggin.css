@@ -1,0 +1,257 @@
+* {
+    
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb62e44-31fd-4e1f-b6ad-0b5c8c2a20ef/BR-pt-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 60px 68px 40px;
+    width: 450px;
+    border-radius: 4px;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo h1 {
+    color: #e50914;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'Press Start 2P', cursive;
+}
+
+h2 {
+    color: white;
+    margin-bottom: 28px;
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    padding: 16px 20px;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #8c8c8c;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1rem;
+    z-index: 1;
+}
+
+.password-toggle:hover {
+    color: #fff;
+}
+
+.switch-form {
+    font-size: 0.7rem;
+}
+
+.error-message, .success-message {
+    font-size: 0.7rem;
+}
+
+.btn {
+    font-size: 0.8rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    background-color: #454545;
+}
+
+.btn {
+    width: 100%;
+    height: 50px;
+    background-color: #e50914;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 24px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
+}
+
+.btn:hover {
+    background-color: #f40612;
+}
+
+.error-message {
+    color: #e87c03;
+    margin-top: 16px;
+    font-size: 14px;
+    display: none;
+}
+
+.success-message {
+    color: #2ecc71;
+    margin-top: 16px;
+    font-size: 14px;
+    display: none;
+}
+
+.switch-form {
+    color: #737373;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.switch-form a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;  /* Added this line to create space */
+}
+
+.switch-form a:hover {
+    text-decoration: underline;
+}
+
+.google-btn {
+    background-color: #4285f4;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.google-btn:hover {
+    background-color: #357ae8;
+}
+
+.google-btn i {
+    font-size: 1.2rem;
+}
+
+
+/* Add these mobile styles at the end of the file */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .login-form h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        font-size: 0.6rem;
+    }
+
+    .form-group input {
+        padding: 0.6rem;
+        font-size: 0.5rem;
+    }
+
+    .login-button {
+        padding: 0.6rem;
+        font-size: 0.6rem;
+    }
+
+    .register-link {
+        font-size: 0.6rem;
+        margin-top: 1rem;
+    }
+
+    .error-message {
+        font-size: 0.5rem;
+    }
+}
+
+/* Add orientation lock for mobile */
+@media screen and (max-width: 480px) and (orientation: landscape) {
+    body {
+        min-height: 100vh;
+    }
+    
+    .login-container {
+        margin: 1rem auto;
+    }
+}
+
+/* Add/update these styles */
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://assets.nflxext.com/ffe/siteui/vlv3/ab180a27-b661-44d7-a6d9-940cb32f2f4a/7fb62e44-31fd-4e1f-b6ad-0b5c8c2a20ef/BR-pt-20231009-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    body {
+        background: #000000;
+        background-image: none;
+    }
+
+    .container {
+        height: 100vh;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .switch-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .switch-form a {
+        margin-top: 5px;
+    }
+}

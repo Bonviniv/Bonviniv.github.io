@@ -1,0 +1,558 @@
+:root {
+    --primary-color: #e50914;
+    --primary-dark: #535353;
+    --secondary-color: #221f1f;
+    --background-dark: #141414;
+    --text-light: #ffffff;
+    --text-gray: #999999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    transition: background-color 1.2s ease;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 4%;
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 100%;
+    z-index: 1000;
+}
+
+
+
+.logo h1 {
+    color: var(--primary-color);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+}
+
+
+.main-nav li {
+    margin-left: 20px;
+}
+
+.main-nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.7rem;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+/* Keep the original hero background */
+.hero {
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.hero-content h2 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-content p {
+    font-size: 0.9rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Content Sections */
+.content {
+    padding: 2rem 4%;
+}
+
+.section-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    transition: width 0.8s ease;
+}
+
+.console-section {
+    margin-bottom: 3rem;
+}
+
+#nes:hover .section-title::after {
+    width: 50%;
+}
+:root {
+    --primary-color: #e50914;
+    --secondary-color: #000000;
+    --dark-bg: #141414;
+    --light-bg: #222;
+    --text-light: #ffffff;
+    --text-dark: #aaaaaa;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+}
+
+/* Header */
+
+
+/* Add these styles to hide scrollbar */
+body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+body::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari and Opera */
+}
+.logo h1 {
+    color: var(--primary-color);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+}
+
+.main-nav li {
+    margin: 0 15px;
+}
+
+.main-nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+.main-nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s;
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    height: 60vh;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-family: 'Press Start 2P', cursive;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+/* Main Content */
+.content {
+    padding: 50px 40px;
+}
+
+.console-section {
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--text-light);
+    font-family: 'Press Start 2P', cursive;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.game-card {
+    background-color: var(--light-bg);
+    border-radius: 5px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.game-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.game-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.game-info {
+    padding: 15px;
+}
+
+.game-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.game-info p {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--light-bg);
+    padding: 30px 0;
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+    }
+    
+    .main-nav li {
+        margin: 5px 0;
+    }
+    
+    .hero {
+        height: 50vh;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.console-section {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+#nes { animation-delay: 0.1s; }
+#nintendo64 { animation-delay: 0.3s; }
+#playstation1 { animation-delay: 0.5s; }
+#segamegadrive { animation-delay: 0.7s; }
+#nes:hover .section-title::after {
+    width: 60%;
+}
+#nintendo64:hover .section-title::after {
+    width: 22.5%;
+}
+
+#playstation1:hover .section-title::after {
+    width: 37%;
+}
+
+#segamegadrive:hover .section-title::after {
+    width: 31%;
+}
+
+/* Games Grid */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.game-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.game-card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.game-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover .game-info {
+    transform: translateY(0);
+}
+
+.game-info h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.game-info p {
+    font-size: 0.6rem;
+    color: var(--text-gray);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--secondary-color);
+    color: var(--text-gray);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 2rem;
+    font-size: 0.7rem;
+}
+/* Update mobile styles for header */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+    
+    .main-nav {
+        width: 100%;
+    }
+    
+    .main-nav ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .main-nav li {
+        margin: 2px;
+    }
+    
+    .main-nav a {
+        font-size: 0.5rem;
+        padding: 3px 6px;
+    }
+
+    .user-profile {
+        margin-top: 8px;
+        font-size: 0.5rem;
+    }
+    #nes:hover .section-title::after {
+        width: 100%;
+    }
+
+    #snes:hover .section-title::after {
+        width: 29%;
+    }
+    
+    #nintendo64:hover .section-title::after {
+        width: 44%;
+    }
+    
+    #playstation1:hover .section-title::after {
+        width: 72%;
+    }
+    
+    #segamegadrive:hover .section-title::after {
+        width: 60%;
+    }
+}
+/* Media Queries */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .main-nav ul {
+        margin-top: 1rem;
+    }
+    
+    .hero {
+        height: 50vh;
+        margin-top: 100px;
+    }
+    
+    .hero-content h2 {
+        font-size: 1.25rem;
+    }
+    .hero-content p {
+        font-size: 0.8rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .main-nav li {
+        margin: 5px 10px;
+    }
+    
+    .hero-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Add with other console section styles */
+#snes { animation-delay: 0.2s; }
+
+#snes:hover .section-title::after {
+    width: 45%;
+}
+
+
+
+#snes > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Keep only these SNES-related styles */
+#snes { 
+    animation-delay: 0.2s; 
+}
+
+#snes:hover .section-title::after {
+    width: 29%;
+}
+@media screen and (orientation: landscape) and (max-width: 900px) {
+    #snes:hover .section-title::after {
+        width: 56%;
+    }
+}

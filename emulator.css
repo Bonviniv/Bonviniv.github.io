@@ -1,0 +1,291 @@
+@keyframes backgroundMove {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 500px 500px;
+    }
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Press Start 2P', cursive;
+    position: relative;
+    overflow: hidden; /* Remove barras de rolagem */
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    background-image: url('fundos/fundoNintendo64.png');
+    background-repeat: repeat;
+    background-size: 100px;
+    opacity: 0.25;
+    z-index: -1;
+    animation: backgroundMove 60s linear infinite;
+}
+
+/* Fundos específicos para cada console */
+body.snes::before {
+    background-image: url('fundos/fundoSNES.png');
+    background-size: 100px;
+    opacity: 0.25;
+}
+body.nintendo64::before {
+    background-image: url('fundos/fundoNintendo64.png');
+}
+
+body.playstation1::before {
+    background-image: url('fundos/fundoPlayStation1.png');
+}
+
+body.segamegadrive::before {
+    background-image: url('fundos/fundoSegaMegaDrive.png');
+    filter: invert(100%);
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+.game-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.game-container {
+    width: 640px;
+    height: 480px;
+    max-width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3), 
+                0 0 30px rgba(0, 255, 0, 0.3),
+                0 0 30px rgba(0, 0, 255, 0.3);
+    margin-top: 0;
+    display: block !important; /* Garantir que esteja visível */
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.3); /* Fundo para visualizar o contêiner */
+}
+
+#game {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    display: block !important; /* Garantir que esteja visível */
+    z-index: 10;
+    position: relative;
+}
+
+/* Indicador de carregamento */
+.game-container::before {
+    content: "Carregando emulador...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    z-index: 5;
+}
+
+/* Destaque para o contêiner quando o jogo estiver carregando */
+.game-container.loading {
+    border: 2px solid #ff5722;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(255, 87, 34, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.5); }
+}
+
+.controls-info {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ps1-info {
+    color: #ffd700;
+    font-size: 11px;
+    margin-top: 8px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+}
+
+.ps1-steps {
+    color: #e0e0e0;
+    font-size: 10px;
+    text-align: left;
+    margin: 8px auto;
+    padding: 8px 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    max-width: 80%;
+    list-style-position: inside;
+}
+
+.ps1-steps li {
+    margin-bottom: 5px;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+    transform: scale(1.05);
+}
+
+    /* Estilos para o painel de diagnóstico */
+    #diagnose-messages {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    
+    #diagnose-messages:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+    }
+    
+    #clear-diagnose:hover, #close-diagnose:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    }
+    
+    #diagnose-content {
+    scrollbar-width: thin;
+    scrollbar-color: #666 #333;
+    }
+    
+    #diagnose-content::-webkit-scrollbar {
+    width: 6px;
+    }
+    
+    #diagnose-content::-webkit-scrollbar-track {
+    background: #333;
+    }
+    
+    #diagnose-content::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 3px;
+    }
+
+
+/* Force landscape orientation */
+@media (max-width: 768px) and (orientation: portrait) {
+    body {
+        background: #000;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .container::before {
+        content: "Please rotate your device";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 14px;
+        text-align: center;
+        z-index: 1000;
+    }
+
+    .game-title {
+        text-align: center;
+        margin-bottom: 350px;
+        font-size: 15px;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    .controls-info p {
+        display: none;
+    }
+
+    .ps1-info, .ps1-steps {
+        display: block;
+        font-size: 8px;
+        margin-top: 5px;
+    }
+
+    .game-container {
+        display: none !important;
+    }
+   
+}
+
+/* Add these mobile landscape styles */
+@media (max-width: 768px) and (orientation: landscape) {
+    .container {
+        padding-top: 0;
+        justify-content: center;
+    }
+
+    .game-title {
+        display: none;
+    }
+
+    .game-container {
+        width: 95vw;
+        height: 90vh;
+        margin: 0;
+    }
+
+    .controls-info {
+        display: none;
+    }
+
+    .back-button {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        margin: 0;
+        padding: 5px 10px;
+        font-size: 8px;
+        z-index: 1000;
+    }
+}

@@ -31,6 +31,14 @@ const projects = [
         link: "https://bonviniv.github.io"
     },
     {
+        id: "gameflix",
+        title: "GameFlix",
+        description: "A Netflix-style platform for retro games featuring in-browser emulation, game library management, and cloud save states. Play classic games directly in your browser.",
+        technologies: ["JavaScript", "CSS", "Firebase"],
+        link: "gameflix.html",
+        repoUrl: "https://bonviniv.github.io/gameflix.html"
+    },
+    {
         id: "hangman",
         title: "Hangman Game",
         description: "A classic hangman game with a modern twist, featuring a real-time cloud-hosted battle royale-style multiplayer mode and API-powered word hint suggestions.",

@@ -1,0 +1,234 @@
+:root {
+    --primary-color: #e50914;
+    --primary-dark: #b81d24;
+    --secondary-color: #221f1f;
+    --background-dark: #141414;
+    --text-light: #ffffff;
+    --text-gray: #999999;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Add/update these styles */
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('fundos/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    body {
+        background: #000000;
+        background-image: none;
+    }
+
+    .container {
+        height: 100vh;
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .container::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo h1 {
+    color: var(--primary-color);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.logo p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.auth-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.7rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.auth-tab.active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-gray);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    background-color: #333;
+    color: var(--text-light);
+    border-radius: 3px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.form-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--text-gray);
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.error-message {
+    color: var(--primary-color);
+    font-size: 0.6rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.success-message {
+    color: #4BB543;
+    font-size: 0.6rem;
+    margin-top: 0.5rem;
+    display: none;
+}
+
+/* Update the existing media query and add new mobile-specific styles */
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    .auth-container {
+        padding: 1rem;
+        margin: 0 10px;
+    }
+    
+    .logo h1 {
+        font-size: 1.2rem;
+    }
+
+    .logo p {
+        font-size: 0.6rem;
+    }
+
+    .auth-tab {
+        font-size: 0.6rem;
+        padding: 0.4rem;
+    }
+
+    .form-control {
+        padding: 0.6rem;
+        font-size: 0.5rem;
+    }
+
+    .btn {
+        padding: 0.6rem;
+        font-size: 0.6rem;
+    }
+
+    .form-group label {
+        font-size: 0.6rem;
+    }
+}
+
+/* Animation for pixel effect */
+@keyframes pixelate {
+    0% {
+        filter: blur(0);
+    }
+    50% {
+        filter: blur(1px);
+    }
+    100% {
+        filter: blur(0);
+    }
+}
+
+.pixelate {
+    animation: pixelate 2s infinite;
+}

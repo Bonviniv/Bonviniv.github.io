@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulator - PlayStation 1</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+    <link rel="stylesheet" href="emulator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="playstation1">
+    <div class="container">
+        <h1 class="game-title" id="game-title">PlayStation 1</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            <p>Controls: D-Pad: Arrow Keys | X: Z | O: X | □: A | △: S | L1: Q | R1: E | L2: R | R2: T | Select: Shift | Start: Enter</p>
+            <div class="ps1-info">PlayStation 1 Emulator Status</div>
+            <ul class="ps1-steps">
+                <li>Loading BIOS from playstation1/BIOS/SCPH1001.BIN</li>
+                <li>Make sure your ROM is in .bin/.cue format</li>
+                <li>For multi-disc games, select the .cue file</li>
+            </ul>
+            <button id="switch-core" class="back-button" style="margin-right: 10px;">Switch Emulator Core</button>
+            <a href="gameflix.html" class="back-button">Back to GameFlix</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Get game path from URL
+        var gamePath = getUrlParameter('ps1Game');
+        var binPath = getUrlParameter('ps1Bin');
+        var useBeetleCore = getUrlParameter('coreBeetle') === 'true';
+
+        // Set the appropriate core
+        var currentCore = useBeetleCore ? 'beetle-psx' : 'psx';
+        
+        // Configure core switching
+        document.getElementById('switch-core').addEventListener('click', function() {
+            var newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('coreBeetle', (!useBeetleCore).toString());
+            window.location.href = newUrl.toString();
+        });
+
+        // Emulator configuration
+        EJS_player = '#game';
+        EJS_biosUrl = 'playstation1/BIOS/SCPH1001.BIN';
+        EJS_core = currentCore;
+        
+        // Handle different file configurations
+        if (gamePath && binPath) {
+            EJS_gameUrl = currentCore === 'beetle-psx' ? gamePath : [gamePath, binPath];
+        } else {
+            EJS_gameUrl = gamePath;
+        }
+
+        // Set appropriate button mapping based on core
+        EJS_defaultOptions = currentCore === 'beetle-psx' ? {
+            'beetle-psx.input.player1.up': 'ArrowUp',
+            'beetle-psx.input.player1.down': 'ArrowDown',
+            'beetle-psx.input.player1.left': 'ArrowLeft',
+            'beetle-psx.input.player1.right': 'ArrowRight',
+            'beetle-psx.input.player1.cross': 'KeyZ',
+            'beetle-psx.input.player1.circle': 'KeyX',
+            'beetle-psx.input.player1.square': 'KeyA',
+            'beetle-psx.input.player1.triangle': 'KeyS',
+            'beetle-psx.input.player1.l1': 'KeyQ',
+            'beetle-psx.input.player1.r1': 'KeyE',
+            'beetle-psx.input.player1.l2': 'KeyR',
+            'beetle-psx.input.player1.r2': 'KeyT',
+            'beetle-psx.input.player1.select': 'ShiftLeft',
+            'beetle-psx.input.player1.start': 'Enter'
+        } : {
+            'psx.pad1.up': 'ArrowUp',
+            'psx.pad1.down': 'ArrowDown',
+            'psx.pad1.left': 'ArrowLeft',
+            'psx.pad1.right': 'ArrowRight',
+            'psx.pad1.cross': 'KeyZ',
+            'psx.pad1.circle': 'KeyX',
+            'psx.pad1.square': 'KeyA',
+            'psx.pad1.triangle': 'KeyS',
+            'psx.pad1.l1': 'KeyQ',
+            'psx.pad1.r1': 'KeyE',
+            'psx.pad1.l2': 'KeyR',
+            'psx.pad1.r2': 'KeyT',
+            'psx.pad1.select': 'ShiftLeft',
+            'psx.pad1.start': 'Enter'
+        };
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script src="emulator.js"></script>
+</body>
+</html>

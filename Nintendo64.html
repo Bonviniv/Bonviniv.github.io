@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulator - Nintendo 64</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+
+    <link rel="stylesheet" href="emulator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="nintendo64">
+    <div class="container">
+        <h1 class="game-title" id="game-title">Nintendo 64</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            <p>Controls: Analog: Arrows | C-Buttons: I, J, K, L | A: Shift | B: Ctrl | Z: Z | L: X | R: C | Start: Enter</p>
+            <a href="gameflix.html" class="back-button">Back to GameFlix</a>
+        </div>
+    </div>
+
+    <script>
+        // Função para obter parâmetros da URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Obtém o caminho do jogo da URL
+        var gamePath = getUrlParameter('n64Game');
+        
+        // Define o título do jogo baseado no caminho
+        if (gamePath) {
+            // Extrai o nome do jogo a partir da pasta
+            var folders = gamePath.split('/');
+            var gameFolder = "";
+            
+            // Encontra a pasta do jogo (geralmente é a penúltima)
+            if (folders.length >= 2) {
+                gameFolder = folders[folders.length - 2];
+            } else {
+                gameFolder = folders[folders.length - 1].split('.')[0];
+            }
+            
+            // Formata o título
+            var gameTitle = gameFolder.replace(/_/g, ' ');
+            document.getElementById('game-title').textContent = gameTitle;
+        }
+        
+        // Configuração do emulador
+        EJS_player = '#game';
+        EJS_gameUrl = gamePath || 'nintendo64/SuperMario64/SuperMario64.z64'; // Usa o caminho da URL ou um padrão
+        EJS_core = 'mupen64plus';
+        
+        // Configuração para remapeamento de botões
+        EJS_defaultOptions = {
+            'n64.buttonA': 'ShiftLeft',  // Botão A mapeado para Shift esquerdo
+            'n64.buttonB': 'ControlLeft', // Botão B mapeado para Ctrl esquerdo
+            'n64.buttonL': 'KeyX',       // Botão L mapeado para tecla X
+            'n64.buttonR': 'KeyC',       // Botão R mapeado para tecla C
+            'n64.buttonZ': 'KeyZ',       // Botão Z mapeado para tecla Z
+            'n64.buttonStart': 'Enter',  // Botão Start mapeado para Enter
+            'n64.dpadUp': 'KeyW',        // D-pad cima (W)
+            'n64.dpadDown': 'KeyS',      // D-pad baixo (S)
+            'n64.dpadLeft': 'KeyA',      // D-pad esquerda (A)
+            'n64.dpadRight': 'KeyD',     // D-pad direita (D)
+            'n64.joystickUp': 'ArrowUp',    // Analógico para cima (seta para cima)
+            'n64.joystickDown': 'ArrowDown', // Analógico para baixo (seta para baixo)
+            'n64.joystickLeft': 'ArrowLeft', // Analógico para esquerda (seta para esquerda)
+            'n64.joystickRight': 'ArrowRight', // Analógico para direita (seta para direita)
+            'n64.cUp': 'KeyI',          // C-button cima (I)
+            'n64.cDown': 'KeyK',        // C-button baixo (K)
+            'n64.cLeft': 'KeyJ',        // C-button esquerda (J)
+            'n64.cRight': 'KeyL'        // C-button direita (L)
+        };
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script src="emulator.js"></script>
+</body>
+</html>

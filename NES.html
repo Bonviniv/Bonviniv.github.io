@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Emulator - NES</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+
+    <link rel="stylesheet" href="emulator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="nes">
+    <div class="container">
+        <h1 class="game-title" id="game-title">Nintendo Entertainment System</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            <p>Controls: D-Pad: Arrows | A: X | B: Z | Select: Shift | Start: Enter</p>
+            <a href="gameflix.html" class="back-button">Back to GameFlix</a>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Get game path from URL
+        var gamePath = getUrlParameter('nesGame');
+        
+        // Add file extension check
+        if (gamePath && !gamePath.toLowerCase().endsWith('.nes')) {
+            alert('Invalid file format. Please select a NES game (.nes file)');
+            window.location.href = 'gameflix.html';
+        } else {
+            // Define o título do jogo baseado no caminho
+            if (gamePath) {
+                // Extrai o nome do jogo a partir da pasta
+                var folders = gamePath.split('/');
+                var gameFolder = "";
+                
+                // Encontra a pasta do jogo (geralmente é a penúltima)
+                if (folders.length >= 2) {
+                    gameFolder = folders[folders.length - 2];
+                } else {
+                    gameFolder = folders[folders.length - 1].split('.')[0];
+                }
+                
+                // Formata o título
+                var gameTitle = gameFolder.replace(/_/g, ' ');
+                document.getElementById('game-title').textContent = gameTitle;
+            }
+        }
+        
+        // Configuração do emulador
+        EJS_player = '#game';
+        EJS_biosUrl = ''; // Famicom Disk System bios
+        EJS_gameUrl = gamePath || 'NES/SuperMarioBros/SuperMarioBros.nes'; // Usa o caminho da URL ou um padrão
+        EJS_core = 'nes';
+        EJS_lightgun = false;
+        
+        // Configuração para remapeamento de botões
+        EJS_defaultOptions = {
+            'nes.btnUp': 'ArrowUp',      // D-pad cima
+            'nes.btnDown': 'ArrowDown',  // D-pad baixo
+            'nes.btnLeft': 'ArrowLeft',  // D-pad esquerda
+            'nes.btnRight': 'ArrowRight',// D-pad direita
+            'nes.btnA': 'KeyX',          // Botão A
+            'nes.btnB': 'KeyZ',          // Botão B
+            'nes.btnSelect': 'ShiftLeft',// Botão Select
+            'nes.btnStart': 'Enter'      // Botão Start
+        };
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script src="emulator.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFlix - Super Nintendo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="emulator.css">
+</head>
+<body class="snes">
+    <div class="container">
+        <h2 class="game-title" id="game-title">Loading...</h2>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            Controls: Arrow keys to move, Z for A, X for B, Enter for Start, Shift for Select
+        </div>
+        <a href="gameflix.html" class="back-button">Back to Menu</a>
+    </div>
+
+    <script type="text/javascript">
+        // Get game path from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const gamePath = decodeURIComponent(urlParams.get('snesGame'));
+        
+        // Configure emulator
+        EJS_player = '#game';
+        EJS_gameUrl = gamePath; // Use the decoded game path
+        EJS_core = 'snes';
+        EJS_mouse = false;
+        EJS_multitap = false;
+        
+        // Update game title
+        const gameTitle = gamePath.split('/').pop().replace('.sfc', '').replace(/\([^)]*\)/g, '').trim();
+        document.getElementById('game-title').textContent = gameTitle;
+        document.title = `GameFlix - ${gameTitle}`;
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emulator - Sega Mega Drive</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+    <link rel="stylesheet" href="emulator.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="segamegadrive">
+    <div class="container">
+        <h1 class="game-title" id="game-title">Sega Mega Drive</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        
+        <div class="controls-info">
+            <p>Controls: D-pad: Arrow Keys | A: Z | B: X | C: C | Start: Enter</p>
+            <div class="control-panel" style="margin: 20px 0; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 5px;">
+                <a href="gameflix.html" class="back-button">Back to GameFlix</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            // Function to add diagnostic messages
+            function adicionarDiagnostico(mensagem, tipo) {
+                const container = document.getElementById('diagnose-messages');
+                const content = document.getElementById('diagnose-content');
+                const gameContainer = document.querySelector('.game-container');
+                
+                // Show the diagnostic container
+                container.style.display = 'block';
+                
+                // Make sure the container is not blocking the game
+                if (gameContainer) {
+                    // Adjust position to not cover the game area
+                    container.style.top = '60px';
+                    container.style.maxHeight = '300px';
+                }
+                
+                // Create element for the message
+                const msgElement = document.createElement('p');
+                msgElement.style.margin = '5px 0';
+                
+                // Set color based on message type
+                if (tipo === 'erro') {
+                    msgElement.style.color = '#ff6b6b';
+                } else if (tipo === 'sucesso') {
+                    msgElement.style.color = '#65ff65';
+                } else if (tipo === 'aviso') {
+                    msgElement.style.color = '#ffc107';
+                } else {
+                    msgElement.style.color = '#ffffff';
+                }
+                
+                msgElement.textContent = mensagem;
+                content.appendChild(msgElement);
+                
+                console.log(`[${tipo || 'info'}] ${mensagem}`);
+                
+                // Adjust layout to ensure diagnostics don't interfere with the game
+                if (typeof ajustarLayoutDiagnostico === 'function') {
+                    ajustarLayoutDiagnostico();
+                }
+                
+                // Auto-hide after 10 seconds if not an error
+                if (tipo !== 'erro') {
+                    setTimeout(() => {
+                        // Only hide if not manually closed
+                        if (container.style.display !== 'none') {
+                            container.style.display = 'none';
+                        }
+                    }, 10000);
+                }
+            }
+            
+            // Function to clear all diagnostic messages
+            function limparDiagnostico() {
+                const content = document.getElementById('diagnose-content');
+                if (content) {
+                    // Remove all messages
+                    while (content.firstChild) {
+                        content.removeChild(content.firstChild);
+                    }
+                }
+            }
+            
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Get game path from URL
+        var gamePath = getUrlParameter('mdGame');
+        
+        // Set game title based on path
+        if (gamePath) {
+            // Extract game name from folder
+            var folders = gamePath.split('/');
+            var gameFolder = "";
+            
+            // Find the game folder (usually the second-to-last)
+            if (folders.length >= 2) {
+                gameFolder = folders[folders.length - 2];
+            } else {
+                gameFolder = folders[folders.length - 1].split('.')[0];
+            }
+            
+            // Format the title
+            var gameTitle = gameFolder.replace(/_/g, ' ');
+            document.getElementById('game-title').textContent = gameTitle;
+        }
+        
+        // Ensure correct positioning of elements
+        function ajustarLayoutDiagnostico() {
+            const container = document.getElementById('diagnose-messages');
+            const gameContainer = document.querySelector('.game-container');
+            
+            if (container && gameContainer) {
+                // Make sure diagnostics don't block the game
+                const gameRect = gameContainer.getBoundingClientRect();
+                // Position diagnostics below the title and above the game
+                container.style.top = '60px';
+                
+                // If there are too many messages, limit height
+                if (container.querySelectorAll('p').length > 10) {
+                    container.style.maxHeight = '250px';
+                }
+            }
+        }
+        
+        // Detect "memory access out of bounds" error
+        window.addEventListener('error', function(event) {
+            if (event.message && event.message.includes('memory access out of bounds')) {
+                console.error("Error detected: memory access out of bounds");
+                
+                adicionarDiagnostico("CRITICAL ERROR: Memory access out of bounds. Try switching to another core.", "erro");
+                
+                // Add a button to try with the other core
+                const btnTrocarNucleo = document.createElement('button');
+                btnTrocarNucleo.textContent = "Try with another core";
+                btnTrocarNucleo.className = "back-button";
+                btnTrocarNucleo.style.backgroundColor = "#ff5722";
+                btnTrocarNucleo.style.marginTop = "10px";
+                
+                btnTrocarNucleo.addEventListener('click', function() {
+                    // Redireciona para a mesma página, mas alternando o núcleo
+                    const usePicoDrive = getUrlParameter('corePico') === 'true';
+                    let url = window.location.href;
+                    
+                    if (usePicoDrive) {
+                        // Remove o parâmetro
+                        url = url.replace('&corePico=true', '').replace('?corePico=true&', '?');
+                        if (url.endsWith('?')) {
+                            url = url.slice(0, -1);
+                        }
+                    } else {
+                        // Adiciona o parâmetro
+                        if (url.indexOf('?') !== -1) {
+                            url += '&corePico=true';
+                        } else {
+                            url += '?corePico=true';
+                        }
+                    }
+                    
+                    window.location.href = url;
+                });
+                
+                document.getElementById('diagnose-content').appendChild(btnTrocarNucleo);
+                document.getElementById('diagnose-messages').style.display = 'block';
+                
+                // Display additional instructions
+                adicionarDiagnostico("This is a common error that occurs when the emulator tries to access memory that doesn't exist.", "info");
+                adicionarDiagnostico("Try the following solutions:", "info");
+                adicionarDiagnostico("1. Reload the page", "info");
+                adicionarDiagnostico("2. Switch to the other core", "info");
+                adicionarDiagnostico("3. Check if the ROM file is intact", "info");
+                            }
+                        });
+                        
+                        // Check if there's a URL parameter to use picodrive core
+                        var usePicoDrive = getUrlParameter('corePico') === 'true';
+                        var emulatorCore = usePicoDrive ? 'picodrive' : 'segaMD';
+                        
+                        // Emulator configuration
+                        EJS_player = '#game';
+                        EJS_gameUrl = gamePath || 'SegaMegaDrive/Sonic/Sonic.md'; // Use URL path or default
+                        EJS_core = emulatorCore;
+                        
+                        // Inform which core is being used
+                        console.log("Using core:", emulatorCore);
+                        if (usePicoDrive) {
+                            adicionarDiagnostico("Using alternative core: picodrive", "info");
+                        } else {
+                            adicionarDiagnostico("Using default core: Genesis Plus GX (segaMD)", "info");
+        }
+        
+        // Button remapping configuration
+        EJS_defaultOptions = {
+            'md.input.pad1.up': 'ArrowUp',       // D-pad up
+            'md.input.pad1.down': 'ArrowDown',   // D-pad down
+            'md.input.pad1.left': 'ArrowLeft',   // D-pad left
+            'md.input.pad1.right': 'ArrowRight', // D-pad right
+            'md.input.pad1.a': 'KeyZ',           // Button A
+            'md.input.pad1.b': 'KeyX',           // Button B
+            'md.input.pad1.c': 'KeyC',           // Button C
+            'md.input.pad1.start': 'Enter',      // Start Button
+            'md.input.pad1.mode': 'Space'        // Mode Button
+        };
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script src="emulator.js"></script>
+    <script>
+        // Configure interface buttons after page load
+        window.addEventListener('load', function() {
+            // Configure diagnostics button
+            document.getElementById('show-diagnose').addEventListener('click', function() {
+                const diagnoseMessages = document.getElementById('diagnose-messages');
+                diagnoseMessages.style.display = diagnoseMessages.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Configure button to clear diagnostic messages
+            document.getElementById('clear-diagnose').addEventListener('click', function() {
+                limparDiagnostico();
+            });
+            
+            // Configure button to close diagnostic messages
+            document.getElementById('close-diagnose').addEventListener('click', function() {
+                const diagnoseMessages = document.getElementById('diagnose-messages');
+                diagnoseMessages.style.display = 'none';
+            });
+            
+            // Configure button to reload the page
+            document.getElementById('reload-page').addEventListener('click', function() {
+                window.location.reload();
+            });
+            
+            // Check for game loading errors
+            fetch(gamePath || 'SegaMegaDrive/Sonic/Sonic.md')
+                .then(response => {
+                    if (response.ok) {
+                        adicionarDiagnostico(`ROM loaded successfully: ${gamePath || 'SegaMegaDrive/Sonic/Sonic.md'}`, "sucesso");
+                    } else {
+                        adicionarDiagnostico(`ERROR: Could not load ROM. Status: ${response.status}`, "erro");
+                    }
+                })
+                .catch(error => {
+                    adicionarDiagnostico(`ERROR loading ROM: ${error.message}`, "erro");
+                });
+        });
+    </script>
+</body>
+</html>

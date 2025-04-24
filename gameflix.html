@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
+    <title>GameFlix </title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="gameflix.css">
+    <style>
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-name {
+            color: var(--text-light);
+            font-size: 0.7rem;
+            margin-right: 15px;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+            }
+            
+            .user-profile {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <h1>GameFlix</h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#nes">NES</a></li>
+                <li><a href="#snes">SNES</a></li>
+                <li><a href="#nintendo64">Nintendo 64</a></li>
+                <li><a href="#segamegadrive">Sega Mega Drive</a></li>
+                <li><a href="#playstation1">PlayStation 1</a></li>
+            </ul>
+        </nav>
+        <div class="user-profile">
+            <span class="user-name" id="user-name">Loading...</span>
+            <button class="logout-btn" id="logout-btn">Logout</button>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h2>Welcome to GameFlix</h2>
+            <p>Your favorite retro games library</p>
+        </div>
+    </div>    
+    <main class="content">
+        <section id="nintendo64" class="console-section">
+            <h2 class="section-title">Nintendo 64</h2>
+            <div class="games-grid" id="nintendo64-games"></div>
+        </section>
+
+        <section id="segamegadrive" class="console-section">
+            <h2 class="section-title">Sega Mega Drive</h2>
+            <div class="games-grid" id="segamegadrive-games"></div>
+        </section>
+
+        <section id="nes" class="console-section">
+            <h2 class="section-title">Nintendo Entertainment System</h2>
+            <div class="games-grid" id="nes-games"></div>
+        </section>
+        
+        <section id="snes" class="console-section">
+            <h2 class="section-title">Super Nintendo</h2>
+            <div class="games-grid" id="snes-games"></div>
+        </section>
+
+        <section id="playstation1" class="console-section">
+            <h2 class="section-title">PlayStation 1 BETA</h2>
+            <div class="games-grid" id="playstation1-games"></div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <p>&copy; 2025 GameFlix - Retro Games Emulator</p>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank" rel="noopener noreferrer">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                </svg>
+            </a>
+            <a href="https://github.com/Bonviniv" target="_blank" rel="noopener noreferrer">
+                <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                </svg>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
+    
+    <!-- Scripts do site -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { fazerLogout } from './auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCU9Qg49gLZTjwkdKXCuDGNFfHT-r3TNbw",
+            authDomain: "forca-a842a.firebaseapp.com",
+            databaseURL: "https://forca-a842a-default-rtdb.firebaseio.com",
+            projectId: "forca-a842a",
+            storageBucket: "forca-a842a.firebasestorage.app",
+            messagingSenderId: "193655210620",
+            appId: "1:193655210620:web:d9e031a1bf40c757927ff9",
+            measurementId: "G-G9WJMEKCFH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                console.log('User authenticated:', user.email); // Debug log
+                const userRef = ref(database, 'usuarios/' + user.uid);
+                get(userRef).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        console.log('User data from database:', userData); // Debug log
+                        document.getElementById('user-name').textContent = `Hello, ${userData.nome}`;
+                    } else {
+                        console.log('No user data found in database'); // Debug log
+                        document.getElementById('user-name').textContent = `Hello, ${user.email}`;
+                    }
+                }).catch((error) => {
+                    console.error("Error fetching user data:", error);
+                    document.getElementById('user-name').textContent = `Hello, ${user.email}`;
+                });
+
+                // Setup logout button
+                document.getElementById('logout-btn').addEventListener('click', () => {
+                    fazerLogout().then(() => {
+                        window.location.href = 'gameflixautentification.html';
+                    }).catch(error => {
+                        console.error('Erro ao fazer logout:', error);
+                    });
+                });
+            } else {
+                // No user is signed in, redirect to login
+                window.location.href = 'gameflixautentification.html';
+            }
+        });
+    </script>
+
+    <script type="module">
+        // Update error messages in the script
+        document.getElementById('user-name').textContent = `Hello, ${userData.nome}`;
+        document.getElementById('user-name').textContent = `Hello, ${user.email}`;
+        console.error('Logout error:', error);
+    </script>
+
+    <script src="gameflix.js"></script>
+    <script src="backgroundEffect.js"></script>
+</body>
+</html>
