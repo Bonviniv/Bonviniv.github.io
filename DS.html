@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFlix - Nintendo DS Emulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="emulator.css">
+</head>
+<body class="ds">
+    <div class="container">
+        <h1 class="game-title" id="game-title">Loading Game...</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            <p>Controls: Arrow Keys (D-Pad), Z (A), X (B), A (L), S (R), Enter (Start), Shift (Select)</p>
+            <p>Touch Screen: Use mouse or touch screen</p>
+        </div>
+        <input type="file" id="rom-input" accept=".nds" style="display: none;">
+        <button id="upload-button" class="upload-button">Upload ROM</button>
+        <a href="gameflix.html" class="back-button">Back to Games</a>
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('upload-button').addEventListener('click', () => {
+            document.getElementById('rom-input').click();
+        });
+
+        document.getElementById('rom-input').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const romData = e.target.result;
+                    
+                    EJS_player = '#game';
+                    EJS_core = 'nds';
+                    EJS_gameUrl = romData;
+                    
+                    // Update game title
+                    document.getElementById('game-title').textContent = file.name.replace('.nds', '');
+                    
+                    // Load the emulator
+                    const script = document.createElement('script');
+                    script.src = 'https://www.emulatorjs.com/loader.js';
+                    document.body.appendChild(script);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

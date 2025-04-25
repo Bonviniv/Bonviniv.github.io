@@ -41,6 +41,22 @@ const consoles = [
         folderPath: 'playstation1',
         gameParameter: 'ps1Game',
         background: 'fundos/fundoPlayStation1.png'
+    },
+    {
+        id: 'gba',
+        name: 'Game Boy Advance',
+        pageUrl: 'GBA.html',
+        folderPath: 'GBA',
+        gameParameter: 'gbaGame',
+        background: 'fundos/fundoGBA.png'
+    },
+    {
+        id: 'ds',
+        name: 'Nintendo DS',
+        pageUrl: 'DS.html',
+        folderPath: 'DS',
+        gameParameter: 'dsGame',
+        background: 'fundos/fundoDS.png'
     }
 ];
 
@@ -212,7 +228,80 @@ const jogos = {
             caminho: 'SegaMegaDrive/Tetris/Tetris (USA) (Genesis Mini).md',
             descricao: 'Stack falling blocks and clear lines for points.'
         }
-    ]
+    ],
+    'gba': [
+    
+    {
+        titulo: 'Pokémon Fire Red Version',
+        capa: 'GBA/Pokemon Fire Red/capa Pokemon Fire Red.png',
+        caminho: 'GBA/Pokemon Fire Red/Pokemon - FireRed Version (USA).gba',
+        descricao: 'Remake of original Pokémon Red with enhanced graphics and gameplay.'
+    },
+    {
+        titulo: 'Pokémon LeafGreen Version',
+        capa: 'GBA/Pokémon LeafGreen Version/capa Pokémon LeafGreen Version.png',
+        caminho: 'GBA/Pokemon LeafGreen Version/Pokemon - LeafGreen Version (USA).gba',
+        descricao: 'Explore Kanto and collect Pokémon in this enhanced classic remake.'
+    },
+    {
+        titulo: 'Pokémon Ruby Version',
+        capa: 'GBA/Pokémon Ruby Version/capa Pokémon Ruby Version.png',
+        caminho: 'GBA/Pokémon Ruby Version/Pokemon - Ruby Version (USA).gba',
+        descricao: 'Battle Team Magma and explore the Hoenn region with exclusive Pokémon.'
+    },
+    {
+        titulo: 'Pokémon Sapphire Version',
+        capa: 'GBA/Pokémon Sapphire Version/capa Pokémon Sapphire Version.png',
+        caminho: 'GBA/Pokémon Sapphire Version/Pokemon - Sapphire Version (USA).gba',
+        descricao: 'Fight Team Aqua and complete your Pokédex in the water-filled Hoenn region.'
+    },
+    {
+        titulo: 'Pokémon Emerald Version',
+        capa: 'GBA/Pokémon Emerald Version/capa Pokémon Emerald Version.png',
+        caminho: 'GBA/Pokémon Emerald Version/Pokemon - Emerald Version (USA, Europe).gba',
+        descricao: 'Catch and battle Pokémon in the Hoenn region with new features.'
+    }
+],
+'ds': [
+    {
+        titulo: 'Mario Kart DS',
+        capa: 'DS/Mario Kart DS/capa Mario Kart DS.png',
+        caminho: 'DS/Mario Kart DS/Mario Kart DS (USA) (En,Fr,De,Es,It).nds',
+        descricao: 'Race with classic Nintendo characters in fast-paced kart battles.'
+    },
+    {
+        titulo: 'New Super Mario Bros',
+        capa: 'DS/New Super Mario Bros/capa New Super Mario Bros.png',
+        caminho: 'DS/New Super Mario Bros/New Super Mario Bros. (USA).nds',
+        descricao: 'Mario returns in a fresh 2D adventure with new moves and bosses.'
+    },
+    {
+        titulo: 'Pokémon Black and White 2',
+        capa: 'DS/Pokémon Black and White 2/capa Pokémon Black and White 2.png',
+        caminho: 'DS/Pokémon Black and White 2/Pokemon Black 2  251 Edition V2.1 Complete.nds',
+        descricao: 'Explore Unova in this enhanced sequel with new Pokémon and storyline.'
+    },
+    {
+        titulo: 'Pokémon HeartGold Version',
+        capa: 'DS/Pokémon HeartGold Version/capa Pokémon HeartGold Version.png',
+        caminho: 'DS/Pokémon HeartGold Version/Pokemon - HeartGold Version (USA).nds',
+        descricao: 'Remake of Pokémon Gold with walking Pokémon and added features.'
+    },
+    {
+        titulo: 'Pokémon Platinum',
+        capa: 'DS/Pokémon Platinum/capa Pokémon Platinum.png',
+        caminho: 'DS/Pokémon Platinum/Pokemon - Platinum Version (USA).nds',
+        descricao: 'A refined version of Diamond and Pearl with new content and story.'
+    },
+    {
+        titulo: 'Pokémon SoulSilver Version',
+        capa: 'DS/Pokémon SoulSilver Version/capa Pokémon SoulSilver Version.png',
+        caminho: 'DS/Pokémon SoulSilver Version/Pokemon - SoulSilver Version (USA).nds',
+        descricao: 'Journey through Johto with your favorite Pokémon following you.'
+    }
+]
+
+
 };
 
 
@@ -268,23 +357,77 @@ function criarCardJogo(jogo, console) {
     return card;
 }
 
-// Função para iniciar um jogo
+// Add recommended download links for DS games
+const dsDownloadLinks = {
+    'DS/Mario Kart DS/Mario Kart DS (USA) (En,Fr,De,Es,It).nds': 'https://romsfun.com/download/mario-kart-ds-117541/8',
+    'DS/New Super Mario Bros/New Super Mario Bros. (USA).nds': 'https://romsfun.com/download/new-super-mario-bros-2-2020/9',
+    'DS/Pokémon Black and White 2/Pokemon Black 2  251 Edition V2.1 Complete.nds': 'https://romsfun.com/download/pokemon-black-and-white-2-1962/1',
+    'DS/Pokémon HeartGold Version/Pokemon - HeartGold Version (USA).nds': 'https://romsfun.com/download/pokemon-heartgold-version-118824/2',
+    'DS/Pokémon Platinum/Pokemon - Platinum Version (USA).nds': 'https://romsfun.com/download/pokemon-platinum-1910/3',
+    'DS/Pokémon SoulSilver Version/Pokemon - SoulSilver Version (USA).nds': 'https://romsfun.com/download/pokemon-soulsilver-version-118860/3'
+};
+
+// Add the DS file upload modal HTML
+function createDSModal() {
+    const modal = document.createElement('div');
+    modal.className = 'ds-modal';
+    modal.innerHTML = `
+        <div class="ds-modal-content">
+            <h2>Upload ROM File</h2>
+            <p>Please select your .nds ROM file to play this game.</p>
+            <input type="file" accept=".nds" id="ds-file-input" class="ds-file-input">
+            <div class="ds-modal-buttons">
+                <button id="ds-upload-btn" class="ds-btn">Play Game</button>
+                <button id="ds-cancel-btn" class="ds-btn">Cancel</button>
+            </div>
+            <p class="ds-download-text">Don't have the ROM? <a href="#" id="ds-download-link" target="_blank">Download here</a></p>
+        </div>
+    `;
+    return modal;
+}
+
+// Modify the iniciarJogo function
 function iniciarJogo(jogo, console) {
-    // Para PlayStation 1, precisamos usar o arquivo .cue em vez do .bin
     let caminhoJogo = jogo.caminho;
     
+    // Special handling for DS games
+    if (console.id === 'ds') {
+        const modal = createDSModal();
+        document.body.appendChild(modal);
+        
+        const fileInput = modal.querySelector('#ds-file-input');
+        const uploadBtn = modal.querySelector('#ds-upload-btn');
+        const cancelBtn = modal.querySelector('#ds-cancel-btn');
+        const downloadLink = modal.querySelector('#ds-download-link');
+        
+        // Set download link if available
+        if (dsDownloadLinks[caminhoJogo]) {
+            downloadLink.href = dsDownloadLinks[caminhoJogo];
+        }
+        
+        uploadBtn.addEventListener('click', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                const objectUrl = URL.createObjectURL(file);
+                window.location.href = `${console.pageUrl}?${console.gameParameter}=${encodeURIComponent(objectUrl)}`;
+            }
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        return;
+    }
+    
+    // Rest of the function remains the same for other consoles
     if (console.id === 'playstation1' && caminhoJogo.endsWith('.bin')) {
-        // Substitui a extensão .bin por .cue, mantendo o mesmo nome de arquivo
         caminhoJogo = caminhoJogo.replace('.bin', '.cue');
     }
     
-    // Para PlayStation 1, adicione o parâmetro caminhoBin
     let url;
     if (console.id === 'playstation1' && jogo.caminhoBin) {
-        // Por padrão, usamos o núcleo PSX (não o beetle-psx)
         url = `${console.pageUrl}?${console.gameParameter}=${encodeURIComponent(caminhoJogo)}&ps1Bin=${encodeURIComponent(jogo.caminhoBin)}`;
-        
-        // Se o jogo especificar um núcleo preferido, use-o
         if (jogo.core === 'beetle-psx') {
             url += '&coreBeetle=true';
         }
@@ -305,16 +448,16 @@ function resetOrientation() {
          window.location.pathname.endsWith('SegaMegaDrive.html') ||
          window.location.pathname.endsWith('SNES.html'))) {
         
-        // Force portrait
-        screen.orientation.lock('portrait')
-            .then(() => {
-                // Force back to landscape after a brief delay
-                setTimeout(() => {
-                    screen.orientation.lock('landscape')
-                        .catch(err => console.log('Landscape lock error:', err));
-                }, 100);
-            })
-            .catch(err => console.log('Portrait lock error:', err));
+        // Use alternative orientation handling
+        if (window.screen && window.screen.orientation) {
+            try {
+                window.screen.orientation.unlock();
+                window.screen.orientation.lock('landscape')
+                    .catch(err => console.log('Orientation lock not supported:', err));
+            } catch (err) {
+                console.log('Orientation API not supported');
+            }
+        }
     }
 }
 

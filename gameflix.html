@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GameFlix </title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23E50914' x='10' y='25' width='80' height='50' rx='10'/><circle fill='%23000' cx='35' cy='50' r='8'/><circle fill='%23000' cx='65' cy='50' r='8'/><rect fill='%23000' x='30' y='40' width='10' height='4'/><rect fill='%23000' x='60' y='40' width='10' height='4'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -69,6 +69,32 @@
         .social-icon:hover {
             color: var(--primary-color);
         }
+        
+        /* Adding the striped effect for DS and PS1 sections */
+        #ds .section-title:hover::after,
+        #playstation1 .section-title:hover::after {
+            content: '';
+            display: block;
+            height: 4px;
+            margin-top: 5px;
+            background: repeating-linear-gradient(
+                45deg,
+                #ffd700,
+                #ffd700 10px,
+                #000000 10px,
+                #000000 20px
+            );
+            animation: stripe-animation 1s linear infinite;
+        }
+
+        @keyframes stripe-animation {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -83,6 +109,8 @@
                 <li><a href="#nintendo64">Nintendo 64</a></li>
                 <li><a href="#segamegadrive">Sega Mega Drive</a></li>
                 <li><a href="#playstation1">PlayStation 1</a></li>
+                <li><a href="#gba">GBA</a></li>
+                <li><a href="#ds">Nintendo DS</a></li>
             </ul>
         </nav>
         <div class="user-profile">
@@ -98,6 +126,9 @@
         </div>
     </div>    
     <main class="content">
+        <!-- Add this section before or after your existing console sections -->
+        
+        
         <section id="nintendo64" class="console-section">
             <h2 class="section-title">Nintendo 64</h2>
             <div class="games-grid" id="nintendo64-games"></div>
@@ -107,7 +138,7 @@
             <h2 class="section-title">Sega Mega Drive</h2>
             <div class="games-grid" id="segamegadrive-games"></div>
         </section>
-
+        
         <section id="nes" class="console-section">
             <h2 class="section-title">Nintendo Entertainment System</h2>
             <div class="games-grid" id="nes-games"></div>
@@ -118,10 +149,20 @@
             <div class="games-grid" id="snes-games"></div>
         </section>
 
+        <section id="gba" class="console-section">
+            <h2 class="section-title">Game Boy Advance</h2>
+            <div class="games-grid" id="gba-games"></div>
+        </section>
+        <section id="ds" class="console-section">
+            <h2 class="section-title">Nintendo DS BETA</h2>
+            <div class="games-grid" id="ds-games"></div>
+        </section>
+        
         <section id="playstation1" class="console-section">
             <h2 class="section-title">PlayStation 1 BETA</h2>
             <div class="games-grid" id="playstation1-games"></div>
         </section>
+        
     </main>
     
     <footer class="footer">

@@ -405,3 +405,47 @@ setInterval(verificarContainerJogo, 5000);
 
 // Executar a verificação imediatamente
 document.addEventListener('DOMContentLoaded', verificarContainerJogo);
+
+// Add fullscreen button to the container
+const container = document.querySelector('.container');
+const fullscreenBtn = document.createElement('button');
+fullscreenBtn.className = 'fullscreen-btn';
+fullscreenBtn.textContent = 'Fullscreen';
+container.appendChild(fullscreenBtn);
+
+// Handle fullscreen mode
+fullscreenBtn.addEventListener('click', () => {
+    const gameContainer = document.querySelector('.game-container');
+    const game = document.querySelector('#game');
+
+    if (!document.fullscreenElement) {
+        gameContainer.classList.add('fullscreen');
+        game.classList.add('fullscreen');
+        if (gameContainer.requestFullscreen) {
+            gameContainer.requestFullscreen();
+        } else if (gameContainer.webkitRequestFullscreen) {
+            gameContainer.webkitRequestFullscreen();
+        } else if (gameContainer.msRequestFullscreen) {
+            gameContainer.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        gameContainer.classList.remove('fullscreen');
+        game.classList.remove('fullscreen');
+    }
+});
+
+// Update fullscreen button text when fullscreen changes
+document.addEventListener('fullscreenchange', updateFullscreenButtonText);
+document.addEventListener('webkitfullscreenchange', updateFullscreenButtonText);
+document.addEventListener('msfullscreenchange', updateFullscreenButtonText);
+
+function updateFullscreenButtonText() {
+    fullscreenBtn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+}

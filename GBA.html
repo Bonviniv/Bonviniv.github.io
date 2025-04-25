@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFlix - GBA Emulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="emulator.css">
+</head>
+<body class="gba">
+    <div class="container">
+        <h1 class="game-title" id="game-title">Loading Game...</h1>
+        <div class="game-container">
+            <div id="game"></div>
+        </div>
+        <div class="controls-info">
+            <p>Controls: Arrow Keys (D-Pad), Z (A), X (B), A (L), S (R), Enter (Start), Shift (Select)</p>
+        </div>
+        <a href="gameflix.html" class="back-button">Back to Games</a>
+    </div>
+
+    <script type="text/javascript">
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameUrl = urlParams.get('gbaGame');
+        
+        if (gameUrl) {
+            EJS_player = '#game';
+            EJS_core = 'gba';
+            EJS_gameUrl = gameUrl;
+            EJS_biosUrl = ''; // Optional GBA BIOS
+            
+            // Update game title
+            const gameTitle = decodeURIComponent(gameUrl.split('/').pop().replace('.gba', ''));
+            document.getElementById('game-title').textContent = gameTitle;
+        }
+    </script>
+    <script src="https://www.emulatorjs.com/loader.js"></script>
+</body>
+</html>

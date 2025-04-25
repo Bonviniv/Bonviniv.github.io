@@ -37,92 +37,99 @@ body {
     z-index: 1000;
 }
 
-
-
-.logo h1 {
-    color: var(--primary-color);
-    font-family: 'Press Start 2P', cursive;
-    font-size: 1.5rem;
-    letter-spacing: 1px;
+.main-nav {
+    display: flex;
+    align-items: center;
 }
 
 .main-nav ul {
     display: flex;
     list-style: none;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
-
 .main-nav li {
-    margin-left: 20px;
+    margin: 0 10px;
 }
 
 .main-nav a {
     color: var(--text-light);
     text-decoration: none;
-    font-size: 0.7rem;
+    font-size: 0.6rem !important;
     transition: color 0.3s ease;
-}
-
-.main-nav a:hover {
-    color: var(--primary-color);
-}
-
-/* Hero Section */
-/* Keep the original hero background */
-.hero {
-   
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 60px;
-}
-
-.hero-content h2 {
     font-family: 'Press Start 2P', cursive;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
-
-.hero-content p {
-    font-size: 0.9rem;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* Content Sections */
-.content {
-    padding: 2rem 4%;
-}
-
-.section-title {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-light);
-    position: relative;
-    padding-bottom: 0.5rem;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 4px;
-    background-color: var(--primary-color);
-    transition: width 0.8s ease;
-}
-
-.console-section {
-    margin-bottom: 3rem;
-}
-
-#nes:hover .section-title::after {
-    width: 50%;
-}
+    
+    .main-nav a:hover {
+        color: var(--primary-color);
+    }
+    
+    /* Logo */
+    .logo h1 {
+        color: var(--primary-color);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    
+    /* Hero Section */
+    /* Keep the original hero background */
+    .hero {
+       
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: 60px;
+    }
+    
+    .hero-content h2 {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .hero-content p {
+        font-size: 0.9rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    /* Content Sections */
+    .content {
+        padding: 2rem 4%;
+    }
+    
+    .section-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-light);
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background-color: var(--primary-color);
+        transition: width 0.8s ease;
+    }
+    
+    .console-section {
+        margin-bottom: 3rem;
+    }
+    
+    #nes:hover .section-title::after {
+        width: 50%;
+    }
 :root {
     --primary-color: #e50914;
     --secondary-color: #000000;
@@ -244,10 +251,22 @@ body::-webkit-scrollbar {
     font-size: 1.8rem;
     margin-bottom: 30px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-color);
     color: var(--text-light);
     font-family: 'Press Start 2P', cursive;
 }
+
+/* Keep the animated line styles */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    transition: width 0.8s ease;
+}
+    
 
 .games-grid {
     display: grid;
@@ -349,6 +368,10 @@ body::-webkit-scrollbar {
 #nintendo64 { animation-delay: 0.3s; }
 #playstation1 { animation-delay: 0.5s; }
 #segamegadrive { animation-delay: 0.7s; }
+#gba { animation-delay: 0.1s; }
+#nes:hover .section-title::after {
+    width: 60%;
+}
 #nes:hover .section-title::after {
     width: 60%;
 }
@@ -362,6 +385,15 @@ body::-webkit-scrollbar {
 
 #segamegadrive:hover .section-title::after {
     width: 31%;
+}
+
+#gba:hover .section-title::after {
+    width: 33%;
+}
+
+#ds:hover .section-title::after {
+    width: 32%;
+    color: #e6ff07;
 }
 
 /* Games Grid */
@@ -477,6 +509,13 @@ body::-webkit-scrollbar {
     #segamegadrive:hover .section-title::after {
         width: 60%;
     }
+    #gba:hover .section-title::after {
+        width: 65%;
+    }
+
+    #ds:hover .section-title::after {
+        width: 50%;
+    }
 }
 /* Media Queries */
 @media (max-width: 768px) {
@@ -555,4 +594,71 @@ body::-webkit-scrollbar {
     #snes:hover .section-title::after {
         width: 56%;
     }
+}
+.ds-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.ds-modal-content {
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.ds-modal-content h2 {
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.ds-file-input {
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.ds-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.ds-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--primary-color);
+    color: var(--text-light);
+    transition: opacity 0.3s;
+}
+
+.ds-btn:hover {
+    opacity: 0.8;
+}
+
+.ds-download-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.ds-download-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.ds-download-text a:hover {
+    text-decoration: underline;
 }
