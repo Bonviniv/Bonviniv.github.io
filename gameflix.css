@@ -1,8 +1,8 @@
 :root {
     --primary-color: #e50914;
-    --primary-dark: #535353;
-    --secondary-color: #221f1f;
-    --background-dark: #141414;
+    --primary-dark: #000000;
+    --secondary-color: #000000;
+    --background-dark: #000000;
     --text-light: #ffffff;
     --text-gray: #999999;
 }
@@ -133,7 +133,7 @@ body {
 :root {
     --primary-color: #e50914;
     --secondary-color: #000000;
-    --dark-bg: #141414;
+    --dark-bg: #000000;
     --light-bg: #222;
     --text-light: #ffffff;
     --text-dark: #aaaaaa;
@@ -380,6 +380,13 @@ body::-webkit-scrollbar {
 }
 
 #playstation1:hover .section-title::after {
+    background: repeating-linear-gradient(
+        45deg,
+        #FFD700,
+        #FFD700 10px,
+        #000000 10px,
+        #000000 20px
+    );
     width: 37%;
 }
 
@@ -392,6 +399,13 @@ body::-webkit-scrollbar {
 }
 
 #ds:hover .section-title::after {
+    background: repeating-linear-gradient(
+        45deg,
+        #FFD700,
+        #FFD700 10px,
+        #000000 10px,
+        #000000 20px
+    );
     width: 32%;
     
 }
@@ -662,3 +676,65 @@ body::-webkit-scrollbar {
 .ds-download-text a:hover {
     text-decoration: underline;
 }
+/* Add after your root variables */
+@keyframes fall {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(300vh) translateX(20px);
+        opacity: 0;
+    }
+}
+
+.pixel-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300vh;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.pixel {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    filter: blur(2px) brightness(1.5);
+    box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    animation: fall 15s linear infinite;
+}
+
+/* Multiple instances of each pixel with different positions */
+.pixel:nth-child(1), .pixel:nth-child(1)::before, .pixel:nth-child(1)::after { content: ''; position: absolute; width: 4px; height: 4px; background-color: #ff0000; border-radius: 50%; filter: blur(2px) brightness(1.5); box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+.pixel:nth-child(1) { left: 5%; top: 0%; animation-delay: 0s; }
+.pixel:nth-child(1)::before { left: 25%; top: -120%; animation: fall 15s linear infinite; animation-delay: 0.5s; }
+.pixel:nth-child(1)::after { left: 45%; top: -240%; animation: fall 15s linear infinite; animation-delay: 1s; }
+
+.pixel:nth-child(2), .pixel:nth-child(2)::before, .pixel:nth-child(2)::after { content: ''; position: absolute; width: 4px; height: 4px; background-color: #ff0000; border-radius: 50%; filter: blur(2px) brightness(1.5); box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+.pixel:nth-child(2) { left: 65%; top: -50%; animation-delay: 1s; }
+.pixel:nth-child(2)::before { left: 85%; top: -170%; animation: fall 15s linear infinite; animation-delay: 1.5s; }
+.pixel:nth-child(2)::after { left: 95%; top: -290%; animation: fall 15s linear infinite; animation-delay: 2s; }
+
+.pixel:nth-child(3), .pixel:nth-child(3)::before, .pixel:nth-child(3)::after { content: ''; position: absolute; width: 4px; height: 4px; background-color: #ff0000; border-radius: 50%; filter: blur(2px) brightness(1.5); box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+.pixel:nth-child(3) { left: 15%; top: -100%; animation-delay: 2s; }
+.pixel:nth-child(3)::before { left: 35%; top: -220%; animation: fall 15s linear infinite; animation-delay: 2.5s; }
+.pixel:nth-child(3)::after { left: 55%; top: -340%; animation: fall 15s linear infinite; animation-delay: 3s; }
+
+.pixel:nth-child(4), .pixel:nth-child(4)::before, .pixel:nth-child(4)::after { content: ''; position: absolute; width: 4px; height: 4px; background-color: #ff0000; border-radius: 50%; filter: blur(2px) brightness(1.5); box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+.pixel:nth-child(4) { left: 75%; top: -150%; animation-delay: 3s; }
+.pixel:nth-child(4)::before { left: 90%; top: -270%; animation: fall 15s linear infinite; animation-delay: 3.5s; }
+.pixel:nth-child(4)::after { left: 40%; top: -390%; animation: fall 15s linear infinite; animation-delay: 4s; }
+
+.pixel:nth-child(5), .pixel:nth-child(5)::before, .pixel:nth-child(5)::after { content: ''; position: absolute; width: 4px; height: 4px; background-color: #ff0000; border-radius: 50%; filter: blur(2px) brightness(1.5); box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; }
+.pixel:nth-child(5) { left: 20%; top: -200%; animation-delay: 4s; }
+.pixel:nth-child(5)::before { left: 60%; top: -320%; animation: fall 15s linear infinite; animation-delay: 4.5s; }
+.pixel:nth-child(5)::after { left: 80%; top: -440%; animation: fall 15s linear infinite; animation-delay: 5s; }
