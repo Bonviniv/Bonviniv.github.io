@@ -10,6 +10,18 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="emulator.css">
+    <style>
+        /* Add this to hide ads */
+        iframe[src*="ad.html"] {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+            visibility: hidden !important;
+        }
+        .frame-2 {
+            display: none !important;
+        }
+    </style>
 </head>
 <body class="gba">
     <div class="container">
@@ -54,5 +66,42 @@
         }
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
+    <script>
+        // Existing emulator settings
+        EJS_color = '#ff0000';
+        EJS_backgroundColor = '#1a1a1a';
+        EJS_backgroundBlur = true;
+        EJS_startOnLoaded = true;
+        EJS_startButtonName = "🎮 START GAME 🎮";
+        EJS_volume = 0.7;
+        EJS_AdUrl = '';
+        EJS_AdMode = 0;
+        EJS_AdTimer = -1;
+        
+        // Enhanced ad removal
+        function removeAds() {
+            const adFrames = document.querySelectorAll('iframe[src*="ad.html"]');
+            adFrames.forEach(frame => {
+                frame.style.width = '0';
+                frame.style.height = '0';
+                frame.style.display = 'none';
+                if (frame.parentElement) {
+                    frame.parentElement.style.display = 'none';
+                }
+            });
+        }
+
+        // Run immediately and also check periodically
+        removeAds();
+        setInterval(removeAds, 100);
+
+        // Rest of your settings remain the same
+        EJS_defaultOptions = {
+            'shader': 'crt-mattias.glslp',
+            'save-state-location': 'browser',
+            'fullscreen': true,
+            'stretch': true
+        }
+    </script>
 </body>
 </html>

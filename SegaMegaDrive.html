@@ -214,45 +214,21 @@
         };
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
-    <script src="emulator.js"></script>
     <script>
-        // Configure interface buttons after page load
-        window.addEventListener('load', function() {
-            // Configure diagnostics button
-            document.getElementById('show-diagnose').addEventListener('click', function() {
-                const diagnoseMessages = document.getElementById('diagnose-messages');
-                diagnoseMessages.style.display = diagnoseMessages.style.display === 'none' ? 'block' : 'none';
-            });
-            
-            // Configure button to clear diagnostic messages
-            document.getElementById('clear-diagnose').addEventListener('click', function() {
-                limparDiagnostico();
-            });
-            
-            // Configure button to close diagnostic messages
-            document.getElementById('close-diagnose').addEventListener('click', function() {
-                const diagnoseMessages = document.getElementById('diagnose-messages');
-                diagnoseMessages.style.display = 'none';
-            });
-            
-            // Configure button to reload the page
-            document.getElementById('reload-page').addEventListener('click', function() {
-                window.location.reload();
-            });
-            
-            // Check for game loading errors
-            fetch(gamePath || 'SegaMegaDrive/Sonic/Sonic.md')
-                .then(response => {
-                    if (response.ok) {
-                        adicionarDiagnostico(`ROM loaded successfully: ${gamePath || 'SegaMegaDrive/Sonic/Sonic.md'}`, "sucesso");
-                    } else {
-                        adicionarDiagnostico(`ERROR: Could not load ROM. Status: ${response.status}`, "erro");
-                    }
-                })
-                .catch(error => {
-                    adicionarDiagnostico(`ERROR loading ROM: ${error.message}`, "erro");
-                });
-        });
+        EJS_color = '#ff0000';
+        EJS_backgroundColor = '#1a1a1a';
+        EJS_backgroundBlur = true;
+        EJS_startOnLoaded = true;
+        EJS_startButtonName = "🎮 START GAME 🎮";
+        EJS_volume = 0.7;
+        EJS_AdUrl = '';
+        EJS_AdMode = 0;
+        EJS_defaultOptions = {
+            'shader': 'crt-mattias.glslp',
+            'save-state-location': 'browser',
+            'fullscreen': true,
+            'stretch': true
+        }
     </script>
 </body>
 </html>
