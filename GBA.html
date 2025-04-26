@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GameFlix - GBA Emulator</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="emulator.css">
@@ -15,6 +18,7 @@
         </div>
         <div class="controls-info">
             <p>Controls: Arrow Keys (D-Pad), Z (A), X (B), A (L), S (R), Enter (Start), Shift (Select)</p>
+            <button id="fullscreen-btn" class="fullscreen-button">Enter Fullscreen</button>
         </div>
         <a href="gameflix.html" class="back-button">Back to Games</a>
     </div>
@@ -28,12 +32,57 @@
             EJS_core = 'gba';
             EJS_gameUrl = gameUrl;
             EJS_biosUrl = ''; // Optional GBA BIOS
+            EJS_pathtodata = 'https://www.emulatorjs.com/';
+            EJS_defaultOptions = {
+                'fullscreen': true,
+                'stretch': true
+            };
             
             // Update game title
             const gameTitle = decodeURIComponent(gameUrl.split('/').pop().replace('.gba', ''));
             document.getElementById('game-title').textContent = gameTitle;
         }
+
+        // Fullscreen handling
+        document.getElementById('fullscreen-btn').addEventListener('click', function() {
+            const gameContainer = document.querySelector('.game-container');
+            if (gameContainer.requestFullscreen) {
+                gameContainer.requestFullscreen();
+            } else if (gameContainer.webkitRequestFullscreen) {
+                gameContainer.webkitRequestFullscreen();
+            } else if (gameContainer.msRequestFullscreen) {
+                gameContainer.msRequestFullscreen();
+            }
+        });
     </script>
     <script src="https://www.emulatorjs.com/loader.js"></script>
+
+    <style>
+        .fullscreen-button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #E50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+        }
+
+        .fullscreen-button:hover {
+            background-color: #ff0f1a;
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-button {
+                width: 100%;
+                margin: 15px 0;
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
 </body>
 </html>

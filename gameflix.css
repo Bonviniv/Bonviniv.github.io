@@ -393,7 +393,7 @@ body::-webkit-scrollbar {
 
 #ds:hover .section-title::after {
     width: 32%;
-    color: #e6ff07;
+    
 }
 
 /* Games Grid */
