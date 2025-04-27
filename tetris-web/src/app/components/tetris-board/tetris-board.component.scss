@@ -377,40 +377,7 @@
   padding-left: 18%;
   }
 
-  .tetris-container {
-    &.gesture-mode {
-      scale: 0.55;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0 20px;
-      gap: 50px;
-
-      .game-board {
-        order: 2;
-        transform: translateX(-63%) translateY(-1%);
-      }
-
-      .game-info {
-        order: 1;
-        transform: translateX(-155%) translateY(-1%);
-        margin-left: 5px;
-      }
-
-      .gesture-toggle {
-        transform: translateX(-155%);
-      }
-
-      ~ .high-score-modal {
-        transform: translate(-63%, -109%);
-      }
-
-      ~ .gesture-toggle {
-        transform: translateX(-265%) !important;
-      }
-     
-    }
-  }
+  
 
   .game-info {
     scale: 0.8;
@@ -636,9 +603,9 @@
   .gesture-toggle {
     display: block;
     position: fixed;
-    bottom: 175px; // Match restart button position
+    bottom: 175px;
     left: 50%;
-    transform: translateX(180%); // Adjusted to align with restart button
+    transform: translateX(180%);
     background: #306230;
     color: #9bbc0f;
     padding: 5px 15px;
@@ -649,8 +616,288 @@
     z-index: 1001;
     cursor: pointer;
     white-space: nowrap;
+  }
+  
+  .tetris-container {
+    &.gesture-mode {
+      scale: 0.55;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 50px;
+
+  
+      
+      .game-board {
+        order: 2;
+        transform: translateX(-63%) translateY(-1%);
+      }
+
+      .game-info {
+        order: 1;
+        transform: translateX(-150%) translateY(-1%);
+        margin-left: 5px;
+      }
+
+      .gesture-toggle {
+        transform: translateX(-155%);
+      }
+
+      ~ .high-score-modal {
+        transform: translate(-63%, -109%);
+      }
+
+      ~ .gesture-toggle {
+        transform: translateX(-265%) !important;
+      }
+      ~ .virtual-controls {
+        display: flex;
+        justify-content: flex-start;
+        padding-left: 20px;
+        .d-pad {
+          display: none;
+        }
+
+        .action-buttons {
+         
+          
+          transform: translateX(-10%);
+          transform: translateY(-50%);
+
+          .round-btn {
+            transform: translate(-15%, 80%);
+
+            &.drop {
+              transform: translate(-75%, -20%);
+            }
+          }
+        }
+      }
+     
+   
+    }
+  }
+
+  .game-info {
+    scale: 0.8;
+    transform: translateX(4%);
+  }  
+
+  .score, .high-score {
+    transform: translateY(300%);
+  }
+
+  .score {
+    scale: 1.2;
+    transform: translateY(250%);
+  }
+
+  //game over and next pieces
+  h3 {
+    transform: translateY(-70%);
+  }
+
+  
+.game-board {
+  scale: 1.38;
+  transform: translateX(2%);
+  transform: translateY(-1%);
+  margin-left: 10px;
+  z-index: 1005; // Increased to be above everything
+  position: relative; // Add this to create stacking context
+}
+
+.restart-btn {
+  scale: 2;
+  transform: translateY(160%);
+
+}
+
+.next-piece-container {
+  transform: translateX(5%);
+  margin-left: 4%;
+  transform: translateY(5%);
+  scale: 1.2;
+}
+
+  .virtual-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .d-pad .arrow, 
+  .action-buttons .round-btn {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
 
 
+  .restart-btn {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .d-pad {
+    position: relative;
+    width: 150px;
+    height: 150px;
+
+    .arrow {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #303030;
+      border: 2px solid #2c2c2cdb;
+      color: #646464;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &.up { top: 5px; left: 50px; border-radius: 5px 5px 0 0; border: 0px;color: #777777; background: #f5000000; z-index: 9;}
+      &.right { top: 50px; right: 5px; border-radius: 0 5px 5px 0;border:0px ; color: #777777; background: #f5000000;z-index: 9;}
+      &.down { bottom: 5px; left: 50px; border-radius: 0 0 5px 5px; border: 0px;color: #777777; background: #f5000000;z-index: 9;}
+      &.left { top: 50px; left: 5px; border-radius: 5px 0 0 5px; border: 0px;color: #777777; background: #f5000000;z-index: 9;}
+      &.center-up { 
+        pointer-events: none;
+        top: -65px; 
+        left: 50px;
+        height: 175px;
+        border-radius: 5px ;
+        
+        border: 0px ;
+        cursor: default;
+        &:active {
+          background: #303030;
+        }
+      }
+      &.center-side { 
+      pointer-events: none;
+        top: 50px; 
+        left: -32px; 
+        width: 175px;
+        border: 0px ;
+        border-radius: 5px ;
+        cursor: default;
+        &:active {
+          background: #303030;
+        }
+      }
+
+
+      &:active {
+        background: #303030;
+      }
+      transform: translate(20%, 60%);
+      scale: 0.75;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 20px;
+    
+
+    .round-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #751717;
+      border: 2px solid #2c2c2cdb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f85555;
+      font-size: 24px;
+      font-style: bolder;
+      font-family: 'Tetrominoes', 'Courier New', monospace;
+
+      &:active {
+        background: #a02020;
+      }
+
+      transform: translate(-50%, 80%);
+
+      &.drop {
+        transform: translate(-90%, -20%);
+      }
+    }
+  }
+
+  .high-score-modal {
+    scale: 0.54;
+    transform: translate(-114%, -109%);
+    border: none;
+
+   
+    
+    .modal-content {
+      background: #a5ca0200;
+      color: #306230;
+      border: none;
+      width: 400px;
+      min-height: 800px;
+      padding: 30px;
+      
+      h2 {
+        font-size: 36px;
+        margin-bottom: 30px;
+      }
+      
+      p {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      
+      .scores-list {
+        margin: 30px 0;
+        font-size: 32px;
+        
+        div {
+          margin: 15px 0;
+          padding: 5px;
+        }
+      }
+      
+      input {
+        width: 200px;
+        height: 50px;
+        font-size: 32px;
+        margin: 20px 0;
+        padding: 10px;
+      }
+      
+      button {
+        font-size: 32px;
+        padding: 15px 30px;
+        margin-top: 20px;
+        z-index: 9999;
+        
+        &:hover {
+          transform: scale(1.05);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+
+      label {
+        font-size: 32px;
+        margin: 15px 0;
+        display: block;
+      }
+    }
   }
 
   .hidden {
@@ -692,8 +939,8 @@
   .gesture-area {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    right:0%;
+    width: 65%;
     height: 25%;
     z-index: 998; // Lower z-index
     background-image: repeating-linear-gradient(
