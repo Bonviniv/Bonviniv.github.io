@@ -1,0 +1,110 @@
+{
+    "scenario": "lab",
+    "collisions": [
+      {
+        "x": -49,
+        "y": -59,
+        "width": 77,
+        "height": 15,
+        "scenario": "lab"
+      },
+      {
+        "x": 56,
+        "y": -61,
+        "width": 49,
+        "height": 16,
+        "scenario": "lab"
+      },
+      {
+        "x": -1,
+        "y": -72,
+        "width": 179,
+        "height": 23,
+        "scenario": "lab"
+      },
+      {
+        "x": -2,
+        "y": -28,
+        "width": 29,
+        "height": 16,
+        "scenario": "lab"
+      },
+      {
+        "x": 36,
+        "y": -16,
+        "width": 34,
+        "height": 12,
+        "scenario": "lab"
+      },
+      {
+        "x": -83,
+        "y": -29,
+        "width": 10,
+        "height": 17,
+        "scenario": "lab"
+      },
+      {
+        "x": -62,
+        "y": -18,
+        "width": 26,
+        "height": 21,
+        "scenario": "lab"
+      },
+      {
+        "x": -56,
+        "y": 31,
+        "width": 63,
+        "height": 16,
+        "scenario": "lab"
+      },
+      {
+        "x": 49,
+        "y": 32,
+        "width": 62,
+        "height": 19,
+        "scenario": "lab"
+      },
+      {
+        "x": -82,
+        "y": 81,
+        "width": 8,
+        "height": 10,
+        "scenario": "lab"
+      },
+      {
+        "x": 76,
+        "y": 81,
+        "width": 11,
+        "height": 11,
+        "scenario": "lab"
+      },
+      {
+        "x": -95,
+        "y": 5,
+        "width": 10,
+        "height": 177,
+        "scenario": "lab"
+      },
+      {
+        "x": 91,
+        "y": 2,
+        "width": 15,
+        "height": 178,
+        "scenario": "lab"
+      },
+      {
+        "x": 54,
+        "y": 93,
+        "width": 91,
+        "height": 10,
+        "scenario": "lab"
+      },
+      {
+        "x": -57,
+        "y": 93,
+        "width": 86,
+        "height": 6,
+        "scenario": "lab"
+      }
+    ]
+  }

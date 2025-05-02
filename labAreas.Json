@@ -1,0 +1,37 @@
+{
+    "scenario": "lab",
+    "areas": [
+      {
+        "id":1,
+        "x": 4,
+        "y": 0,
+        "width": 206,
+        "height": 206,
+        "cv": "assets/cv/VitorBarbosaCV.pdf"
+      },
+      {
+        "id":2,
+        "x": 391,
+        "y": 0,
+        "width": 211,
+        "height": 212,
+        "link": "https://www.linkedin.com/in/vitorsantosbarbosa/"
+      },
+      {
+        "id":3,
+        "x": -428,
+        "y": 0,
+        "width": 213,
+        "height": 211,
+        "link": "https://github.com/Bonviniv"
+      },
+      {
+        "id":4,
+        "x": 398,
+        "y": 260,
+        "width": 235,
+        "height": 44,
+        "action": "s"
+      }
+    ]
+  }

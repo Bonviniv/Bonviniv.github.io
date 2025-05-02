@@ -1,0 +1,104 @@
+/* Mobile controls container */
+#controles {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 4;
+}
+
+/* Mobile control buttons */
+#controles button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#controles button:hover, 
+#controles button:active {
+    background-color: rgba(200, 200, 200, 0.9);
+}
+
+/* Hide mobile controls on desktop */
+@media (min-width: 769px) {
+    #controles {
+        position: fixed;
+        bottom: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        display: grid;
+        grid-template-areas:
+            ". up ."
+            "left down right";
+        gap: 25px;
+        width: 100px;
+    }
+
+    #controles button {
+        scale: 1.5;
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        transition: background-color 0.1s;
+    }
+
+    #btn-up { grid-area: up; ; }
+    #btn-left { grid-area: left; ; }
+    #btn-down { grid-area: down; }
+    #btn-right { grid-area: right; ; }
+
+    #controles button:active,
+    #controles button.pressed {
+        background-color: rgba(150, 150, 150, 0.9);
+        transform: scale(0.95);
+    }
+}
+
+/* Mobile landscape controls */
+@media (max-width: 768px) and (orientation: landscape) {
+    #controles {
+        position: fixed;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: grid;
+        grid-template-areas:
+            ". up ."
+            "left down right";
+        gap: 0px;
+        width: 100px;
+    }
+
+    #controles button {
+        scale: 0.7;
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        transition: background-color 0.1s;
+    }
+
+    #btn-up { grid-area: up; transform: translateY(40%); }
+    #btn-left { grid-area: left; transform: translatex(40%); }
+    #btn-down { grid-area: down; }
+    #btn-right { grid-area: right; transform: translatex(-40%); }
+
+    #controles button:active,
+    #controles button.pressed {
+        background-color: rgba(150, 150, 150, 0.9);
+        transform: scale(0.95);
+    }
+}

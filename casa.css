@@ -1,0 +1,259 @@
+
+/* Reset default browser styles */
+
+@font-face {
+    font-family: 'PokemonFireRed';
+    src: url('assets/font/pokemon-firered-leafgreen-font-recreation.ttf') format('truetype');
+  }
+  
+
+* {
+  font-family: 'PokemonFireRed', sans-serif;
+}
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background layer - scales to fill screen */
+#background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/images/casa/background/casaBackground.png');
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+/* Scenario layer - fixed size centered */
+#cenario {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    background-image: url('assets/images/casa/cenario/casa.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+}
+
+/* Character */
+#personagem {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    background-image: url('assets/sprites/tile000.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    /* Remove the transform that's causing positioning issues */
+    transform: scale(0.5);
+}
+
+/* Mobile controls */
+#controles {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 4;
+}
+
+#controles button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#controles button:hover, 
+#controles button:active {
+    background-color: rgba(200, 200, 200, 0.9);
+}
+
+/* Volume control */
+#volume-control {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume-icon {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+#volume {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 10px;
+    background: linear-gradient(to right, #7a7f7f 50%, #c9cece 50%);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+#volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+#volume::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hide mobile controls on desktop */
+@media (min-width: 769px) {
+    #controles {
+        display: none;
+    }
+}
+
+/* Scenario overlay layer - appears above character */
+#cenario-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    background-image: url('assets/images/casa/cenarioOverlay/casaup.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 11; /* Higher than character (z-index: 3) */
+    pointer-events: none; /* Allow clicks to pass through to elements below */
+}
+
+/* Collision mode styles */
+#collision-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    z-index: 6;
+    pointer-events: none;
+}
+
+#collision-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+#collision-controls button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#export-collisions {
+    display: none;
+    background-color: #2196F3 !important;
+}
+
+.collision-rect {
+    position: absolute;
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 6;
+}
+
+
+#index-text-display {
+    position: fixed;
+    top: 55%;
+    right: 5%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-family: 'PokemonFireRed', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    line-height: 1;
+    width: 30%;
+
+    text-align: center;
+    z-index: 1000;
+}
+
+#index-text-display a {
+    color: #000000;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    background-color: #00000020;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+#index-text-display a:hover {
+    color: #002594;
+    text-decoration: shadow;
+}
+
+#index-text-display .game-link {
+    color: #000000;
+}
+
+#index-text-display .game-link:hover {
+    color: #002594;
+}

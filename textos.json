@@ -1,10 +1,64 @@
-{
-    "en": {
-      "title": "Welcome",
-      "description": "This is a multilingual website."
+[
+    {
+      "scenario": "pallet-town",
+      "trigger": { "x": -100, "y": 85, "largura": 37, "altura": 29 },
+      "Mobiletrigger": { "x": -63, "y": 48, "largura": 22, "altura": 20 },
+      "texto": "The new information center was recently inaugurated.\n Stop by the yellow building to learn more."
     },
-    "pt": {
-      "title": "Bem-vindo",
-      "description": "Este é um site multilíngue."
-    }
-  }
+    {
+      "scenario": "pallet-town",
+      "trigger": { "x": 70, "y": 110, "largura": 39, "altura": 24 },
+      "Mobiletrigger": { "x": 43, "y": 70, "largura": 28, "altura": 17 },
+      "texto": "Information center,\n enter to explore."
+    },
+    {
+      "scenario": "pallet-town",
+      "trigger": { "x": -40, "y": 30, "largura": 36, "altura": 22 },
+      "Mobiletrigger": { "x": -24, "y": 20, "largura": 22, "altura": 17 },
+      "texto": "Welcome to Scripttown!\n Read the signs and explore the buildings to get to know the city."
+    },
+    {
+      "scenario": "pallet-town",
+      "trigger": { "x": 10, "y": -120, "largura": 67, "altura": 26 },
+      "Mobiletrigger": { "x": 3, "y": -75, "largura": 49, "altura": 23 },
+      "texto": "It seems like someone is taking a nap.\n Too bad I don't have the Poké Flute yet, maybe later..."
+    },
+    {
+      "scenario": "lab",
+      "trigger": { "x": -2, "y": -27, "largura": 53, "altura":35 },
+      "Mobiletrigger": { "x":-4, "y": -18, "largura": 38, "altura": 19 },
+       "texto": "Hello, I'm Professor Oak, and this is the information center.\nI would offer you one of the three starter Pokémon, but unfortunately, the last trainers already took them...\nHowever, we have something even better on the table go take a look!"
+    },
+    {
+      "scenario": "lab",
+      "trigger": { "x": 57, "y": -15, "largura": 47, "altura": 25 },
+      "Mobiletrigger": { "x": 36, "y": -8, "largura": 30, "altura": 15 },
+      "texto": "Press ⬆️ to examine what's on the table.",
+      "imagePopup": "assets/images/lab/outros/oaks-lab-links .png"
+  },
+  {
+    "scenario": "casa",
+    "trigger": { "x": 155, "y": -129, "largura": 46, "altura": 76},
+    "Mobiletrigger": { "x": 121, "y": -105, "largura": 60, "altura": 60 },
+    "texto": "Welcome to my room.\n While I'm away, Leela is in charge,\n if Leela's out, Clarinha is in charge"
+},
+{
+  "scenario": "casa",
+  "trigger": { "x": -99, "y": -116, "largura": 59, "altura": 35 },
+  "Mobiletrigger": { "x": -81, "y": -92, "largura": 44, "altura": 40 },
+  "texto": "I think this cat's name is Clarinha"
+},
+{
+  "scenario": "casa",
+  "trigger": { "x": -137, "y": 75, "largura": 43, "altura": 50 },
+  "Mobiletrigger": { "x": -113, "y": 56, "largura": 28, "altura": 53 },
+  "texto": "I think this cat's name is Leela"
+},
+{
+  "scenario": "casa",
+  "trigger": { "x": -199, "y": -113, "largura": 44, "altura": 54 },
+  "Mobiletrigger": { "x": -159, "y": -91, "largura": 38, "altura": 38 },
+  "texto": "Someone was writing code, \n and this scene looks a lot like this house"
+}
+  ]
+  

@@ -1,0 +1,75 @@
+{
+    "scenario": "casa",
+    "collisions": [
+      {
+        "x": 142,
+        "y": -17,
+        "width": 23,
+        "height": 297,
+        "scenario": "casa"
+      },
+      {
+        "x": -12,
+        "y": 129,
+        "width": 338,
+        "height": 20,
+        "scenario": "casa"
+      },
+      {
+        "x": -182,
+        "y": -7,
+        "width": 16,
+        "height": 309,
+        "scenario": "casa"
+      },
+      {
+        "x": 42,
+        "y": -97,
+        "width": 10,
+        "height": 57,
+        "scenario": "casa"
+      },
+      {
+        "x": 63,
+        "y": -76,
+        "width": 46,
+        "height": 18,
+        "scenario": "casa"
+      },
+      {
+        "x": -18,
+        "y": -140,
+        "width": 339,
+        "height": 41,
+        "scenario": "casa"
+      },
+      {
+        "x": -118,
+        "y": -121,
+        "width": 120,
+        "height": 32,
+        "scenario": "casa"
+      },
+      {
+        "x": -167,
+        "y": -106,
+        "width": 20,
+        "height": 26,
+        "scenario": "casa"
+      },
+      {
+        "x": -43,
+        "y": 39,
+        "width": 25,
+        "height": 56,
+        "scenario": "casa"
+      },
+      {
+        "x": -141,
+        "y": 55,
+        "width": 37,
+        "height": 44,
+        "scenario": "casa"
+      }
+    ]
+  }

@@ -1,0 +1,46 @@
+
+[
+    {
+     "scenario": "pallet-town",
+      "trigger": { "x": 70, "y": 65, "largura": 30, "altura": 30, "pressing":"up" },
+      "destino": {
+       "scenarioDestination": "lab",
+        "spawn": { "x": -10, "y": 100 }
+      }
+    },
+    {
+        "scenario": "pallet-town",
+         "trigger": { "x": -90, "y": -30, "largura": 30, "altura": 30, "pressing":"up" },
+         "destino": {
+          "scenarioDestination": "casa",
+           "spawn": { "x": 117, "y": -142 }
+         }
+       }
+       ,
+       {
+        "scenario": "lab",
+        "trigger": { "x": -4, "y": 147, "largura": 29, "altura": 15, "pressing":"down" },
+        "destino": {
+          "scenarioDestination": "index",
+           "spawn": { "x": 65, "y": 67  }
+         }
+       },
+       
+       {
+        "scenario": "casa",
+        "trigger": { "x": 84, "y": -130, "largura": 55, "altura": 50, "pressing":"left" },
+        "destino": {
+          "scenarioDestination": "index",
+           "spawn": { "x": -96, "y": -34 }
+         }
+       },
+       {
+        "scenario": "casa2",
+        "trigger": { "x": -4, "y": 147, "largura": 29, "altura": 15, "pressing":"down" },
+        "destino": {
+          "scenarioDestination": "index",
+           "spawn": { "x": -48, "y": -34  }
+         }
+       }
+  ]
+  

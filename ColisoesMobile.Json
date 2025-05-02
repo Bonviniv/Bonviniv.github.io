@@ -1,0 +1,96 @@
+{
+    "scenario": "pallet-town",
+    "collisions": [
+      {
+        "x": -42,
+        "y": -36,
+        "width": 46,
+        "height": 34,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 43,
+        "y": -34,
+        "width": 50,
+        "height": 29,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 16,
+        "y": -25,
+        "width": 11,
+        "height": 11,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -70,
+        "y": -25,
+        "width": 10,
+        "height": 12,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -43,
+        "y": 16,
+        "width": 47,
+        "height": 9,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -62,
+        "y": 44,
+        "width": 9,
+        "height": 9,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 43,
+        "y": 24,
+        "width": 68,
+        "height": 30,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 39,
+        "y": 64,
+        "width": 58,
+        "height": 9,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -29,
+        "y": 96,
+        "width": 50,
+        "height": 57,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -2,
+        "y": 103,
+        "width": 227,
+        "height": 16,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 2,
+        "y": -89,
+        "width": 229,
+        "height": 22,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": 104,
+        "y": 6,
+        "width": 17,
+        "height": 214,
+        "scenario": "pallet-town"
+      },
+      {
+        "x": -106,
+        "y": 5,
+        "width": 21,
+        "height": 212,
+        "scenario": "pallet-town"
+      }
+    ]
+  }

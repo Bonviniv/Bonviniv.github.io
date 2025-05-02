@@ -1,0 +1,150 @@
+/* Add at the beginning of the file */
+body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+#game-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('assets/images/lab/background/oaks-labBackground.png') center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#cenario {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    background: url('assets/images/lab/cenario/oaks-lab.png') center center no-repeat;
+    background-size: contain;
+}
+
+#cenario-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    background: url('assets/images/lab/cenarioOverlay/oaks-labup.png') center center no-repeat;
+    background-size: contain;
+    pointer-events: none;
+}
+
+#personagem {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+    z-index: 5;
+}
+
+/* Volume control */
+#volume-control {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume-icon {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+#volume {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 10px;
+    background: linear-gradient(to right, #7a7f7f 50%, #c9cece 50%);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+#volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+#volume::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+/* Collision mode styles */
+#collision-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1920px;
+    height: 1080px;
+    z-index: 6;
+    pointer-events: none;
+}
+
+#collision-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+#collision-controls button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#export-collisions {
+    display: none;
+    background-color: #2196F3 !important;
+}
+
+.collision-rect {
+    position: absolute;
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 6;
+}

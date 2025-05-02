@@ -1,0 +1,68 @@
+
+@font-face {
+  font-family: 'PokemonFont';
+  src: url('assets/font/pokemon-firered-leafgreen-font-recreation.ttf') format('truetype');
+}
+
+* {
+  font-family: 'PokemonFont', sans-serif;
+}
+
+#text-display {
+    position: fixed;
+    bottom: 45%;
+    left: 20%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.142);
+    color: rgb(0, 0, 0);
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: 'PokemonFont';
+    font-size: 20px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    max-width: 30%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 100;
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    #text-display {
+        bottom: 30%;
+        left: 12%;
+        padding: 10px 15px;
+        font-size: 13px;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
+        max-width: 35%;
+        transform: scale(0.8) translateX(-50%);
+    }
+}
+
+/* Collision mode styles */
+#collision-controls {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: none;  /* Hidden by default */
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+#collision-controls.show {
+  display: flex;  /* Will be shown when 'c' is pressed */
+}
+
+#collision-controls button {
+  padding: 8px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}

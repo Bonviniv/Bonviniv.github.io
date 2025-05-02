@@ -1,89 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vitor Barbosa</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Favicon Link -->
-  <link rel="icon" href="images/3.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Casa - Scripttown</title>
+    <link rel="icon" href="assets/logo/logo.png">
+    <link rel="stylesheet" href="casa.css">
+    <link rel="stylesheet" href="textsPokemon.css">
+    <link rel="stylesheet" href="casaMobile.css">
+    <link rel="stylesheet" href="buttons.css">
 </head>
-
-<body data-background="casa">
-</head>
-
 <body>
-
-  
- 
-
-    <div id="text-box5" style="display: none;">
-      <span>I think this cat's name is Leela</span>
-       
-      </div>
-
-      <div id="text-box6" style="display: none;">
-        <span>I think this cat's name is Clarinha</span>        
-      </div>
-
-      <div id="text-box7" style="display: none;">
-        <span>Someone was writing code,<br>
-           and this scene looks a lot like this house</span>        
-      </div>
-
-      <div id="text-box8" style="display: none;">
-        <span>Welcome to my room.<br>
-          While I'm away, Leela is in charge,<br>
-          if Leela's out, Clarinha is in charge</span>  
+    <div id="game-container">
+        <!-- Background layer (scalable) -->
+        <div id="background"></div>
         
-      </div>
-      
-      <div id="text-box">
-        <img src="images/text-box.png" alt="Text Boxcasa" />
-        <div class="text-background">
-          <span>Press S</span>
+        <!-- Scenario layer (fixed 1920x1080) -->
+        <div id="cenario"></div>
+        
+        <!-- Character layer -->
+        <div id="personagem"></div>
+        
+        <!-- Scenario overlay layer (for depth perspective) -->
+        <div id="cenario-overlay"></div>
+        
+        <!-- Controls for mobile -->
+        <div id="controles">
+            <button id="btn-up">W</button>
+            <button id="btn-left">A</button>
+            <button id="btn-down">S</button>
+            <button id="btn-right">D</button>
         </div>
-      </div>
-  <body>
-    <div id="map-overlay" >
-      <img src="images/casaup.png" alt="Overlay Map" id="overlay-image">
+        
+        <!-- Volume control -->
+        <div id="volume-control">
+            <span id="volume-icon">🔈</span>
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
     </div>
     
-    <div id="map">
-      <p id="zoom-status">Zoom não detectado.</p>
-      <img src="images/casa.png" alt="Casa map" id="casa-map">
-      <canvas id="collisionCanvas"></canvas>
-      <div id="character"></div>
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/music/index.mp3" type="audio/mp3">
+    </audio>
+    
+    <!-- Scripts -->
+    <script src="personagem.js"></script>
+    <script src="script.js"></script>
+    <div id="collision-layer"></div>
+    <div id="collision-controls">
+        <button id="toggle-collision">Collision Mode: OFF</button>
+        <button id="export-collisions">Export Collisions</button>
     </div>
-
-   
- 
-      <div id="volume-control">
-        <!-- Volume icon -->
-        <span class="volume-icon">🔊</span>
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.15">
-      </div>
-
-
-
-  <audio id="background-music" loop>
-    <source src="musica/Littleroot Town - Pokémon Ruby⧸Sapphire⧸Emerald Soundtrack.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-  <div id="position-display"></div>
-
-  <!-- Teclas virtuais WASD -->
-  <div id="virtual-keyboard">
-    <button class="virtual-key" data-key="w">W</button>
-    <div class="horizontal-keys">
-      <button class="virtual-key" data-key="a">A</button>
-      <button class="virtual-key" data-key="s">S</button>
-      <button class="virtual-key" data-key="d">D</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-  <script></script>
+    
+    <script src="lab.js"></script>
+    <script src="collisionMode.js"></script>
+    <script src="transitionLogics.js"></script>
 </body>
 </html>
