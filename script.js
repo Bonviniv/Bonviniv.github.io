@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const volumeIcon = document.getElementById('volume-icon');
         
         // Set initial volume and update slider background
-        volumeControl.value = 0.15;
-        bgMusic.volume = 0.15;
-        const initialValue = 15;
+        volumeControl.value = 0;
+        bgMusic.volume = 0;
+        const initialValue = 0;
         volumeControl.style.background = `linear-gradient(to right, #7a7f7f ${initialValue}%, #c9cece ${initialValue}%)`;
         
         // Add click handler for volume icon
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     previousVolume= localStorage.getItem('localVolume');
 
                 }else{
-                    previousVolume= 0.15;
+                    previousVolume= 0;
 
                 }
                 
