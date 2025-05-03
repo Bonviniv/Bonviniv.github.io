@@ -68,6 +68,59 @@
 
 /* Mobile landscape controls */
 @media (max-width: 1000px) and (orientation: landscape) {
+
+    /* Volume control */
+#volume-control {
+    transform: translateY(-1400%);
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume-icon {
+    color: white;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+#volume {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 10px;
+    background: linear-gradient(to right, #7a7f7f 50%, #c9cece 50%);
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+
+#volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+#volume::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
     #controles {
         position: fixed;
         bottom: 5px;

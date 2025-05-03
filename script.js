@@ -5,6 +5,17 @@
 let typingTimeout = null;
 let isTyping = false;
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Add this near the start of DOMContentLoaded
+    // Check if device is mobile and add orientation change listener
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+        window.addEventListener('orientationchange', function() {
+            location.reload();
+        });
+    }
+});
+
 // Initialize game when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Add font-face declaration at the start
