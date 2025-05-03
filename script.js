@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize audio
     if (bgMusic && volumeControl) {
         const volumeIcon = document.getElementById('volume-icon');
-        
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         // Set initial volume and update slider background
         volumeControl.value = 0;
         bgMusic.volume = 0;
@@ -133,22 +133,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         
-        // Play music when page loads
-        document.addEventListener('click', function playAudio() {
-            bgMusic.play();
-           // document.removeEventListener('click', playAudio);
-        });
+        // Update volume control to start music when changed
         volumeControl.addEventListener('input', function() {
+            if (this.value > 0) {
+                bgMusic.play().catch(error => console.log("Playback failed:", error));
+            }
             bgMusic.volume = this.value;
             const value = this.value * 100;
             
-            // Update slider background
             this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #c9cece ${value}%)`;
-            
             updateVolumeLocalVariable(this.value);
             updateVolumeIcon(this.value);
         });
 
+        // Update volume icon click handler
+        volumeIcon.addEventListener('click', function() {
+            if (bgMusic.volume > 0) {
+                // Muting logic remains the same...
+            } else {
+                // Unmuting logic
+                let previousVolume = volumeIcon.dataset.previousVolume || 
+                    (localStorage.getItem('localVolume') != null ? localStorage.getItem('localVolume') : 0);
+                
+                if (previousVolume > 0) {
+                    bgMusic.play().catch(error => console.log("Playback failed:", error));
+                }
+                // Rest of unmuting logic remains the same...
+            }
+        });
         // Add touch events for mobile
         volumeControl.addEventListener('touchstart', function(e) {
             e.preventDefault(); // Prevent default touch behavior
