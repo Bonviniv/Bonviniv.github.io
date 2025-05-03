@@ -159,6 +159,34 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Set up mobile buttons
+    setupMobileButton('btn-c', 'c');
+    const btnC = document.getElementById('btn-c');
+    if (btnC) {
+        btnC.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            // Simulate 'C' key press
+            const keyEvent = new KeyboardEvent('keydown', {
+                key: 'c',
+                code: 'KeyC',
+                bubbles: true
+            });
+            document.dispatchEvent(keyEvent);
+            personagem.toggleCollisionBoxes();
+        });
+
+        btnC.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Simulate 'C' key press
+            const keyEvent = new KeyboardEvent('keydown', {
+                key: 'c',
+                code: 'KeyC',
+                bubbles: true
+            });
+            document.dispatchEvent(keyEvent);
+            personagem.toggleCollisionBoxes();
+        });
+    }
+
     setupMobileButton('btn-up', 'w');
     setupMobileButton('btn-left', 'a');
     setupMobileButton('btn-down', 's');
@@ -347,11 +375,4 @@ function loadTexts() {
     requestAnimationFrame(gameLoop);
     
     console.log('Game initialized');
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'c' || e.key === 'C') {
-        const collisionControls = document.getElementById('collision-controls');
-        collisionControls.classList.toggle('show');
-    }
 });
