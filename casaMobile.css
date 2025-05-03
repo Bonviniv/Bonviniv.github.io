@@ -20,7 +20,7 @@
     }
 }
 
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 1000px) and (orientation: landscape) {
     #game-container {
         width: 100vw;
         height: 100vh;

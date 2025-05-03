@@ -45,7 +45,7 @@ setTimeout(simulateDebugKeyPress, 200);
 -------------------------------------------------------------
 botão para fazer caixas de colisão e exportar:
 
-textsPokemon.css 
+em textsPokemon.css 
 
 /* Collision mode styles */
 #collision-controls {
@@ -59,3 +59,13 @@ textsPokemon.css
 }
 
 ---------------------------------------------------------------------
+
+show coordinates and screen size 
+
+em personagem.js
+
+ else {
+            //this.coordDisplay.textContent = `X: ${Math.round(this.x)}, Y: ${Math.round(this.y)} | Sprite: (${Math.round(this.x)},${Math.round(this.y)}) | Screen: ${screenWidth}x${screenHeight}`;
+
+            this.coordDisplay.style.display = 'none';
+        }

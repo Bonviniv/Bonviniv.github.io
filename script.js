@@ -137,7 +137,38 @@ document.addEventListener('DOMContentLoaded', () => {
             bgMusic.play();
            // document.removeEventListener('click', playAudio);
         });
-        
+        volumeControl.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+            const value = this.value * 100;
+            
+            // Update slider background
+            this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #c9cece ${value}%)`;
+            
+            updateVolumeLocalVariable(this.value);
+            updateVolumeIcon(this.value);
+        });
+
+        // Add touch events for mobile
+        volumeControl.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // Prevent default touch behavior
+        });
+
+        volumeControl.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const slider = e.target;
+            const rect = slider.getBoundingClientRect();
+            const position = (touch.clientX - rect.left) / rect.width;
+            const value = Math.max(0, Math.min(1, position));
+            
+            slider.value = value;
+            bgMusic.volume = value;
+            const percentage = value * 100;
+            slider.style.background = `linear-gradient(to right, #7a7f7f ${percentage}%, #c9cece ${percentage}%)`;
+            
+            updateVolumeLocalVariable(value);
+            updateVolumeIcon(value);
+        });
         // Update volume and slider when changed
         volumeControl.addEventListener('input', function() {
             bgMusic.volume = this.value;
