@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if device is mobile and add orientation change listener
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     if (isMobile) {
+        localStorage.setItem('localVolume', '0');
         window.addEventListener('orientationchange', function() {
             location.reload();
         });
