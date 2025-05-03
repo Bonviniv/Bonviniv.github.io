@@ -9,8 +9,10 @@ let isTyping = false;
 document.addEventListener('DOMContentLoaded', () => {
     // Add font-face declaration at the start
     // Load texts for current scenario
+    console.log("localVolume = ", localStorage.getItem('localVolume'));
+    
     loadTexts();
-    const fontFace = new FontFace('PokemonFireRed', 'url("assets/fonts/pokemon-firered-leafgreen-font-recreation.ttf")');
+    const fontFace = new FontFace('PokemonFireRed', 'url("fonte/pokemon-firered-leafgreen-font-recreation.ttf")');
     fontFace.load().then(function(loadedFace) {
         document.fonts.add(loadedFace);
     }).catch(function(error) {
@@ -34,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Audio element
     const bgMusic = document.getElementById('bg-music');
     const volumeControl = document.getElementById('volume');
+
+   
     
     // Initialize audio
     if (bgMusic && volumeControl) {
@@ -54,17 +58,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 bgMusic.volume = 0;
                 volumeIcon.textContent = '🔇';
                 volumeControl.style.background = `linear-gradient(to right, #7a7f7f 0%, #c9cece 0%)`;
+                localStorage.setItem('localVolume', '0');
             } else {
                 // Restore previous volume or default to 0.15
-                const previousVolume = volumeIcon.dataset.previousVolume || 0.15;
+                let previousVolume = 0;
+
+                if(volumeIcon.dataset.previousVolume){
+                    previousVolume= volumeIcon.dataset.previousVolume;
+
+                }else if(localStorage.getItem('localVolume')!= null && localStorage.getItem('localVolume')!= -1){
+
+                    previousVolume= localStorage.getItem('localVolume');
+
+                }else{
+                    previousVolume= 0.15;
+
+                }
+                
                 volumeControl.value = previousVolume;
                 bgMusic.volume = previousVolume;
                 const value = previousVolume * 100;
                 volumeControl.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #c9cece ${value}%)`;
                 updateVolumeIcon(previousVolume);
+               
+
+                
             }
         });
 
+        if(localStorage.getItem('localVolume') != null && localStorage.getItem('localVolume') != -1){
+            const savedVolume = localStorage.getItem('localVolume');
+            bgMusic.volume = savedVolume;
+            volumeControl.value = savedVolume; // Set the slider position
+            console.log("bgMusic.volume = ", bgMusic.volume);
+            updateVolumeIcon(bgMusic.volume);
+            
+            const volSet = bgMusic.volume * 100;
+            
+            // Update slider background
+            volumeControl.style.background = `linear-gradient(to right, #7a7f7f ${volSet}%, #c9cece ${volSet}%)`;
+        }
 
     
         // Helper function to update volume icon
@@ -79,11 +112,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 volumeIcon.textContent = '🔊';
             }
         }
+
+         // Helper function to update volume icon
+         function updateVolumeLocalVariable(value) {
+            localStorage.setItem('localVolume', value);
+
+        }
+
+
         
         // Play music when page loads
         document.addEventListener('click', function playAudio() {
             bgMusic.play();
-            document.removeEventListener('click', playAudio);
+           // document.removeEventListener('click', playAudio);
         });
         
         // Update volume and slider when changed
@@ -95,6 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.style.background = `linear-gradient(to right, #7a7f7f ${value}%, #c9cece ${value}%)`;
             
             console.log("vol = ", this.value);
+
+            updateVolumeLocalVariable(this.value) ;
+            console.log("localVolume = ", localStorage.getItem('localVolume'));
             
             // Update volume icon based on level
             if (this.value == 0) {

@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add event listener for virtual button
-    document.getElementById('btn-up').addEventListener('click', () => {
+    document.getElementById('btn-up')?.addEventListener('click', () => {
         if (currentTrigger?.imagePopup) {
             imagePopup.style.display = 'block';
         }
@@ -126,11 +126,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Modify keyboard event listeners to handle both physical and virtual inputs
     document.addEventListener('keydown', (e) => {
-        if ((e.key === 'w' || e.key === 'ArrowUp' || e.target.id === 'btn-up') && currentTrigger?.imagePopup) {
+        if (currentTrigger?.imagePopup && 
+            (e.key === 'w' || 
+             e.key === 'ArrowUp' || 
+             (e.target && e.target.id === 'btn-up') ||
+             (e.type === 'touchstart' && e.target.id === 'btn-up'))) {
             imagePopup.style.display = 'block';
         }
         if ((e.key === 's' || e.key === 'ArrowDown' || e.target.id === 'btn-down') && imagePopup.style.display === 'block') {
             imagePopup.style.display = 'none';
+        }
+    });
+
+    // Add touch event listener for mobile
+    document.getElementById('btn-up')?.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (currentTrigger?.imagePopup) {
+            imagePopup.style.display = 'block';
         }
     });
 
