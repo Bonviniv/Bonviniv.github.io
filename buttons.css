@@ -92,10 +92,10 @@
         transition: background-color 0.1s;
     }
 
-    #btn-up { grid-area: up; transform: translateY(40%); }
-    #btn-left { grid-area: left; transform: translatex(40%); }
+    #btn-up { grid-area: up; }
+    #btn-left { grid-area: left;}
     #btn-down { grid-area: down; }
-    #btn-right { grid-area: right; transform: translatex(-40%); }
+    #btn-right { grid-area: right; }
 
     #controles button:active,
     #controles button.pressed {
