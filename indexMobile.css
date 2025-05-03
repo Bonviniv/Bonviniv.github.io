@@ -88,3 +88,29 @@
     width: 100px;
 }
 }
+
+
+/* Add this at the top level, outside any media queries */
+@media (orientation: portrait) {
+
+    #index-text-display {
+        display: none;
+    }
+    #game-container {
+        display: none;
+    }
+
+    body::before {
+        content: "Please rotate your device";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'PokemonFireRed', Arial, sans-serif;
+        font-size: 24px;
+        color: black;
+        text-align: center;
+        width: 100%;
+        z-index: 9999;
+    }
+}

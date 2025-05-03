@@ -1,4 +1,25 @@
 
+/* Add this at the top level, outside any media queries */
+@media (orientation: portrait) {
+    #game-container {
+        display: none;
+    }
+
+    body::before {
+        content: "Please rotate your device";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'PokemonFireRed', Arial, sans-serif;
+        font-size: 24px;
+        color: black;
+        text-align: center;
+        width: 100%;
+        z-index: 9999;
+    }
+}
+
 @media (max-width: 768px) and (orientation: landscape) {
     #game-container {
         width: 100vw;

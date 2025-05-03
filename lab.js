@@ -8,10 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const labText = `Welcome to the Lab!\n 
-      Here you can find information about\n
-      my technical skills and projects.\n
-      Feel free to explore!\n`;
+    const labText = ``;
 
     const textElement = createLabTextDisplay();
     textElement.innerHTML = labText.replace(/\n/g, '<br>');
