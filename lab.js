@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.objectFit = 'contain';
         
         // Create clickable areas
+        // Add this helper function at the start of DOMContentLoaded
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        // Modify the click area event listeners in createImagePopup
         fetch(isMobile() ? 'labAreasMobile.Json' : 'labAreas.Json')
             .then(response => response.json())
             .then(data => {
@@ -46,7 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     clickArea.style.height = `${area.height}px`;
                     clickArea.style.cursor = 'pointer';
                     
-                    clickArea.addEventListener('click', () => {
+                    clickArea.addEventListener('click', (e) => {
+                        if (isMobile()) {
+                            e.stopPropagation(); // Prevent event bubbling on mobile
+                        }
+                        
                         if (area.cv) {
                             const link = document.createElement('a');
                             link.href = area.cv;
@@ -60,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const keyDownEvent = new KeyboardEvent('keydown', {
                                 key: 's',
                                 code: 'KeyS',
-                                bubbles: true
+                                bubbles: !isMobile() // Don't bubble events on mobile
                             });
                             document.dispatchEvent(keyDownEvent);
                             
@@ -68,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const keyUpEvent = new KeyboardEvent('keyup', {
                                     key: 's',
                                     code: 'KeyS',
-                                    bubbles: true
+                                    bubbles: !isMobile()
                                 });
                                 document.dispatchEvent(keyUpEvent);
                             }, 10);
