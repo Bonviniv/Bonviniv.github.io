@@ -269,7 +269,9 @@ updateCoordinatesDisplay() {
             this.coordDisplay.style.display = 'block';
             this.coordDisplay.textContent = `X: ${Math.round(this.x)}, Y: ${Math.round(this.y)} | Sprite: (${Math.round(this.x)},${Math.round(this.y)}) | Screen: ${screenWidth}x${screenHeight}`;
         } else {
-            this.coordDisplay.style.display = 'none';
+            this.coordDisplay.textContent = `X: ${Math.round(this.x)}, Y: ${Math.round(this.y)} | Sprite: (${Math.round(this.x)},${Math.round(this.y)}) | Screen: ${screenWidth}x${screenHeight}`;
+
+           // this.coordDisplay.style.display = 'none';
         }
     }
 }
