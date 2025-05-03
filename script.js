@@ -376,3 +376,44 @@ function loadTexts() {
     
     console.log('Game initialized');
 });
+
+function simulateDebugKeyPress() {
+    // First press
+    const keyDownEvent1 = new KeyboardEvent('keydown', {
+        key: 'c',
+        code: 'KeyC',
+        bubbles: true
+    });
+    document.dispatchEvent(keyDownEvent1);
+    
+    setTimeout(() => {
+        const keyUpEvent1 = new KeyboardEvent('keyup', {
+            key: 'c',
+            code: 'KeyC',
+            bubbles: true
+        });
+        document.dispatchEvent(keyUpEvent1);
+
+        // Second press after first one completes
+        setTimeout(() => {
+            const keyDownEvent2 = new KeyboardEvent('keydown', {
+                key: 'c',
+                code: 'KeyC',
+                bubbles: true
+            });
+            document.dispatchEvent(keyDownEvent2);
+
+            setTimeout(() => {
+                const keyUpEvent2 = new KeyboardEvent('keyup', {
+                    key: 'c',
+                    code: 'KeyC',
+                    bubbles: true
+                });
+                document.dispatchEvent(keyUpEvent2);
+            }, 0.1);
+        }, 0.1);
+    }, 0.1);
+}
+
+// Call the function when the lab loads
+setTimeout(simulateDebugKeyPress, 200);

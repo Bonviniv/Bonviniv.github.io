@@ -21,7 +21,7 @@
         "scenario": "lab",
         "trigger": { "x": -4, "y": 147, "largura": 29, "altura": 15, "pressing":"down" },
         "destino": {
-          "scenarioDestination": "",
+          "scenarioDestination": "index",
            "spawn": { "x": 65, "y": 67  }
          }
        },
@@ -30,7 +30,7 @@
         "scenario": "casa",
         "trigger": { "x": 84, "y": -130, "largura": 55, "altura": 50, "pressing":"left" },
         "destino": {
-          "scenarioDestination": "",
+          "scenarioDestination": "index",
            "spawn": { "x": -96, "y": -34 }
          }
        },
@@ -38,7 +38,7 @@
         "scenario": "casa2",
         "trigger": { "x": -4, "y": 147, "largura": 29, "altura": 15, "pressing":"down" },
         "destino": {
-          "scenarioDestination": "",
+          "scenarioDestination": "index",
            "spawn": { "x": -48, "y": -34  }
          }
        }
