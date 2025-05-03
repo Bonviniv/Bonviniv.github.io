@@ -13,7 +13,7 @@
          "trigger": { "x": -52, "y": -15, "largura": 22, "altura": 15, "pressing":"up" },
          "destino": {
           "scenarioDestination": "casa",
-           "spawn": { "x": 100, "y": 400 }
+           "spawn": { "x": 94, "y": -114 }
          }
        }
       ,

@@ -183,7 +183,7 @@ renderPlayerCollisionBox(container) {
     const currentAspectRatio = currentWidth / currentHeight;
     
     // Calculate scale factor for mobile
-    const scaleFactor = isMobile ? (currentAspectRatio / defaultAspectRatio-(defaultAspectRatio*0.2)) : 1;
+    const scaleFactor = isMobile ? (currentAspectRatio / defaultAspectRatio-(defaultAspectRatio*0.25)) : 1;
     
     // Check current page and set dimensions accordingly
     const currentPage = window.location.pathname.split('/').pop();
@@ -201,7 +201,7 @@ renderPlayerCollisionBox(container) {
     hitboxElement.style.top = `${hitboxTop}px`;
     hitboxElement.style.width = `${charWidth * 4}px`;
     hitboxElement.style.height = `${charHeight * 4}px`;
-    hitboxElement.style.backgroundImage = `url('assets/sprites/tile${this.directions[this.direction][0].toString().padStart(3, '0')}.png')`;
+    hitboxElement.style.backgroundImage = `url('${this.spriteCache[`tile${this.directions[this.direction][0].toString().padStart(3, '0')}.png`]}')`;
     hitboxElement.style.backgroundSize = 'contain';
     hitboxElement.style.backgroundRepeat = 'no-repeat';
     hitboxElement.style.border = '1px solid rgba(0, 0, 255, 0.5)';
@@ -221,7 +221,7 @@ renderPlayerCollisionBox(container) {
             hitboxElement.style.top = `${this.y - charHeight + 540}px`;
             
             const spriteIndex = this.directions[this.direction][this.frame].toString().padStart(3, '0');
-            hitboxElement.style.backgroundImage = `url('assets/sprites/tile${spriteIndex}.png')`;
+            hitboxElement.style.backgroundImage = `url('${this.spriteCache[`tile${spriteIndex}.png`]}')`;
         
     };
 }
@@ -356,17 +356,96 @@ getPosition() {
      */
     preloadSprites() {
         this.spriteCache = {};
-        
+        const spritePromises = [];
+
         // Preload all direction sprites
         for (const direction in this.directions) {
             const frames = this.directions[direction];
             for (const frame of frames) {
                 const spriteIndex = frame.toString().padStart(3, '0');
-                const img = new Image();
-                img.src = `assets/sprites/tile${spriteIndex}.png`;
-                this.spriteCache[`tile${spriteIndex}.png`] = img;
+                const spriteKey = `sprite_tile${spriteIndex}`;
+                
+                // Check if sprite is already in localStorage
+                const cachedSprite = localStorage.getItem(spriteKey);
+                if (cachedSprite) {
+                    this.spriteCache[`tile${spriteIndex}.png`] = cachedSprite;
+                } else {
+                    // Load and cache new sprite
+                    const promise = new Promise((resolve) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            const dataUrl = canvas.toDataURL('image/png');
+                            localStorage.setItem(spriteKey, dataUrl);
+                            this.spriteCache[`tile${spriteIndex}.png`] = dataUrl;
+                            resolve();
+                        };
+                        img.src = `assets/sprites/tile${spriteIndex}.png`;
+                    });
+                    spritePromises.push(promise);
+                }
             }
         }
+        return Promise.all(spritePromises);
+    }
+
+    renderPlayerCollisionBox(container) {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // Default screen dimensions
+        const defaultWidth = 1920;
+        const defaultHeight = 1080;
+        const defaultAspectRatio = defaultWidth / defaultHeight;
+        
+        // Current screen dimensions and aspect ratio
+        const currentWidth = window.innerWidth;
+        const currentHeight = window.innerHeight;
+        const currentAspectRatio = currentWidth / currentHeight;
+        
+        // Calculate scale factor for mobile
+        const scaleFactor = isMobile ? (currentAspectRatio / defaultAspectRatio-(defaultAspectRatio*0.25)) : 1;
+        
+        // Check current page and set dimensions accordingly
+        const currentPage = window.location.pathname.split('/').pop();
+        const charWidth = currentPage === 'casa.html' ? 12 * scaleFactor : 8 * scaleFactor;
+        const charHeight = currentPage === 'casa.html' ? 15 * scaleFactor : 10 * scaleFactor;
+        
+        const hitboxElement = document.createElement('div');
+        hitboxElement.className = 'character-hitbox';
+        
+        const hitboxLeft = this.x - charWidth + 960;
+        const hitboxTop = this.y - charHeight + 540;
+        
+        hitboxElement.style.position = 'absolute';
+        hitboxElement.style.left = `${hitboxLeft}px`;
+        hitboxElement.style.top = `${hitboxTop}px`;
+        hitboxElement.style.width = `${charWidth * 4}px`;
+        hitboxElement.style.height = `${charHeight * 4}px`;
+        hitboxElement.style.backgroundImage = `url('assets/sprites/tile${this.directions[this.direction][0].toString().padStart(3, '0')}.png')`;
+        hitboxElement.style.backgroundSize = 'contain';
+        hitboxElement.style.backgroundRepeat = 'no-repeat';
+        hitboxElement.style.border = '1px solid rgba(0, 0, 255, 0.5)';
+        hitboxElement.style.zIndex = '8';
+    
+        if(!this.showCollisions) {
+            hitboxElement.style.border = '0px solid rgba(0, 0, 255, 0.5)';
+    
+        }
+        
+        container.appendChild(hitboxElement);
+        this.collisionElements.push(hitboxElement);
+        
+        this.updateHitbox = () => {
+            hitboxElement.style.left = `${this.x - charWidth + 960}px`;
+            hitboxElement.style.top = `${this.y - charHeight + 540}px`;
+            
+            const spriteIndex = this.directions[this.direction][this.frame].toString().padStart(3, '0');
+            hitboxElement.style.backgroundImage = `url('${this.spriteCache[`tile${spriteIndex}.png`]}')`;
+        };
     }
     
     /**

@@ -1,4 +1,12 @@
-@media (max-width: 768px) and (orientation: landscape) {
+/* Add touch-action and user-select properties */
+* {
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@media (max-width: 1000px) and (orientation: landscape) {
     #game-container {
         width: 100vw;
         height: 100vh;
@@ -6,12 +14,20 @@
         top: 0;
         left: 0;
         overflow: hidden;
+        touch-action: none;
+        -ms-touch-action: none;
+        -webkit-overflow-scrolling: none;
+        
     }
 
     #background {
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
+        width: 200%;
+        height: 200%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+  
     }
 
     #cenario,

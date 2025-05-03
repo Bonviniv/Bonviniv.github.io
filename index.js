@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     
     if (isMobile) {
-        window.location.href = 'projects.html';
-        return;
+       // window.location.href = 'projects.html';
+       // return;
     }
 
     function createIndexTextDisplay() {

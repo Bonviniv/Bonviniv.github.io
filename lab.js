@@ -120,12 +120,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Modify keyboard event listeners
-    document.addEventListener('keydown', (e) => {
-        if ((e.key === 'w' || e.key === 'ArrowUp') && currentTrigger?.imagePopup) {
+    // Add event listener for virtual button
+    document.getElementById('btn-up').addEventListener('click', () => {
+        if (currentTrigger?.imagePopup) {
             imagePopup.style.display = 'block';
         }
-        if ((e.key === 's' || e.key === 'ArrowDown') && imagePopup.style.display === 'block') {
+    });
+
+    // Modify keyboard event listeners to handle both physical and virtual inputs
+    document.addEventListener('keydown', (e) => {
+        if ((e.key === 'w' || e.key === 'ArrowUp' || e.target.id === 'btn-up') && currentTrigger?.imagePopup) {
+            imagePopup.style.display = 'block';
+        }
+        if ((e.key === 's' || e.key === 'ArrowDown' || e.target.id === 'btn-down') && imagePopup.style.display === 'block') {
             imagePopup.style.display = 'none';
         }
     });
