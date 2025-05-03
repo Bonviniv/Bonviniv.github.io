@@ -84,7 +84,11 @@ class Personagem {
        
     
         // Get the appropriate collision file or default to Colisoes.json
-        const collisionFile = collisionFiles[currentPage] || 'Colisoes.json';
+        let collisionFile = collisionFiles[currentPage] || 'Colisoes.json';
+
+        if(isMobile){
+            collisionFile = collisionFiles[currentPage] || 'ColisoesMobile.json';
+        }
         
         fetch(collisionFile)
             .then(response => response.json())
