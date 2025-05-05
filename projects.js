@@ -26,7 +26,7 @@ const projects = [
     {
         id: "portfolio",
         title: " Scriptown",
-        description: "My personal website featuring a Pokémon-style demo game designed to introduce myself.                                                            Not yet supported on mobile.",
+        description: "My personal website featuring a Pokémon-style demo game designed to introduce myself.",
         technologies: ["HTML", "CSS", "JavaScript"],
         link: "https://bonviniv.github.io"
     },
