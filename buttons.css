@@ -153,6 +153,7 @@
 
     #controles button:active,
     #controles button.pressed {
+        transform: translateX(-800%);
         background-color: rgba(150, 150, 150, 0.9);
         
     }
