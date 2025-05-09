@@ -69,7 +69,8 @@ class Personagem {
             'index': 'Colisoes.json',
             'lab': 'ColisoesLab.json',
             'casa': 'ColisoesCasa.json',
-            'casa2': 'ColisoesCasa2.json'
+            'casa2': 'ColisoesCasa2.json',
+            'casa2quarto': 'ColisoesCasa2quarto.json'
         };
         if(isMobile){
             // Map pages to their collision files
@@ -77,7 +78,8 @@ class Personagem {
             'index': 'ColisoesMobile.json',
             'lab': 'ColisoesMobileLab.json',
             'casa': 'ColisoesMobileCasa.json',
-            'casa2': 'ColisoesMobileCasa2.json'
+            'casa2': 'ColisoesMobileCasa2.json',
+            'casa2quarto': 'ColisoesMobileCasa2quarto.json'
         };
         }
 
@@ -193,7 +195,8 @@ renderPlayerCollisionBox(container) {
     const currentPage = window.location.pathname.split('/').pop();
     const charWidth = currentPage === 'casa.html' ? 12 * scaleFactor : 8 * scaleFactor;
     const charHeight = currentPage === 'casa.html' ? 15 * scaleFactor : 10 * scaleFactor;
-    
+
+   
     const hitboxElement = document.createElement('div');
     hitboxElement.className = 'character-hitbox';
     
@@ -417,9 +420,12 @@ getPosition() {
         
         // Check current page and set dimensions accordingly
         const currentPage = window.location.pathname.split('/').pop();
-        const charWidth = currentPage === 'casa.html' ? 12 * scaleFactor : 8 * scaleFactor;
-        const charHeight = currentPage === 'casa.html' ? 15 * scaleFactor : 10 * scaleFactor;
+        const charWidth = currentPage === 'casa.html' ||currentPage === 'casa2.html'||currentPage === 'casa2quarto.html' ? 12 * scaleFactor : 8 * scaleFactor;
+        const charHeight = currentPage === 'casa.html'||currentPage === 'casa2.html'||currentPage === 'casa2quarto.html' ? 15 * scaleFactor : 10 * scaleFactor;
         
+         //charWidth = currentPage === 'casa2.html' ? 12 * scaleFactor : 8 * scaleFactor;
+         //charHeight = currentPage === 'casa2.html' ? 15 * scaleFactor : 10 * scaleFactor;
+           
         const hitboxElement = document.createElement('div');
         hitboxElement.className = 'character-hitbox';
         

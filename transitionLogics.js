@@ -7,7 +7,8 @@ class TransitionLogics {
             'index': 'pallet-town',
             'lab': 'lab',
             'casa': 'casa',
-            'casa2': 'casa2'
+            'casa2': 'casa2',
+            'casa2quarto': 'casa2quarto'
         };
         this.currentScenario = scenarioMap[currentPage] || 'pallet-town';
         this.transitionElements = [];

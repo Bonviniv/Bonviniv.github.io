@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     function createCasaTextDisplay() {
         const textDisplay = document.createElement('div');
@@ -43,9 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const existingSpawnPoint = sessionStorage.getItem('spawnPoint');
     if (!existingSpawnPoint) {
         const initialPosition = isMobile() 
-        ? { x: 12, y: 129 }
-        : { x: 13, y: 153 };
-        
+        ? { x:110, y: 20 }
+        : { x:132, y: 52  };
+
+            
         document.dispatchEvent(new CustomEvent('setPlayerPosition', {
             detail: initialPosition
         }));
@@ -117,3 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(simulateDebugKeyPress, 200);
 });
+      
+
+     

@@ -1,0 +1,124 @@
+{
+    "scenario": "casa2quarto",
+    "collisions": [
+      {
+        "x": 143,
+        "y": -33,
+        "width": 14,
+        "height": 204,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 136,
+        "y": -88,
+        "width": 38,
+        "height": 36,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -15,
+        "y": -113,
+        "width": 364,
+        "height": 49,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -152,
+        "y": -66,
+        "width": 87,
+        "height": 49,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -153,
+        "y": -31,
+        "width": 23,
+        "height": 27,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -25,
+        "y": -36,
+        "width": 26,
+        "height": 34,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -51,
+        "y": 19,
+        "width": 42,
+        "height": 53,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -25,
+        "y": 60,
+        "width": 13,
+        "height": 15,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 12,
+        "y": 7,
+        "width": 54,
+        "height": 129,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 43,
+        "y": 40,
+        "width": 14,
+        "height": 65,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 67,
+        "y": 63,
+        "width": 50,
+        "height": 20,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -22,
+        "y": 74,
+        "width": 362,
+        "height": 28,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -150,
+        "y": 56,
+        "width": 19,
+        "height": 22,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -179,
+        "y": 46,
+        "width": 25,
+        "height": 39,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -198,
+        "y": -33,
+        "width": 18,
+        "height": 202,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -26,
+        "y": 54,
+        "width": 15,
+        "height": 24,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 64,
+        "y": 10,
+        "width": 52,
+        "height": 18,
+        "scenario": "casa2quarto"
+      }
+    ]
+  }

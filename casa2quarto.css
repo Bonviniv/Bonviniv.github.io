@@ -51,7 +51,7 @@ body {
     transform: translate(-50%, -50%);
     width: 1920px;
     height: 1080px;
-    background-image: url('assets/images/casa2/cenario/casa2.png');
+    background-image: url('assets/images/casa2quarto/cenario/casa2quarto.png');
     background-repeat: no-repeat;
     background-position: center;
     z-index: 2;
@@ -166,7 +166,7 @@ body {
     transform: translate(-50%, -50%);
     width: 1920px;
     height: 1080px;
-    background-image: url('assets/images/casa2/cenarioOverlay/casa2up.png');
+    background-image: url('assets/images/casa2quarto/cenarioOverlay/casa2quartoup.png');
     background-repeat: no-repeat;
     background-position: center;
     z-index: 11; /* Higher than character (z-index: 3) */

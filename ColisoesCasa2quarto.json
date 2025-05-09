@@ -1,0 +1,166 @@
+{
+    "scenario": "casa2quarto",
+    "collisions": [
+      {
+        "x": 163,
+        "y": -100,
+        "width": 25,
+        "height": 18,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -194,
+        "y": -41,
+        "width": 22,
+        "height": 22,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -193,
+        "y": -86,
+        "width": 92,
+        "height": 50,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -190,
+        "y": 75,
+        "width": 20,
+        "height": 22,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -224,
+        "y": 65,
+        "width": 31,
+        "height": 36,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -30,
+        "y": 75,
+        "width": 25,
+        "height": 20,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -64,
+        "y": 29,
+        "width": 41,
+        "height": 46,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -30,
+        "y": -38,
+        "width": 32,
+        "height": 26,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 80,
+        "y": 79,
+        "width": 62,
+        "height": 15,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 52,
+        "y": 18,
+        "width": 10,
+        "height": 14,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 17,
+        "y": 8,
+        "width": 65,
+        "height": 160,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 182,
+        "y": -42,
+        "width": 15,
+        "height": 253,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -25,
+        "y": 94,
+        "width": 427,
+        "height": 15,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -245,
+        "y": -35,
+        "width": 13,
+        "height": 272,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -34,
+        "y": -139,
+        "width": 438,
+        "height": 61,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 80,
+        "y": 17,
+        "width": 60,
+        "height": 14,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 83,
+        "y": 16,
+        "width": 58,
+        "height": 20,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -30,
+        "y": -43,
+        "width": 31,
+        "height": 35,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -64,
+        "y": 24,
+        "width": 44,
+        "height": 59,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -188,
+        "y": 71,
+        "width": 22,
+        "height": 29,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -223,
+        "y": 60,
+        "width": 34,
+        "height": 52,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": -118,
+        "y": 93,
+        "width": 265,
+        "height": 41,
+        "scenario": "casa2quarto"
+      },
+      {
+        "x": 116,
+        "y": 88,
+        "width": 143,
+        "height": 34,
+        "scenario": "casa2quarto"
+      }
+    ]
+  }

@@ -15,7 +15,15 @@
           "scenarioDestination": "casa",
            "spawn": { "x": 117, "y": -142 }
          }
-       }
+       },
+       {
+           "scenario": "pallet-town",
+            "trigger": { "x": 55, "y": -30, "largura": 30, "altura": 30, "pressing":"up" },
+            "destino": {
+             "scenarioDestination": "casa2",
+              "spawn": { "x": 13, "y": 153 }
+            }
+          }
        ,
        {
         "scenario": "lab",
@@ -36,10 +44,26 @@
        },
        {
         "scenario": "casa2",
-        "trigger": { "x": -4, "y": 147, "largura": 29, "altura": 15, "pressing":"down" },
+        "trigger": { "x": 15, "y": 188, "largura": 54, "altura": 34, "pressing":"down" },
         "destino": {
           "scenarioDestination": "index",
            "spawn": { "x": -48, "y": -34  }
+         }
+       },
+       {
+        "scenario": "casa2",
+        "trigger": { "x": 181, "y": 121, "largura": 54, "altura": 42, "pressing":"right" },
+        "destino": {
+          "scenarioDestination": "casa2quarto",
+           "spawn": { "x": 135, "y": 52  }
+         }
+       },
+       {
+        "scenario": "casa2quarto",
+        "trigger": { "x": 83, "y": 47, "largura": 49, "altura": 46, "pressing":"left" },
+        "destino": {
+          "scenarioDestination": "casa2",
+           "spawn": { "x": 181, "y": 110  }
          }
        }
   ]

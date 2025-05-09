@@ -313,7 +313,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'index': 'pallet-town',
             'lab': 'lab',
             'casa': 'casa',
-            'casa2': 'casa2'
+            'casa2': 'casa2',
+            'casa2quarto': 'casa2quarto'
         };
         const currentScenario = scenarioMap[currentPage] || 'pallet-town';
 
@@ -349,7 +350,8 @@ function loadTexts() {
         'index': 'pallet-town',
         'lab': 'lab',
         'casa': 'casa',
-        'casa2': 'casa2'
+        'casa2': 'casa2',
+        'casa2quarto': 'casa2quarto'
     };
     const currentScenario = scenarioMap[currentPage] || 'pallet-town';
 
