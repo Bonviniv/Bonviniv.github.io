@@ -55,7 +55,7 @@
         "trigger": { "x": 143, "y": 98, "largura": 28, "altura": 35, "pressing":"right" },
         "destino": {
           "scenarioDestination": "casa2quarto",
-           "spawn": { "x": 27, "y": -22 }
+           "spawn": { "x": 110, "y": 20 }
          }
        },
        {
