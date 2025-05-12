@@ -1,0 +1,24 @@
+{
+  "AAPL": {
+    "weekly": [
+      { "date": "2024-02-01", "predicted_price": 185.50 },
+      { "date": "2024-02-08", "predicted_price": 187.25 },
+      { "date": "2024-02-15", "predicted_price": 189.00 }
+    ],
+    "monthly": [
+      { "date": "2024-03-01", "predicted_price": 190.75 },
+      { "date": "2024-04-01", "predicted_price": 192.50 }
+    ]
+  },
+  "GOOGL": {
+    "weekly": [
+      { "date": "2024-02-01", "predicted_price": 142.30 },
+      { "date": "2024-02-08", "predicted_price": 144.50 },
+      { "date": "2024-02-15", "predicted_price": 146.75 }
+    ],
+    "monthly": [
+      { "date": "2024-03-01", "predicted_price": 148.90 },
+      { "date": "2024-04-01", "predicted_price": 151.20 }
+    ]
+  }
+}

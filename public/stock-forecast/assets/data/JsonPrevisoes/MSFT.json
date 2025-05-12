@@ -1,0 +1,51 @@
+{
+  "symbol": "MSFT",
+  "predictionDay": [
+    {
+      "Open": 440.0,
+      "High": 440.739990234375,
+      "Low": 435.8800048828125,
+      "Volume": 15313100,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 412.86
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 440.0,
+      "High": 440.739990234375,
+      "Low": 435.8800048828125,
+      "Volume": 15313100,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 488.69
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 440.0,
+      "High": 440.739990234375,
+      "Low": 435.8800048828125,
+      "Volume": 15313100,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 499.72
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 440.0,
+      "High": 440.739990234375,
+      "Low": 435.8800048828125,
+      "Volume": 15313100,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 475.75
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "symbol": "LLY",
+  "predictionDay": [
+    {
+      "Open": 752.010009765625,
+      "High": 762.010009765625,
+      "Low": 733.0,
+      "Volume": 4069900,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 1192.62
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 752.010009765625,
+      "High": 762.010009765625,
+      "Low": 733.0,
+      "Volume": 4069900,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 1462.11
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 752.010009765625,
+      "High": 762.010009765625,
+      "Low": 733.0,
+      "Volume": 4069900,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 1543.14
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 752.010009765625,
+      "High": 762.010009765625,
+      "Low": 733.0,
+      "Volume": 4069900,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 1758.51
+    }
+  ]
+}
