@@ -61,6 +61,13 @@ const projects = [
         technologies: ["Angular", "TypeScript", "Firebase"],
         link: "tetris.html",
         repoUrl: "https://bonviniv.github.io/tetris.html"
+    }, {
+        id: "stock forecast",
+        title: "stock forecast",
+        description: "Angular app with SCSS styling for real-time stock data, interactive charts, and AI-powered price predictions using Python and machine learning.",
+        technologies: ["Angular", "TypeScript", "Firebase"],
+        link: "stock-forecast.html",
+        repoUrl: "https://bonviniv.github.io/public/stock-forecast/"
     },
     {
         id: "github",

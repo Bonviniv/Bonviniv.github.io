@@ -7,24 +7,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Update favicon links -->
-  <link rel="icon" type="image/png" href="./public/stock-forecast/assets/images/stocksIcon.png">
-  <link rel="apple-touch-icon" href="./public/stock-forecast/assets/images/stocksIcon.png">
-  <link rel="shortcut icon" type="image/png" href="./public/stock-forecast/assets/images/stocksIcon.png">
+  <link rel="icon" type="image/png" href="./assets/images/stocksIcon.png">
+  <link rel="apple-touch-icon" href="./assets/images/stocksIcon.png">
+  <link rel="shortcut icon" type="image/png" href="./assets/images/stocksIcon.png">
   <meta name="theme-color" content="#8b8b8b">
 
   <base href="/public/stock-forecast/">
-  <link rel="stylesheet" href="./styles-XG5JD6XZ.css">
+  <link rel="stylesheet" href="styles-XG5JD6XZ.css">
 </head>
 <body>
   <app-root></app-root>
 
   <script>
     // Configure paths for assets
-    window.assetPath = './assets/';
-    window.dataPath = './assets/data/';
+    window.assetPath = 'assets/';
+    window.dataPath = 'assets/data/';
   </script>
-  <script src="./polyfills-FFHMD2TL.js" type="module"></script>
-  <script src="./main-WEMXMQ7S.js" type="module"></script>
+  <script src="polyfills-FFHMD2TL.js" type="module"></script>
+  <script src="main-WEMXMQ7S.js" type="module"></script>
 </body>
 </html>
 
@@ -43,6 +43,7 @@ ng build --configuration production --base-href /public/stock-forecast/
 cd ..
 
 xcopy /s /y stock-forecast\dist\stock-forecast\browser\* public\stock-forecast\
-xcopy /s /y stock-forecast\src\assets\data\stocksData\* public\stock-forecast\assets\data\stocksData\
-xcopy /s /y stock-forecast\src\assets\data\JsonPrevisoes\* public\stock-forecast\assets\data\JsonPrevisoes\
+
+xcopy /s /y stock-forecast\src\assets\data\stocksData\*.* public\stock-forecast\assets\data\stocksData\
+xcopy /s /y stock-forecast\src\assets\data\JsonPrevisoes\*.* public\stock-forecast\assets\data\JsonPrevisoes\
 copy /y stock-forecast\src\assets\data\stocksList.json public\stock-forecast\assets\data\
