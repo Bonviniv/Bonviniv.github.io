@@ -1,0 +1,51 @@
+{
+  "symbol": "XOM",
+  "predictionDay": [
+    {
+      "Open": 107.13999938964844,
+      "High": 107.75,
+      "Low": 106.37999725341797,
+      "Volume": 10989000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 69.56
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 107.13999938964844,
+      "High": 107.75,
+      "Low": 106.37999725341797,
+      "Volume": 10989000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 79.37
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 107.13999938964844,
+      "High": 107.75,
+      "Low": 106.37999725341797,
+      "Volume": 10989000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 77.39
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 107.13999938964844,
+      "High": 107.75,
+      "Low": 106.37999725341797,
+      "Volume": 10989000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 40.64
+    }
+  ]
+}

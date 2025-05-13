@@ -7,43 +7,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Update favicon links -->
-  <link rel="icon" type="image/png" href="./assets/images/stocksIcon.png">
-  <link rel="apple-touch-icon" href="./assets/images/stocksIcon.png">
-  <link rel="shortcut icon" type="image/png" href="./assets/images/stocksIcon.png">
+  <link rel="icon" type="image/png" href="assets/images/stocksIcon.png">
+  <link rel="apple-touch-icon" href="assets/images/stocksIcon.png">
+  <link rel="shortcut icon" type="image/png" href="assets/images/stocksIcon.png">
   <meta name="theme-color" content="#8b8b8b">
 
   <base href="/public/stock-forecast/">
-  <link rel="stylesheet" href="styles-XG5JD6XZ.css">
+  <link rel="stylesheet" type="text/css" href="styles-XG5JD6XZ.css" media="all">
 </head>
 <body>
   <app-root></app-root>
 
   <script>
-    // Configure paths for assets
-    window.assetPath = 'assets/';
-    window.dataPath = 'assets/data/';
+    // Configure paths for assets and routing
+    window.assetPath = './assets/';
+    window.dataPath = './assets/data/';
+    window.stocksListPath = './assets/data/stocksList.json';
+    window.useHashLocation = true;
+    window.appBaseHref = '/public/stock-forecast/';
   </script>
   <script src="polyfills-FFHMD2TL.js" type="module"></script>
   <script src="main-WEMXMQ7S.js" type="module"></script>
 </body>
 </html>
 
-cd c:\Users\vitor\cloneGit\Bonviniv.github.io
 
-rmdir /s /q public\stock-forecast
-mkdir public\stock-forecast
-mkdir public\stock-forecast\assets
-mkdir public\stock-forecast\assets\data
-mkdir public\stock-forecast\assets\data\stocksData
-mkdir public\stock-forecast\assets\data\JsonPrevisoes
-mkdir public\stock-forecast\assets\images
-
-cd stock-forecast
-ng build --configuration production --base-href /public/stock-forecast/
-cd ..
-
-xcopy /s /y stock-forecast\dist\stock-forecast\browser\* public\stock-forecast\
-
-xcopy /s /y stock-forecast\src\assets\data\stocksData\*.* public\stock-forecast\assets\data\stocksData\
-xcopy /s /y stock-forecast\src\assets\data\JsonPrevisoes\*.* public\stock-forecast\assets\data\JsonPrevisoes\
-copy /y stock-forecast\src\assets\data\stocksList.json public\stock-forecast\assets\data\

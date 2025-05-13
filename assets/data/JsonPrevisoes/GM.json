@@ -1,0 +1,51 @@
+{
+  "symbol": "GM",
+  "predictionDay": [
+    {
+      "Open": 47.560001373291016,
+      "High": 47.970001220703125,
+      "Low": 47.25,
+      "Volume": 8581600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 49.49
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 47.560001373291016,
+      "High": 47.970001220703125,
+      "Low": 47.25,
+      "Volume": 8581600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 58.05
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 47.560001373291016,
+      "High": 47.970001220703125,
+      "Low": 47.25,
+      "Volume": 8581600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 59.16
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 47.560001373291016,
+      "High": 47.970001220703125,
+      "Low": 47.25,
+      "Volume": 8581600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 61.19
+    }
+  ]
+}

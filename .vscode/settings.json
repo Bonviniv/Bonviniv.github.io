@@ -1,3 +1,9 @@
+
 {
-    "liveServer.settings.port": 5502
+    "liveServer.settings.port": 5502,
+    "liveServer.settings.CustomMimeTypes": {
+        ".js": "application/javascript",
+        ".css": "text/css",
+        ".json": "application/json"
+    }
 }

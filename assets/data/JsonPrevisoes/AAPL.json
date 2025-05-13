@@ -1,0 +1,51 @@
+{
+  "symbol": "AAPL",
+  "predictionDay": [
+    {
+      "Open": 199.0,
+      "High": 200.5399932861328,
+      "Low": 197.5399932861328,
+      "Volume": 36415700,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 193.81
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 199.0,
+      "High": 200.5399932861328,
+      "Low": 197.5399932861328,
+      "Volume": 36415700,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 237.48
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 199.0,
+      "High": 200.5399932861328,
+      "Low": 197.5399932861328,
+      "Volume": 36415700,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 252.63
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 199.0,
+      "High": 200.5399932861328,
+      "Low": 197.5399932861328,
+      "Volume": 36415700,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 236.03
+    }
+  ]
+}

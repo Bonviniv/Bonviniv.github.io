@@ -1,0 +1,51 @@
+{
+  "symbol": "WMT",
+  "predictionDay": [
+    {
+      "Open": 96.75,
+      "High": 97.19999694824219,
+      "Low": 96.29000091552734,
+      "Volume": 13692100,
+      "Dividends": 0.235,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 88.92
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 96.75,
+      "High": 97.19999694824219,
+      "Low": 96.29000091552734,
+      "Volume": 13692100,
+      "Dividends": 0.235,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 107.51
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 96.75,
+      "High": 97.19999694824219,
+      "Low": 96.29000091552734,
+      "Volume": 13692100,
+      "Dividends": 0.235,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 114.61
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 96.75,
+      "High": 97.19999694824219,
+      "Low": 96.29000091552734,
+      "Volume": 13692100,
+      "Dividends": 0.235,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 127.83
+    }
+  ]
+}

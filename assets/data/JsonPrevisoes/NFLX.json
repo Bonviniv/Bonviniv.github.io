@@ -1,0 +1,51 @@
+{
+  "symbol": "NFLX",
+  "predictionDay": [
+    {
+      "Open": 1147.0999755859375,
+      "High": 1151.0,
+      "Low": 1133.219970703125,
+      "Volume": 2566600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 472.67
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 1147.0999755859375,
+      "High": 1151.0,
+      "Low": 1133.219970703125,
+      "Volume": 2566600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 567.92
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 1147.0999755859375,
+      "High": 1151.0,
+      "Low": 1133.219970703125,
+      "Volume": 2566600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 599.51
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 1147.0999755859375,
+      "High": 1151.0,
+      "Low": 1133.219970703125,
+      "Volume": 2566600,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 432.59
+    }
+  ]
+}

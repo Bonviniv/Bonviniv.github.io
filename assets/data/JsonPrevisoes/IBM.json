@@ -1,0 +1,51 @@
+{
+  "symbol": "IBM",
+  "predictionDay": [
+    {
+      "Open": 252.50999450683594,
+      "High": 253.0,
+      "Low": 247.63999938964844,
+      "Volume": 2900300,
+      "Dividends": 1.68,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 130.0
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 252.50999450683594,
+      "High": 253.0,
+      "Low": 247.63999938964844,
+      "Volume": 2900300,
+      "Dividends": 1.68,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 151.83
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 252.50999450683594,
+      "High": 253.0,
+      "Low": 247.63999938964844,
+      "Volume": 2900300,
+      "Dividends": 1.68,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 153.79
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 252.50999450683594,
+      "High": 253.0,
+      "Low": 247.63999938964844,
+      "Volume": 2900300,
+      "Dividends": 1.68,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 121.8
+    }
+  ]
+}

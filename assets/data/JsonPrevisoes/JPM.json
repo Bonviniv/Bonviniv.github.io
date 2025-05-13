@@ -1,0 +1,51 @@
+{
+  "symbol": "JPM",
+  "predictionDay": [
+    {
+      "Open": 254.5,
+      "High": 255.50999450683594,
+      "Low": 252.33999633789062,
+      "Volume": 5084000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-10 00:00:00",
+      "Close": 223.17
+    }
+  ],
+  "predictionWeek": [
+    {
+      "Open": 254.5,
+      "High": 255.50999450683594,
+      "Low": 252.33999633789062,
+      "Volume": 5084000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-05-16 00:00:00",
+      "Close": 262.65
+    }
+  ],
+  "predictionMonth": [
+    {
+      "Open": 254.5,
+      "High": 255.50999450683594,
+      "Low": 252.33999633789062,
+      "Volume": 5084000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2025-06-09 00:00:00",
+      "Close": 263.2
+    }
+  ],
+  "predictionYear": [
+    {
+      "Open": 254.5,
+      "High": 255.50999450683594,
+      "Low": 252.33999633789062,
+      "Volume": 5084000,
+      "Dividends": 0.0,
+      "Stock Splits": 0.0,
+      "Date": "2026-05-09 00:00:00",
+      "Close": 282.5
+    }
+  ]
+}
