@@ -27,6 +27,16 @@ class StickyWebBoard {
         this.syncInProgress = false;
         this.realtimeListener = null;
         
+        // Mobile-specific properties
+        this.isMobile = this.detectMobile();
+        this.touchStart = { x: 0, y: 0 };
+        this.lastTap = 0;
+        this.tapDelay = 300;
+        this.doubleTapDelay = 500;
+        this.longPressDelay = 500;
+        this.longPressTimer = null;
+        this.isDragging = false;
+        
         this.init();
     }
 
@@ -67,6 +77,15 @@ class StickyWebBoard {
             },
             postits: []
         };
+    }
+
+    /**
+     * Detecta se está em dispositivo mobile
+     */
+    detectMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+               'ontouchstart' in window || 
+               navigator.maxTouchPoints > 0;
     }
 
     /**
@@ -113,15 +132,16 @@ class StickyWebBoard {
     }
 
     /**
-     * Inicia salvamento automático a cada 30 segundos
+     * Inicia salvamento automático a cada 60 segundos
      */
     startAutoSave() {
         this.autoSaveInterval = setInterval(() => {
-            if (this.hasUnsavedChanges && !this.currentEditingPostit) {
-                // Só salva se não estiver editando um post-it
+            if (this.hasUnsavedChanges && !this.currentEditingPostit && !this.syncInProgress) {
+                // Só salva se não estiver editando um post-it e não estiver em sync
+                console.log('Auto-save: Salvando mudanças...');
                 this.syncWithFirebase();
             }
-        }, 30000); // 30 segundos em vez de 5
+        }, 60000); // 60 segundos para reduzir conflitos
     }
 
     /**
@@ -184,6 +204,12 @@ class StickyWebBoard {
         const darkModeToggle = document.getElementById('darkModeToggle');
         darkModeToggle.addEventListener('click', () => {
             this.toggleDarkMode();
+        });
+
+        // Save button
+        const saveButton = document.getElementById('saveButton');
+        saveButton.addEventListener('click', () => {
+            this.manualSave();
         });
 
         // Zoom controls
@@ -296,7 +322,7 @@ class StickyWebBoard {
 
         // Context menu
         document.addEventListener('contextmenu', (e) => {
-            if (e.target.closest('.postit')) {
+            if (e.target.closest('.postit') && !this.isMobile) {
                 e.preventDefault();
                 this.showContextMenu(e, e.target.closest('.postit'));
             }
@@ -304,15 +330,73 @@ class StickyWebBoard {
 
         // Fecha context menu
         document.addEventListener('click', (e) => {
-            if (!document.getElementById('contextMenu').contains(e.target)) {
+            if (!document.getElementById('contextMenu').contains(e.target) && !e.target.closest('.postit')) {
                 this.hideContextMenu();
             }
         });
+
+        // Touch events para fechar context menu em mobile
+        if (this.isMobile) {
+            document.addEventListener('touchstart', (e) => {
+                if (!document.getElementById('contextMenu').contains(e.target) && !e.target.closest('.postit')) {
+                    this.hideContextMenu();
+                }
+            });
+        }
 
         // Board events
         board.addEventListener('click', (e) => {
             if (e.target === board || e.target === document.getElementById('boardContainer')) {
                 this.clearEditingMode();
+            }
+        });
+
+        // Mobile-specific optimizations
+        if (this.isMobile) {
+            this.setupMobileOptimizations();
+        }
+    }
+
+    /**
+     * Configurações específicas para mobile
+     */
+    setupMobileOptimizations() {
+        // Previne zoom duplo toque
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        // Melhora scrolling em iOS
+        document.addEventListener('touchmove', (e) => {
+            if (e.target.closest('.postit') && this.isDragging) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Orientação
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.updateBoardSize();
+                this.hideContextMenu();
+            }, 100);
+        });
+
+        // Visibilidade da página
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.clearEditingMode();
+                this.hideContextMenu();
             }
         });
     }
@@ -379,9 +463,14 @@ class StickyWebBoard {
         this.renderPostit(newPostit);
         this.checkBoardExpansion(newPostit.position.x, newPostit.position.y, newPostit.size.width, newPostit.size.height);
         
-        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        // Salva imediatamente no localStorage e Firebase
         localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
         this.markUnsavedChanges();
+        
+        // Força salvamento imediato no Firebase
+        if (this.isOnline && this.userDocRef) {
+            this.syncWithFirebase();
+        }
     }
 
     /**
@@ -456,6 +545,33 @@ class StickyWebBoard {
         if (this.isDarkMode) {
             this.applyDarkMode();
         }
+
+        // Otimizações mobile
+        if (this.isMobile) {
+            this.optimizeMobileBoard();
+        }
+    }
+
+    /**
+     * Otimizações específicas para mobile
+     */
+    optimizeMobileBoard() {
+        const board = document.getElementById('board');
+        const boardContainer = document.getElementById('boardContainer');
+        
+        // Melhora performance em mobile
+        board.style.willChange = 'transform';
+        boardContainer.style.willChange = 'transform';
+        
+        // Tamanho mínimo para mobile
+        if (this.boardData.board.width < window.innerWidth) {
+            this.boardData.board.width = window.innerWidth;
+        }
+        if (this.boardData.board.height < window.innerHeight) {
+            this.boardData.board.height = window.innerHeight;
+        }
+        
+        this.updateBoardSize();
     }
 
     /**
@@ -504,6 +620,107 @@ class StickyWebBoard {
     setupPostitEvents(element, postit) {
         const textarea = element.querySelector('.postit-content');
         
+        if (this.isMobile) {
+            // Touch events para mobile
+            this.setupMobilePostitEvents(element, postit, textarea);
+        } else {
+            // Mouse events para desktop
+            this.setupDesktopPostitEvents(element, postit, textarea);
+        }
+
+        // Eventos comuns para ambos
+        textarea.addEventListener('blur', () => {
+            this.savePostitText(postit, textarea.value);
+        });
+
+        textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                textarea.blur();
+            }
+        });
+    }
+
+    /**
+     * Configura eventos mobile para post-it
+     */
+    setupMobilePostitEvents(element, postit, textarea) {
+        let touchStartTime = 0;
+        let touchStartPos = { x: 0, y: 0 };
+        let isLongPress = false;
+        let hasMoved = false;
+
+        // Touch start
+        element.addEventListener('touchstart', (e) => {
+            if (textarea.hasAttribute('readonly')) {
+                e.preventDefault();
+            }
+            
+            touchStartTime = Date.now();
+            const touch = e.touches[0];
+            touchStartPos = { x: touch.clientX, y: touch.clientY };
+            hasMoved = false;
+            isLongPress = false;
+            
+            // Long press timer for context menu
+            this.longPressTimer = setTimeout(() => {
+                if (!hasMoved) {
+                    isLongPress = true;
+                    this.showContextMenu(e, element);
+                    navigator.vibrate && navigator.vibrate(50);
+                }
+            }, this.longPressDelay);
+        }, { passive: false });
+
+        // Touch move
+        element.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+            const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+            
+            if (deltaX > 10 || deltaY > 10) {
+                hasMoved = true;
+                if (this.longPressTimer) {
+                    clearTimeout(this.longPressTimer);
+                    this.longPressTimer = null;
+                }
+                
+                if (textarea.hasAttribute('readonly')) {
+                    this.handleTouchDrag(e, element, postit);
+                }
+            }
+        }, { passive: false });
+
+        // Touch end
+        element.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            
+            if (this.longPressTimer) {
+                clearTimeout(this.longPressTimer);
+                this.longPressTimer = null;
+            }
+            
+            if (this.isDragging) {
+                this.endTouchDrag(e, element, postit);
+                return;
+            }
+            
+            if (isLongPress) {
+                return;
+            }
+            
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            
+            if (!hasMoved && touchDuration < this.tapDelay) {
+                this.handleTap(e, element, postit, textarea);
+            }
+        }, { passive: false });
+    }
+
+    /**
+     * Configura eventos desktop para post-it
+     */
+    setupDesktopPostitEvents(element, postit, textarea) {
         // Modo de edição
         element.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -519,16 +736,95 @@ class StickyWebBoard {
             this.startDrag(e, element, postit);
         });
 
-        // Salva alterações no texto
-        textarea.addEventListener('blur', () => {
-            this.savePostitText(postit, textarea.value);
+        // Context menu
+        element.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            this.showContextMenu(e, element);
         });
+    }
 
-        textarea.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                textarea.blur();
+    /**
+     * Manipula tap em dispositivos mobile
+     */
+    handleTap(e, element, postit, textarea) {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - this.lastTap;
+        
+        if (timeDiff < this.doubleTapDelay) {
+            // Double tap - abre context menu
+            this.showContextMenu(e, element);
+            navigator.vibrate && navigator.vibrate(50);
+        } else {
+            // Single tap - entra em modo de edição
+            this.enterEditMode(element, postit);
+        }
+        
+        this.lastTap = currentTime;
+    }
+
+    /**
+     * Manipula drag em touch
+     */
+    handleTouchDrag(e, element, postit) {
+        if (!this.isDragging) {
+            this.isDragging = true;
+            element.classList.add('dragging');
+            document.body.classList.add('no-select');
+        }
+        
+        const touch = e.touches[0];
+        const board = document.getElementById('board');
+        const boardRect = board.getBoundingClientRect();
+        
+        const x = touch.clientX - boardRect.left - (element.offsetWidth / 2);
+        const y = touch.clientY - boardRect.top - (element.offsetHeight / 2);
+        
+        element.style.left = Math.max(0, x) + 'px';
+        element.style.top = Math.max(0, y) + 'px';
+        
+        // Feedback visual
+        this.checkOverlap(element);
+    }
+
+    /**
+     * Finaliza drag em touch
+     */
+    endTouchDrag(e, element, postit) {
+        this.isDragging = false;
+        element.classList.remove('dragging');
+        document.body.classList.remove('no-select');
+        
+        // Atualiza posição no dados
+        const oldPosition = { ...postit.position };
+        const newX = parseInt(element.style.left);
+        const newY = parseInt(element.style.top);
+        
+        // Só salva se a posição realmente mudou
+        if (oldPosition.x !== newX || oldPosition.y !== newY) {
+            postit.position.x = newX;
+            postit.position.y = newY;
+            
+            // Verifica se precisa expandir o board
+            this.checkBoardExpansion(postit.position.x, postit.position.y, postit.size.width, postit.size.height);
+            
+            this.addToHistory({
+                type: 'move',
+                postit: postit,
+                oldPosition: oldPosition,
+                newPosition: { ...postit.position }
+            });
+            
+            // Salva imediatamente no localStorage e Firebase
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            this.markUnsavedChanges();
+            
+            // Força salvamento imediato no Firebase
+            if (this.isOnline && this.userDocRef) {
+                this.syncWithFirebase();
             }
-        });
+        }
+        
+        this.clearOverlapIndicators();
     }
 
     /**
@@ -726,9 +1022,24 @@ class StickyWebBoard {
         document.getElementById('contextItalicBtn').classList.toggle('active', postit.font.italic);
         
         // Posiciona menu
-        contextMenu.style.left = e.pageX + 'px';
-        contextMenu.style.top = e.pageY + 'px';
+        if (this.isMobile) {
+            // Mobile: centraliza o menu
+            contextMenu.style.left = '50%';
+            contextMenu.style.top = '50%';
+            contextMenu.style.transform = 'translate(-50%, -50%)';
+        } else {
+            // Desktop: posiciona no cursor
+            contextMenu.style.left = e.pageX + 'px';
+            contextMenu.style.top = e.pageY + 'px';
+            contextMenu.style.transform = 'none';
+        }
+        
         contextMenu.classList.add('active');
+        
+        // Adiciona overlay para mobile
+        if (this.isMobile) {
+            this.createContextMenuOverlay();
+        }
         
         this.setupContextMenuEvents();
     }
@@ -789,6 +1100,12 @@ class StickyWebBoard {
             this.toggleTextFormat('italic', 'context');
         };
         
+        // Duplicar post-it
+        document.getElementById('duplicatePostit').onclick = () => {
+            this.duplicatePostit(postit);
+            this.hideContextMenu();
+        };
+        
         // Deletar post-it
         document.getElementById('deletePostit').onclick = () => {
             this.deletePostit(postit);
@@ -802,6 +1119,47 @@ class StickyWebBoard {
     hideContextMenu() {
         document.getElementById('contextMenu').classList.remove('active');
         this.contextMenuTarget = null;
+        this.removeContextMenuOverlay();
+    }
+
+    /**
+     * Cria overlay para context menu em mobile
+     */
+    createContextMenuOverlay() {
+        let overlay = document.getElementById('contextMenuOverlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'contextMenuOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            document.body.appendChild(overlay);
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    this.hideContextMenu();
+                }
+            });
+        }
+    }
+
+    /**
+     * Remove overlay do context menu
+     */
+    removeContextMenuOverlay() {
+        const overlay = document.getElementById('contextMenuOverlay');
+        if (overlay) {
+            overlay.remove();
+        }
     }
 
     /**
@@ -823,9 +1181,82 @@ class StickyWebBoard {
             element.remove();
         }
         
-        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        // Salva imediatamente no localStorage e Firebase
         localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
         this.markUnsavedChanges();
+        
+        // Força salvamento imediato no Firebase
+        if (this.isOnline && this.userDocRef) {
+            this.syncWithFirebase();
+        }
+    }
+
+    /**
+     * Duplica um post-it ao lado do post-it original
+     */
+    duplicatePostit(originalPostit) {
+        // Calcula a posição do novo post-it (primeiro tenta ao lado direito)
+        let newX = originalPostit.position.x + originalPostit.size.width + 10;
+        let newY = originalPostit.position.y;
+        
+        // Se não couber na horizontal, coloca embaixo
+        const boardWidth = this.boardData.board.width;
+        if (newX + originalPostit.size.width > boardWidth) {
+            newX = originalPostit.position.x;
+            newY = originalPostit.position.y + originalPostit.size.height + 10;
+        }
+        
+        // Cria um novo post-it com as mesmas configurações do original
+        const newPostit = {
+            id: this.generateId(), // Usa a função generateId existente
+            text: originalPostit.text,
+            position: {
+                x: newX,
+                y: newY
+            },
+            size: {
+                width: originalPostit.size.width,
+                height: originalPostit.size.height
+            },
+            color: originalPostit.color,
+            textColor: originalPostit.textColor,
+            font: {
+                family: originalPostit.font.family, // Adiciona family que estava faltando
+                size: originalPostit.font.size,
+                bold: originalPostit.font.bold,
+                italic: originalPostit.font.italic
+            },
+            zIndex: this.getMaxZIndex() + 1
+        };
+
+        // Adiciona ao histórico para desfazer
+        this.addToHistory({
+            type: 'create',
+            postit: JSON.parse(JSON.stringify(newPostit))
+        });
+
+        // Adiciona aos dados do board
+        this.boardData.postits.push(newPostit);
+
+        // Verifica se precisa expandir o board
+        this.checkBoardExpansion(
+            newPostit.position.x, 
+            newPostit.position.y, 
+            newPostit.size.width, 
+            newPostit.size.height
+        );
+
+        // Cria o elemento visual
+        this.renderPostit(newPostit);
+
+        // Salva imediatamente no localStorage e Firebase
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
+        
+        // Força salvamento imediato no Firebase
+        if (this.isOnline && this.userDocRef) {
+            this.syncWithFirebase();
+        }
     }
 
     /**
@@ -1044,6 +1475,8 @@ class StickyWebBoard {
             menu.classList.remove('dark-mode');
             contextMenu.classList.remove('dark-mode');
         }
+        
+        this.updateModeIcon();
     }
 
     /**
@@ -1052,12 +1485,62 @@ class StickyWebBoard {
     toggleDarkMode() {
         this.isDarkMode = !this.isDarkMode;
         this.applyDarkMode();
+        this.updateModeIcon();
         
         // Salva preferência no localStorage
         localStorage.setItem('stickyWebDarkMode', this.isDarkMode.toString());
         
         // Marca como não salvo para o auto-save cuidar do Firebase
         this.markUnsavedChanges();
+    }
+
+    /**
+     * Atualiza o ícone do modo noturno/diurno
+     */
+    updateModeIcon() {
+        const modeIcon = document.getElementById('modeIcon');
+        if (modeIcon) {
+            modeIcon.textContent = this.isDarkMode ? '🌙' : '☀️';
+        }
+    }
+
+    /**
+     * Salvamento manual do board
+     */
+    async manualSave() {
+        const saveButton = document.getElementById('saveButton');
+        const saveText = saveButton.querySelector('.save-text');
+        
+        // Feedback visual
+        saveButton.classList.add('saving');
+        saveText.textContent = 'Salvando...';
+        
+        try {
+            await this.syncWithFirebase();
+            
+            // Sucesso
+            saveButton.classList.remove('saving');
+            saveButton.classList.add('saved');
+            saveText.textContent = 'Salvo!';
+            
+            // Volta ao normal após 2 segundos
+            setTimeout(() => {
+                saveButton.classList.remove('saved');
+                saveText.textContent = 'Salvar';
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Erro ao salvar:', error);
+            
+            // Erro
+            saveButton.classList.remove('saving');
+            saveText.textContent = 'Erro';
+            
+            // Volta ao normal após 2 segundos
+            setTimeout(() => {
+                saveText.textContent = 'Salvar';
+            }, 2000);
+        }
     }
 
     /**
@@ -1201,7 +1684,7 @@ class StickyWebBoard {
             if (user) {
                 this.currentUser = user;
                 this.userDocRef = this.db.collection('users').doc(user.uid);
-                this.syncWithFirebase();
+                this.loadInitialDataFromFirebase(); // Carrega dados apenas uma vez
                 this.showStatus('Conectado como: ' + user.email);
             } else {
                 this.currentUser = null;
@@ -1225,7 +1708,29 @@ class StickyWebBoard {
         this.syncInProgress = true;
         
         try {
-            // Carregar dados do Firebase apenas no início
+            // Se há mudanças não salvas, salva no Firebase
+            if (this.hasUnsavedChanges) {
+                await this.saveToFirebase();
+                this.showStatus('Dados salvos na nuvem');
+            }
+            
+        } catch (error) {
+            console.error('Erro ao sincronizar:', error);
+            this.showStatus('Erro na sincronização. Trabalhando offline.');
+        } finally {
+            this.syncInProgress = false;
+        }
+    }
+
+    /**
+     * Carrega dados iniciais do Firebase (apenas no início)
+     */
+    async loadInitialDataFromFirebase() {
+        if (!this.userDocRef || this.syncInProgress) return;
+        
+        this.syncInProgress = true;
+        
+        try {
             const doc = await this.userDocRef.get();
             
             if (doc.exists) {
@@ -1248,12 +1753,11 @@ class StickyWebBoard {
                 await this.saveToFirebase();
             }
             
-            // NÃO configurar listener em tempo real - apenas carrega dados uma vez
-            console.log('Dados carregados. Listener em tempo real desabilitado para evitar recarregamentos.');
+            console.log('Dados iniciais carregados do Firebase');
             
         } catch (error) {
-            console.error('Erro ao sincronizar:', error);
-            this.showStatus('Erro na sincronização. Trabalhando offline.');
+            console.error('Erro ao carregar dados iniciais:', error);
+            this.showStatus('Erro ao carregar dados. Usando dados locais.');
         } finally {
             this.syncInProgress = false;
         }

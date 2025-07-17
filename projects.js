@@ -55,6 +55,14 @@ const projects = [
         repoUrl: "https://bonviniv.github.io/StackHunt.html"
     },
     {
+        id: "stickyweb",
+        title: "StickyWeb Board",
+        description: "Interactive digital sticky note board with real-time collaboration, drag-and-drop functionality, customizable post-its, dark mode, and cloud synchronization for team productivity.",
+        technologies: ["HTML", "CSS", "JavaScript", "Firebase"],
+        link: "stickyweblogin.html",
+        repoUrl: "https://bonviniv.github.io/stickyweblogin.html"
+    },
+    {
         id: "tetris",
         title: "Tetris",
         description: "Classic Tetris game with modern features, including a cloud-hosted leaderboard and mobile-exclusive control modes: one emulating a classic Game Boy layout and another using modern touch gesture controls.",
