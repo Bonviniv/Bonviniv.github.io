@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickyWeb Board - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Aptos Corpus', Arial, sans-serif;
+            background: linear-gradient(135deg, #2d4a3d 0%, #1a2f22 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2d4a3d;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #2d4a3d;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #2d4a3d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            background-color: #1a2f22;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .divider {
+            margin: 20px 0;
+            text-align: center;
+            color: #666;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">StickyWeb Board</div>
+        <div class="subtitle">Entre na sua conta para acessar seus post-its</div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="successMessage" class="success-message" style="display: none;"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <button type="submit" class="btn" id="loginBtn">Entrar</button>
+        </form>
+        
+        <div class="divider">ou</div>
+        
+        <button class="btn btn-secondary" id="registerBtn">Criar Nova Conta</button>
+        
+        <div id="registerForm" style="display: none;">
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="registerPassword">Senha</label>
+                <input type="password" id="registerPassword" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" required>
+            </div>
+            
+            <button type="button" class="btn" id="createAccountBtn">Criar Conta</button>
+            <button type="button" class="btn btn-secondary" id="backToLoginBtn">Voltar ao Login</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration (substitua pelas suas credenciais)
+        const firebaseConfig = {
+    apiKey: "AIzaSyCLUujntkLscM6NPapltZtTM2bhxAR2Yqg",
+    authDomain: "stickyweb69420.firebaseapp.com",
+    projectId: "stickyweb69420",
+    storageBucket: "stickyweb69420.appspot.com",
+    messagingSenderId: "527593371138",
+    appId: "1:527593371138:web:94a24a812d703dc341991b"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Elementos do DOM
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const backToLoginBtn = document.getElementById('backToLoginBtn');
+        const createAccountBtn = document.getElementById('createAccountBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        // Verificar se usuário já está logado
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Usuário logado, redirecionar para o board
+                window.location.href = 'stickyweb.html';
+            }
+        });
+
+        // Alternar entre login e registro
+        registerBtn.addEventListener('click', () => {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            registerBtn.style.display = 'none';
+            clearMessages();
+        });
+
+        backToLoginBtn.addEventListener('click', () => {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            registerBtn.style.display = 'block';
+            clearMessages();
+        });
+
+        // Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                setLoading(true);
+                clearMessages();
+                
+                await auth.signInWithEmailAndPassword(email, password);
+                showSuccess('Login realizado com sucesso!');
+                
+                // Redirecionar será feito pelo onAuthStateChanged
+            } catch (error) {
+                showError(getErrorMessage(error.code));
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Criar conta
+        createAccountBtn.addEventListener('click', async () => {
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showError('As senhas não coincidem');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+            
+            try {
+                setLoading(true);
+                clearMessages();
+                
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Criar documento do usuário no Firestore
+                await db.collection('users').doc(user.uid).set({
+                    email: user.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    boardData: {
+                        board: {
+                            backgroundColor: "#2d4a3d",
+                            width: 2000,
+                            height: 1500,
+                            showScrollbars: false
+                        },
+                        userPreferences: {
+                            lastFontFamily: "Aptos Corpus",
+                            lastFontSize: 16,
+                            lastPostitColor: "#ffeb3b",
+                            lastTextColor: "#222222",
+                            lastBold: false,
+                            lastItalic: false
+                        },
+                        postits: []
+                    }
+                });
+                
+                showSuccess('Conta criada com sucesso!');
+                
+                // Redirecionar será feito pelo onAuthStateChanged
+            } catch (error) {
+                showError(getErrorMessage(error.code));
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Funções auxiliares
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function clearMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        function setLoading(loading) {
+            const container = document.querySelector('.login-container');
+            if (loading) {
+                container.classList.add('loading');
+            } else {
+                container.classList.remove('loading');
+            }
+        }
+
+        function getErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/user-not-found':
+                    return 'Usuário não encontrado';
+                case 'auth/wrong-password':
+                    return 'Senha incorreta';
+                case 'auth/email-already-in-use':
+                    return 'Este email já está em uso';
+                case 'auth/invalid-email':
+                    return 'Email inválido';
+                case 'auth/weak-password':
+                    return 'Senha muito fraca';
+                default:
+                    return 'Erro: ' + errorCode;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickyWeb Board</title>
+    <link rel="stylesheet" href="stickywebStyle.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>StickyWeb Board</h1>
+            <div style="display: flex; align-items: center;">
+                <div class="dark-mode-toggle">
+                    <label>Modo Noturno</label>
+                    <div class="toggle-switch" id="darkModeToggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="menu" id="menu">
+            <div class="menu-section">
+                <h3>Novo Post-it</h3>
+                <button class="btn btn-primary" id="createPostit">Criar Post-it</button>
+                
+                <div class="postit-preview" id="postitPreview">
+                    <div class="preview-postit">
+                        <textarea class="preview-content" readonly>Seu texto ficará assim</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Próximo Post-it</h3>
+                <label for="nextPostitColor">Cor do Post-it:</label>
+                <input type="color" id="nextPostitColor" value="#ffeb3b">
+                
+                <label for="nextTextColor">Cor do Texto:</label>
+                <input type="color" id="nextTextColor" value="#222222">
+                
+                <label for="nextFontSize">Tamanho da Fonte:</label>
+                <input type="range" id="nextFontSize" min="10" max="36" value="16">
+                <span id="fontSizeValue">16px</span>
+                
+                <label for="nextFontFamily">Fonte:</label>
+                <select id="nextFontFamily">
+                    <option value="Aptos Corpus">Aptos Corpus</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                </select>
+                
+                <label>Formatação:</label>
+                <div class="text-format-controls">
+                    <button class="format-btn" id="nextBoldBtn" type="button">B</button>
+                    <button class="format-btn" id="nextItalicBtn" type="button">I</button>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Board</h3>
+                <label for="boardColor">Cor do Board:</label>
+                <input type="color" id="boardColor" value="#2d4a3d">
+                
+                <label>
+                    <input type="checkbox" id="showScrollbars"> Mostrar Scrollbars
+                </label>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Ações</h3>
+                <button class="btn btn-secondary" id="exportJson">Exportar JSON</button>
+                <button class="btn btn-secondary" id="importJson">Importar JSON</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+                <button class="btn btn-secondary" id="undoAction">Desfazer</button>
+                <button class="btn btn-secondary" id="redoAction">Refazer</button>
+                <button class="btn btn-danger" id="logout">Sair</button>
+            </div>
+            
+            <div class="menu-section">
+                <h3>Status</h3>
+                <div id="status" class="status-message"></div>
+            </div>
+        </nav>
+        
+        <main class="board" id="board">
+            <div class="board-container" id="boardContainer">
+                <!-- Post-its serão inseridos aqui dinamicamente -->
+            </div>
+        </main>
+        
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomOut">-</button>
+            <div class="zoom-level" id="zoomLevel">100%</div>
+            <button class="zoom-btn" id="zoomIn">+</button>
+        </div>
+        
+        <div class="context-menu" id="contextMenu">
+            <div class="context-menu-section">
+                <h4>Personalizar Post-it</h4>
+                <label for="contextPostitColor">Cor do Post-it:</label>
+                <input type="color" id="contextPostitColor">
+                
+                <label for="contextTextColor">Cor do Texto:</label>
+                <input type="color" id="contextTextColor">
+                
+                <label for="contextFontSize">Tamanho da Fonte:</label>
+                <input type="range" id="contextFontSize" min="10" max="36">
+                <span id="contextFontSizeValue">16px</span>
+                
+                <label for="contextPostitSize">Tamanho do Post-it:</label>
+                <input type="range" id="contextPostitSize" min="120" max="300" value="180">
+                <span id="contextPostitSizeValue">180px</span>
+                
+                <label>Formatação:</label>
+                <div class="text-format-controls">
+                    <button class="format-btn" id="contextBoldBtn" type="button">B</button>
+                    <button class="format-btn" id="contextItalicBtn" type="button">I</button>
+                </div>
+                
+                <button class="btn btn-danger" id="deletePostit">Deletar Post-it</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Configuração do Firebase (dados reais do projeto)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLUujntkLscM6NPapltZtTM2bhxAR2Yqg",
+            authDomain: "stickyweb69420.firebaseapp.com",
+            projectId: "stickyweb69420",
+            storageBucket: "stickyweb69420.appspot.com",
+            messagingSenderId: "527593371138",
+            appId: "1:527593371138:web:COLOQUE_SEU_APP_ID_AQUI"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="stickywebScript.js"></script>
+</body>
+</html>

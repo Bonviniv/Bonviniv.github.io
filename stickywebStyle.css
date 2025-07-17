@@ -1,0 +1,731 @@
+/* Reset e configurações globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Aptos Corpus', Arial, sans-serif;
+    background-color: #2d4a3d;
+    overflow: hidden;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.header.dark-mode {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.header h1 {
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.header.dark-mode h1 {
+    color: #ffffff;
+}
+
+/* Dark mode toggle */
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.dark-mode-toggle label {
+    font-size: 14px;
+    margin-right: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.header.dark-mode .dark-mode-toggle label {
+    color: #ffffff;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-switch.active {
+    background-color: #007bff;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.toggle-switch.active .toggle-slider {
+    transform: translateX(25px);
+}
+
+/* Menu toggle (sandwich) */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Menu sandwich animação */
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Menu lateral */
+.menu {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 80px 20px 20px;
+    overflow-y: auto;
+    transition: right 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    z-index: 999;
+}
+
+.menu.dark-mode {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+.menu.active {
+    right: 0;
+}
+
+.menu-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.menu.dark-mode .menu-section {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.menu-section h3 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.menu.dark-mode .menu-section h3 {
+    color: #ffffff;
+}
+
+.menu-section h4 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu.dark-mode .menu-section h4 {
+    color: #ffffff;
+}
+
+.menu-section label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu.dark-mode .menu-section label {
+    color: #cccccc;
+}
+
+.menu-section input[type="color"],
+.menu-section input[type="range"],
+.menu-section select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.menu.dark-mode .menu-section input[type="color"],
+.menu.dark-mode .menu-section input[type="range"],
+.menu.dark-mode .menu-section select {
+    background-color: #4a4a4a;
+    border-color: #666;
+    color: #ffffff;
+}
+
+.menu-section input[type="color"] {
+    height: 40px;
+    cursor: pointer;
+}
+
+.menu-section input[type="range"] {
+    width: 80%;
+    margin-right: 10px;
+}
+
+.menu-section select {
+    background-color: white;
+    cursor: pointer;
+}
+
+.menu.dark-mode .menu-section select {
+    background-color: #4a4a4a;
+}
+
+/* Botões */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Board */
+.board {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    background-color: #2d4a3d;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(0,0,0,0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 50%, rgba(0,0,0,0.1) 1px, transparent 1px),
+        radial-gradient(circle at 40% 20%, rgba(0,0,0,0.08) 1px, transparent 1px),
+        radial-gradient(circle at 60% 80%, rgba(0,0,0,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 
+        60px 60px,
+        80px 80px,
+        40px 40px,
+        70px 70px,
+        20px 20px,
+        20px 20px;
+    background-position: 
+        0 0,
+        10px 10px,
+        20px 20px,
+        30px 30px,
+        0 0,
+        0 0;
+    transition: background-color 0.3s ease;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.2);
+}
+
+/* Ocultar scrollbars por padrão */
+.board::-webkit-scrollbar {
+    display: none;
+}
+
+.board {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Mostrar scrollbars quando habilitadas */
+.board.show-scrollbars::-webkit-scrollbar {
+    display: block;
+    width: 12px;
+    height: 12px;
+}
+
+.board.show-scrollbars::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.board.show-scrollbars::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.board.show-scrollbars::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+.board.show-scrollbars {
+    -ms-overflow-style: auto;
+    scrollbar-width: thin;
+}
+
+.board-container {
+    position: relative;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+/* Zoom controls */
+.zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.zoom-btn:hover {
+    background-color: #0056b3;
+}
+
+.zoom-level {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Post-its */
+.postit {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background-color: #ffeb3b;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: move;
+    user-select: none;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.postit:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.postit.editing {
+    border: 2px dashed #007bff;
+    z-index: 10;
+}
+
+.postit.overlapping {
+    border: 2px solid #8b0000;
+    z-index: 5;
+}
+
+.postit.dragging {
+    transform: rotate(5deg);
+    z-index: 100;
+}
+
+.postit-content {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border: none;
+    background: transparent;
+    resize: none;
+    font-family: inherit;
+    font-size: 16px;
+    color: #222222;
+    border-radius: 8px;
+    outline: none;
+    overflow-wrap: break-word;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.postit-content:focus {
+    outline: none;
+}
+
+/* Menu de contexto */
+.context-menu {
+    position: absolute;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    min-width: 250px;
+    display: none;
+    z-index: 1000;
+    border: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.context-menu.dark-mode {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.context-menu.active {
+    display: block;
+}
+
+.context-menu-section {
+    margin-bottom: 15px;
+}
+
+.context-menu-section:last-child {
+    margin-bottom: 0;
+}
+
+.context-menu-section h4 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.context-menu.dark-mode .context-menu-section h4 {
+    color: #ffffff;
+}
+
+.context-menu-section label {
+    display: block;
+    margin: 8px 0 4px;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.context-menu.dark-mode .context-menu-section label {
+    color: #cccccc;
+}
+
+.context-menu-section input[type="color"],
+.context-menu-section input[type="range"] {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.context-menu.dark-mode .context-menu-section input[type="color"],
+.context-menu.dark-mode .context-menu-section input[type="range"] {
+    background-color: #4a4a4a;
+    border-color: #666;
+}
+
+.context-menu-section input[type="color"] {
+    height: 35px;
+    cursor: pointer;
+}
+
+.context-menu-section input[type="range"] {
+    width: 70%;
+    margin-right: 10px;
+}
+
+.context-menu-section .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+/* Text formatting buttons */
+.text-format-controls {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.format-btn {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.format-btn:hover {
+    background-color: #e9ecef;
+}
+
+.format-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.menu.dark-mode .format-btn {
+    background-color: #4a4a4a;
+    border-color: #666;
+    color: #ffffff;
+}
+
+.menu.dark-mode .format-btn:hover {
+    background-color: #555;
+}
+
+.context-menu.dark-mode .format-btn {
+    background-color: #4a4a4a;
+    border-color: #666;
+    color: #ffffff;
+}
+
+.context-menu.dark-mode .format-btn:hover {
+    background-color: #555;
+}
+
+/* Preview do post-it */
+.postit-preview {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.menu.dark-mode .postit-preview {
+    background-color: #2a2a2a;
+}
+
+/* Status Message */
+.status-message {
+    background: var(--accent-color);
+    color: var(--text-color);
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.status-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dark-mode .status-message {
+    background: var(--accent-color-dark);
+    color: var(--text-color-dark);
+}
+
+.preview-postit {
+    width: 120px;
+    height: 120px;
+    background-color: #ffeb3b;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.preview-content {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    resize: none;
+    font-family: 'Aptos Corpus', Arial, sans-serif;
+    font-size: 12px;
+    color: #222222;
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .menu {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .header h1 {
+        font-size: 20px;
+    }
+    
+    .postit {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .context-menu {
+        min-width: 200px;
+    }
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.postit {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Foco para navegação por teclado */
+.menu-toggle:focus,
+.btn:focus,
+input:focus,
+select:focus,
+.postit:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Indicadores visuais */
+.font-size-indicator,
+.postit-size-indicator {
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+}
+
+/* Overlay para fechar menu */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    display: block;
+}
