@@ -25,6 +25,7 @@ class StickyWebBoard {
         this.isOnline = navigator.onLine;
         this.pendingSync = false;
         this.syncInProgress = false;
+        this.realtimeListener = null;
         
         this.init();
     }
@@ -77,6 +78,12 @@ class StickyWebBoard {
             if (saved) {
                 this.boardData = { ...this.getDefaultBoardData(), ...JSON.parse(saved) };
             }
+            
+            // Carrega preferências do modo noturno
+            const darkModePreference = localStorage.getItem('stickyWebDarkMode');
+            if (darkModePreference === 'true') {
+                this.isDarkMode = true;
+            }
         } catch (error) {
             console.error('Erro ao carregar dados do board:', error);
             this.boardData = this.getDefaultBoardData();
@@ -87,6 +94,8 @@ class StickyWebBoard {
      * Salva dados no localStorage e Firebase
      */
     async saveBoardData() {
+        if (!this.hasUnsavedChanges) return;
+        
         try {
             // Salvar localmente primeiro
             localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
@@ -104,14 +113,15 @@ class StickyWebBoard {
     }
 
     /**
-     * Inicia salvamento automático a cada 5 segundos
+     * Inicia salvamento automático a cada 30 segundos
      */
     startAutoSave() {
         this.autoSaveInterval = setInterval(() => {
-            if (this.hasUnsavedChanges) {
-                this.saveBoardData();
+            if (this.hasUnsavedChanges && !this.currentEditingPostit) {
+                // Só salva se não estiver editando um post-it
+                this.syncWithFirebase();
             }
-        }, 5000);
+        }, 30000); // 30 segundos em vez de 5
     }
 
     /**
@@ -120,9 +130,13 @@ class StickyWebBoard {
     setupBeforeUnload() {
         window.addEventListener('beforeunload', (e) => {
             if (this.hasUnsavedChanges) {
-                this.saveBoardData();
-                e.preventDefault();
-                e.returnValue = '';
+                // Salva dados de forma síncrona
+                localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+                
+                // Tenta salvar no Firebase se possível
+                if (this.isOnline && this.userDocRef) {
+                    this.syncWithFirebase();
+                }
             }
         });
     }
@@ -194,24 +208,28 @@ class StickyWebBoard {
             document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
             this.boardData.userPreferences.lastFontSize = parseInt(e.target.value);
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
         document.getElementById('nextPostitColor').addEventListener('change', (e) => {
             this.boardData.userPreferences.lastPostitColor = e.target.value;
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
         document.getElementById('nextTextColor').addEventListener('change', (e) => {
             this.boardData.userPreferences.lastTextColor = e.target.value;
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
         document.getElementById('nextFontFamily').addEventListener('change', (e) => {
             this.boardData.userPreferences.lastFontFamily = e.target.value;
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
@@ -219,17 +237,22 @@ class StickyWebBoard {
         document.getElementById('nextBoldBtn').addEventListener('click', () => {
             this.toggleTextFormat('bold', 'next');
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            this.markUnsavedChanges();
         });
 
         document.getElementById('nextItalicBtn').addEventListener('click', () => {
             this.toggleTextFormat('italic', 'next');
             this.updatePreview();
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            this.markUnsavedChanges();
         });
 
         // Cor do board
         document.getElementById('boardColor').addEventListener('change', (e) => {
             this.boardData.board.backgroundColor = e.target.value;
             this.updateBoardBackground(e.target.value);
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
@@ -237,6 +260,7 @@ class StickyWebBoard {
         document.getElementById('showScrollbars').addEventListener('change', (e) => {
             this.boardData.board.showScrollbars = e.target.checked;
             this.toggleScrollbars(e.target.checked);
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         });
 
@@ -354,6 +378,9 @@ class StickyWebBoard {
         this.boardData.postits.push(newPostit);
         this.renderPostit(newPostit);
         this.checkBoardExpansion(newPostit.position.x, newPostit.position.y, newPostit.size.width, newPostit.size.height);
+        
+        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
         this.markUnsavedChanges();
     }
 
@@ -424,6 +451,11 @@ class StickyWebBoard {
         // Atualiza controles do menu
         this.updateMenuControls();
         this.updatePreview();
+        
+        // Aplica modo noturno se estava salvo
+        if (this.isDarkMode) {
+            this.applyDarkMode();
+        }
     }
 
     /**
@@ -535,6 +567,8 @@ class StickyWebBoard {
      */
     savePostitText(postit, newText) {
         const oldText = postit.text;
+        if (oldText === newText) return; // Não salva se não mudou
+        
         postit.text = newText;
         
         this.addToHistory({
@@ -544,7 +578,9 @@ class StickyWebBoard {
             newText: newText
         });
         
-        this.saveBoardData();
+        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
     }
 
     /**
@@ -601,22 +637,31 @@ class StickyWebBoard {
         
         // Atualiza posição no dados
         const oldPosition = { ...postit.position };
-        postit.position.x = parseInt(element.style.left);
-        postit.position.y = parseInt(element.style.top);
+        const newX = parseInt(element.style.left);
+        const newY = parseInt(element.style.top);
         
-        // Verifica se precisa expandir o board
-        this.checkBoardExpansion(postit.position.x, postit.position.y, postit.size.width, postit.size.height);
-        
-        this.addToHistory({
-            type: 'move',
-            postit: postit,
-            oldPosition: oldPosition,
-            newPosition: { ...postit.position }
-        });
+        // Só salva se a posição realmente mudou
+        if (oldPosition.x !== newX || oldPosition.y !== newY) {
+            postit.position.x = newX;
+            postit.position.y = newY;
+            
+            // Verifica se precisa expandir o board
+            this.checkBoardExpansion(postit.position.x, postit.position.y, postit.size.width, postit.size.height);
+            
+            this.addToHistory({
+                type: 'move',
+                postit: postit,
+                oldPosition: oldPosition,
+                newPosition: { ...postit.position }
+            });
+            
+            // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            this.markUnsavedChanges();
+        }
         
         this.clearOverlapIndicators();
         this.draggedPostit = null;
-        this.markUnsavedChanges();
     }
 
     /**
@@ -700,6 +745,7 @@ class StickyWebBoard {
         document.getElementById('contextPostitColor').onchange = (e) => {
             postit.color = e.target.value;
             element.style.backgroundColor = e.target.value;
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         };
         
@@ -707,6 +753,7 @@ class StickyWebBoard {
         document.getElementById('contextTextColor').onchange = (e) => {
             postit.textColor = e.target.value;
             element.querySelector('.postit-content').style.color = e.target.value;
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         };
         
@@ -716,6 +763,7 @@ class StickyWebBoard {
             postit.font.size = size;
             element.querySelector('.postit-content').style.fontSize = size + 'px';
             document.getElementById('contextFontSizeValue').textContent = size + 'px';
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         };
         
@@ -728,6 +776,7 @@ class StickyWebBoard {
             element.style.height = size + 'px';
             document.getElementById('contextPostitSizeValue').textContent = size + 'px';
             this.checkBoardExpansion(postit.position.x, postit.position.y, size, size);
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         };
         
@@ -774,7 +823,9 @@ class StickyWebBoard {
             element.remove();
         }
         
-        this.saveBoardData();
+        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
     }
 
     /**
@@ -838,7 +889,9 @@ class StickyWebBoard {
                 break;
         }
         
-        this.saveBoardData();
+        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
     }
 
     /**
@@ -865,7 +918,9 @@ class StickyWebBoard {
                 break;
         }
         
-        this.saveBoardData();
+        // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
     }
 
     /**
@@ -970,10 +1025,9 @@ class StickyWebBoard {
     }
 
     /**
-     * Alterna modo escuro
+     * Aplica o modo noturno nos elementos da interface
      */
-    toggleDarkMode() {
-        this.isDarkMode = !this.isDarkMode;
+    applyDarkMode() {
         const toggle = document.getElementById('darkModeToggle');
         const header = document.querySelector('.header');
         const menu = document.getElementById('menu');
@@ -990,6 +1044,20 @@ class StickyWebBoard {
             menu.classList.remove('dark-mode');
             contextMenu.classList.remove('dark-mode');
         }
+    }
+
+    /**
+     * Alterna modo escuro
+     */
+    toggleDarkMode() {
+        this.isDarkMode = !this.isDarkMode;
+        this.applyDarkMode();
+        
+        // Salva preferência no localStorage
+        localStorage.setItem('stickyWebDarkMode', this.isDarkMode.toString());
+        
+        // Marca como não salvo para o auto-save cuidar do Firebase
+        this.markUnsavedChanges();
     }
 
     /**
@@ -1068,6 +1136,7 @@ class StickyWebBoard {
                 prefs.lastItalic = !prefs.lastItalic;
                 document.getElementById('nextItalicBtn').classList.toggle('active', prefs.lastItalic);
             }
+            // Não marca mudanças não salvas para preferências
         } else if (context === 'context' && this.contextMenuTarget) {
             const postit = this.contextMenuTarget.postit;
             const element = this.contextMenuTarget.element;
@@ -1083,6 +1152,8 @@ class StickyWebBoard {
                 textarea.style.fontStyle = postit.font.italic ? 'italic' : 'normal';
             }
             
+            // Salva apenas no localStorage, Firebase será salvo pelo auto-save
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.markUnsavedChanges();
         }
     }
@@ -1136,8 +1207,9 @@ class StickyWebBoard {
                 this.currentUser = null;
                 this.userDocRef = null;
                 this.showStatus('Trabalhando offline');
-                // Redirecionar para login se não estiver autenticado
-                if (!window.location.pathname.includes('stickyweblogin.html')) {
+                // Só redireciona se não estiver já na página de login
+                if (!window.location.pathname.includes('stickyweblogin.html') && 
+                    !window.location.pathname.includes('stickyweb.html')) {
                     window.location.href = 'stickyweblogin.html';
                 }
             }
@@ -1153,7 +1225,7 @@ class StickyWebBoard {
         this.syncInProgress = true;
         
         try {
-            // Carregar dados do Firebase
+            // Carregar dados do Firebase apenas no início
             const doc = await this.userDocRef.get();
             
             if (doc.exists) {
@@ -1162,24 +1234,22 @@ class StickyWebBoard {
                     this.boardData = userData.boardData;
                     this.renderBoard();
                     this.applyBoardSettings();
-                    this.showStatus('Dados sincronizados com sucesso');
+                    this.showStatus('Dados carregados da nuvem');
+                }
+                
+                // Carrega preferência do modo noturno do Firebase
+                if (userData.preferences && userData.preferences.darkMode !== undefined) {
+                    this.isDarkMode = userData.preferences.darkMode;
+                    this.applyDarkMode();
+                    localStorage.setItem('stickyWebDarkMode', this.isDarkMode.toString());
                 }
             } else {
                 // Primeira vez do usuário - criar documento
                 await this.saveToFirebase();
             }
             
-            // Configurar listener para mudanças em tempo real
-            this.userDocRef.onSnapshot(doc => {
-                if (doc.exists && !this.syncInProgress) {
-                    const userData = doc.data();
-                    if (userData.boardData) {
-                        this.boardData = userData.boardData;
-                        this.renderBoard();
-                        this.applyBoardSettings();
-                    }
-                }
-            });
+            // NÃO configurar listener em tempo real - apenas carrega dados uma vez
+            console.log('Dados carregados. Listener em tempo real desabilitado para evitar recarregamentos.');
             
         } catch (error) {
             console.error('Erro ao sincronizar:', error);
@@ -1193,13 +1263,16 @@ class StickyWebBoard {
      * Salva dados no Firebase
      */
     async saveToFirebase() {
-        if (!this.userDocRef || !this.currentUser) return;
+        if (!this.userDocRef || !this.currentUser || this.syncInProgress) return;
         
         try {
             const userData = {
                 email: this.currentUser.email,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                boardData: this.boardData
+                lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+                boardData: this.boardData,
+                preferences: {
+                    darkMode: this.isDarkMode
+                }
             };
             
             await this.userDocRef.set(userData, { merge: true });
@@ -1213,14 +1286,29 @@ class StickyWebBoard {
     }
 
     /**
+     * Aplica configurações do board carregadas
+     */
+    applyBoardSettings() {
+        // Aplica zoom se estava salvo
+        if (this.boardData.userPreferences && this.boardData.userPreferences.zoomLevel) {
+            this.zoomLevel = this.boardData.userPreferences.zoomLevel;
+            this.applyZoom();
+        }
+        
+        // Atualiza controles do menu
+        this.updateMenuControls();
+    }
+
+    /**
      * Configura monitoramento de status da rede
      */
     setupNetworkStatus() {
         window.addEventListener('online', () => {
             this.isOnline = true;
             this.showStatus('Conectado à internet');
-            if (this.pendingSync) {
+            if (this.pendingSync && this.hasUnsavedChanges) {
                 this.saveToFirebase();
+                this.pendingSync = false;
             }
         });
 
@@ -1253,6 +1341,18 @@ class StickyWebBoard {
     async logout() {
         if (this.auth) {
             try {
+                // Limpa o listener em tempo real
+                if (this.realtimeListener) {
+                    this.realtimeListener();
+                    this.realtimeListener = null;
+                }
+                
+                // Limpa o intervalo de auto-save
+                if (this.autoSaveInterval) {
+                    clearInterval(this.autoSaveInterval);
+                    this.autoSaveInterval = null;
+                }
+                
                 await this.auth.signOut();
                 window.location.href = 'stickyweblogin.html';
             } catch (error) {
