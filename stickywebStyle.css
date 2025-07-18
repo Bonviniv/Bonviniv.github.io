@@ -46,512 +46,22 @@ body {
     color: #ffffff;
 }
 
-/* Save Button */
-.save-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.save-button:hover {
-    background-color: #218838;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.save-button:active {
-    transform: translateY(0);
-}
-
-.save-button.saving {
-    background-color: #ffc107;
-    cursor: not-allowed;
-}
-
-.save-button.saved {
-    background-color: #28a745;
-    animation: pulse 0.5s ease-in-out;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.save-icon {
-    font-size: 16px;
-}
-
-.save-text {
-    font-size: 14px;
-}
-
-/* Dark mode styles for save button */
-.header.dark-mode .save-button {
-    background-color: #198754;
-    color: white;
-}
-
-.header.dark-mode .save-button:hover {
-    background-color: #157347;
-}
-
-.header.dark-mode .save-button.saving {
-    background-color: #fd7e14;
-}
-
-/* ============================================
-   MOBILE RESPONSIVE STYLES
-============================================ */
-
-/* Mobile viewport meta tag should be added to HTML */
-@media screen and (max-width: 768px) {
-    /* Header adjustments for mobile */
-    .header {
-        padding: 10px 15px;
-        flex-wrap: wrap;
-    }
-    
-    .header h1 {
-        font-size: 20px;
-        margin: 0;
-    }
-    
-    .header > div {
-        gap: 10px !important;
-    }
-    
-    /* Save button mobile optimization */
-    .save-button {
-        padding: 6px 10px;
-        font-size: 12px;
-        min-height: 32px;
-        min-width: 70px;
-    }
-    
-    .save-text {
-        font-size: 12px;
-    }
-    
-    .save-icon {
-        font-size: 14px;
-    }
-    
-    /* Toggle switch mobile */
-    .toggle-switch {
-        width: 45px;
-        height: 22px;
-    }
-    
-    .toggle-slider {
-        width: 18px;
-        height: 18px;
-        top: 2px;
-        left: 2px;
-    }
-    
-    .toggle-switch.active .toggle-slider {
-        transform: translateX(23px);
-    }
-    
-    .mode-icon {
-        font-size: 14px;
-    }
-    
-    /* Menu toggle mobile */
-    .menu-toggle {
-        padding: 8px;
-    }
-    
-    .menu-toggle span {
-        width: 20px;
-        height: 2px;
-    }
-    
-    /* Menu mobile */
-    .menu {
-        width: 100%;
-        max-width: 100%;
-        right: 0;
-        left: 0;
-        top: 60px;
-        max-height: calc(100vh - 60px);
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .menu-section {
-        padding: 15px;
-        margin-bottom: 10px;
-    }
-    
-    .menu-section h3 {
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-    
-    /* Form controls mobile */
-    .form-group {
-        margin-bottom: 12px;
-    }
-    
-    .form-group label {
-        font-size: 12px;
-        margin-bottom: 4px;
-    }
-    
-    .form-group input,
-    .form-group select {
-        height: 36px;
-        font-size: 14px;
-        padding: 8px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-    }
-    
-    .form-group input[type="range"] {
-        height: 20px;
-    }
-    
-    .form-group input[type="color"] {
-        height: 40px;
-        padding: 2px;
-    }
-    
-    /* Buttons mobile */
-    .btn {
-        padding: 10px 16px;
-        font-size: 14px;
-        min-height: 40px;
-        margin: 4px 0;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    /* Text format controls mobile */
-    .text-format-controls {
-        gap: 8px;
-    }
-    
-    .format-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-        border-radius: 6px;
-    }
-    
-    /* Preview mobile */
-    .preview-postit {
-        width: 80px;
-        height: 80px;
-        margin: 10px auto;
-    }
-    
-    .preview-content {
-        font-size: 10px;
-        padding: 8px;
-    }
-    
-    /* Board mobile */
-    .board {
-        padding: 10px;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Post-its mobile */
-    .postit {
-        min-width: 120px;
-        min-height: 120px;
-        cursor: pointer;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-    
-    .postit.editing {
-        border: 2px solid #007bff;
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-    }
-    
-    .postit.dragging {
-        opacity: 0.8;
-        z-index: 9999;
-        transform: scale(1.05);
-    }
-    
-    .postit-content {
-        font-size: 14px;
-        padding: 8px;
-        resize: none;
-        border: none;
-        background: transparent;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        line-height: 1.4;
-    }
-    
-    .postit-content:focus {
-        outline: none;
-    }
-    
-    /* Context menu mobile */
-    .context-menu {
-        position: fixed;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        z-index: 10000;
-        min-width: 280px;
-        max-width: 90vw;
-        max-height: 80vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .context-menu.active {
-        display: block;
-    }
-    
-    .context-menu-section {
-        padding: 15px;
-    }
-    
-    .context-menu-section h4 {
-        font-size: 16px;
-        margin-bottom: 12px;
-        color: #333;
-    }
-    
-    .context-menu label {
-        font-size: 12px;
-        margin-bottom: 4px;
-        display: block;
-    }
-    
-    .context-menu input[type="range"] {
-        width: 100%;
-        margin: 8px 0;
-    }
-    
-    .context-menu input[type="color"] {
-        width: 100%;
-        height: 40px;
-        margin: 4px 0;
-    }
-    
-    .context-menu .text-format-controls {
-        margin: 10px 0;
-    }
-    
-    .context-menu .btn {
-        width: 100%;
-        margin: 6px 0;
-        padding: 12px;
-        font-size: 14px;
-    }
-    
-    /* Zoom controls mobile */
-    .zoom-controls {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 25px;
-        padding: 8px 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        z-index: 1000;
-    }
-    
-    .zoom-btn {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        border: none;
-        background: #007bff;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .zoom-btn:active {
-        transform: scale(0.95);
-    }
-    
-    .zoom-level {
-        font-size: 12px;
-        font-weight: 500;
-        color: #333;
-        min-width: 35px;
-        text-align: center;
-    }
-    
-    /* Status message mobile */
-    #status {
-        position: fixed;
-        top: 70px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 12px;
-        z-index: 10001;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    
-    #status.show {
-        opacity: 1;
-    }
-    
-    /* Touch feedback */
-    .postit:active {
-        transform: scale(0.98);
-    }
-    
-    .btn:active {
-        transform: scale(0.98);
-    }
-    
-    /* Accessibility improvements */
-    .postit:focus {
-        outline: 2px solid #007bff;
-        outline-offset: 2px;
-    }
-    
-    /* Prevent text selection during drag */
-    .no-select {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-    
-    /* Loading state */
-    .loading {
-        pointer-events: none;
-        opacity: 0.6;
-    }
-    
-    /* Landscape orientation specific */
-    @media screen and (orientation: landscape) and (max-height: 500px) {
-        .header {
-            padding: 8px 15px;
-        }
-        
-        .header h1 {
-            font-size: 18px;
-        }
-        
-        .menu {
-            top: 50px;
-            max-height: calc(100vh - 50px);
-        }
-        
-        .zoom-controls {
-            bottom: 15px;
-            right: 15px;
-        }
-        
-        .context-menu {
-            max-height: 70vh;
-        }
-        
-        #status {
-            top: 60px;
-        }
-    }
-    
-    /* Very small screens */
-    @media screen and (max-width: 480px) {
-        .header {
-            padding: 8px 10px;
-        }
-        
-        .header h1 {
-            font-size: 16px;
-        }
-        
-        .save-button {
-            padding: 5px 8px;
-            font-size: 11px;
-            min-width: 60px;
-        }
-        
-        .toggle-switch {
-            width: 40px;
-            height: 20px;
-        }
-        
-        .toggle-slider {
-            width: 16px;
-            height: 16px;
-        }
-        
-        .toggle-switch.active .toggle-slider {
-            transform: translateX(20px);
-        }
-        
-        .menu-section {
-            padding: 12px;
-        }
-        
-        .postit {
-            min-width: 100px;
-            min-height: 100px;
-        }
-        
-        .context-menu {
-            min-width: 250px;
-        }
-        
-        .zoom-controls {
-            bottom: 15px;
-            right: 15px;
-            padding: 6px 10px;
-        }
-        
-        .zoom-btn {
-            width: 28px;
-            height: 28px;
-            font-size: 14px;
-        }
-    }
-}
-
 /* Dark mode toggle */
 .dark-mode-toggle {
     display: flex;
     align-items: center;
     margin-left: 20px;
+}
+
+.dark-mode-toggle label {
+    font-size: 14px;
+    margin-right: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.header.dark-mode .dark-mode-toggle label {
+    color: #ffffff;
 }
 
 .toggle-switch {
@@ -562,20 +72,10 @@ body {
     border-radius: 25px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .toggle-switch.active {
     background-color: #007bff;
-}
-
-.mode-icon {
-    font-size: 16px;
-    position: absolute;
-    z-index: 2;
-    transition: all 0.3s ease;
 }
 
 .toggle-slider {
@@ -587,11 +87,57 @@ body {
     background-color: white;
     border-radius: 50%;
     transition: transform 0.3s ease;
-    z-index: 1;
 }
 
 .toggle-switch.active .toggle-slider {
     transform: translateX(25px);
+}
+
+/* Header controls */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Save button */
+.save-button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.save-button:hover {
+    background-color: #218838;
+}
+
+.save-button.syncing {
+    background-color: #17a2b8;
+    animation: pulse 1s infinite;
+}
+
+.save-button.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+.save-button.error:hover {
+    background-color: #c82333;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
 
 /* Menu toggle (sandwich) */
@@ -900,12 +446,24 @@ body {
     width: 180px;
     height: 180px;
     background-color: #ffeb3b;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px 5px 20px 3px;
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
     cursor: move;
     user-select: none;
     transition: all 0.3s ease;
     z-index: 1;
+}
+
+.postit::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid rgba(255, 255, 255, 0.548);
+    border-bottom: 15px solid transparent;
+    border-radius: 20px 20px 5px 20px;
 }
 
 .postit:hover {
@@ -938,7 +496,7 @@ body {
     font-family: inherit;
     font-size: 16px;
     color: #222222;
-    border-radius: 8px;
+    border-radius: 5px 5px 0px 5px;
     outline: none;
     overflow-wrap: break-word;
     text-align: center;
@@ -1126,11 +684,23 @@ body {
     width: 120px;
     height: 120px;
     background-color: #ffeb3b;
-    border-radius: 8px;
+    border-radius: 5px 5px 0px 0px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
     position: relative;
     transition: all 0.3s ease;
+}
+
+.preview-postit::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 10px solid transparent;
+    border-radius: 0 0 3px 0;
 }
 
 .preview-content {
@@ -1143,7 +713,7 @@ body {
     font-family: 'Aptos Corpus', Arial, sans-serif;
     font-size: 12px;
     color: #222222;
-    border-radius: 8px;
+    border-radius: 5px 5px 0px 5px;
     outline: none;
     text-align: center;
     display: flex;

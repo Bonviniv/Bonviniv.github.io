@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StickyWeb Board</title>
     <link rel="stylesheet" href="stickywebStyle.css">
 </head>
@@ -10,14 +10,10 @@
     <div class="container">
         <header class="header">
             <h1>StickyWeb Board</h1>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <button class="save-button" id="saveButton" title="Salvar Board">
-                    <span class="save-icon">💾</span>
-                    <span class="save-text">Salvar</span>
-                </button>
+            <div style="display: flex; align-items: center;">
                 <div class="dark-mode-toggle">
-                    <div class="toggle-switch" id="darkModeToggle" title="Alternar Modo Noturno/Diurno">
-                        <span class="mode-icon" id="modeIcon">☀️</span>
+                    <label>Modo Noturno</label>
+                    <div class="toggle-switch" id="darkModeToggle">
                         <div class="toggle-slider"></div>
                     </div>
                 </div>
@@ -130,13 +126,9 @@
                     <button class="format-btn" id="contextItalicBtn" type="button">I</button>
                 </div>
                 
-                <button class="btn btn-primary" id="duplicatePostit">Criar novo post-it como esse</button>
                 <button class="btn btn-danger" id="deletePostit">Deletar Post-it</button>
             </div>
         </div>
-        
-        <!-- Status message -->
-        <div id="status"></div>
     </div>
     
     <!-- Firebase SDK -->

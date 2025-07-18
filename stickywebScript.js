@@ -132,16 +132,16 @@ class StickyWebBoard {
     }
 
     /**
-     * Inicia salvamento automático a cada 60 segundos
+     * Inicia salvamento automático a cada 5 segundos
      */
     startAutoSave() {
         this.autoSaveInterval = setInterval(() => {
             if (this.hasUnsavedChanges && !this.currentEditingPostit && !this.syncInProgress) {
                 // Só salva se não estiver editando um post-it e não estiver em sync
-                console.log('Auto-save: Salvando mudanças...');
+                console.log('Auto-save: Sincronizando com Firebase...');
                 this.syncWithFirebase();
             }
-        }, 60000); // 60 segundos para reduzir conflitos
+        }, 5000); // 5 segundos para sincronização mais rápida
     }
 
     /**
@@ -193,12 +193,24 @@ class StickyWebBoard {
         // Menu toggle
         const menuToggle = document.getElementById('menuToggle');
         const menu = document.getElementById('menu');
+        const menuOverlay = document.getElementById('menuOverlay');
         const board = document.getElementById('board');
         
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             menu.classList.toggle('active');
+            
+            if (this.isMobile) {
+                menuOverlay.classList.toggle('active');
+            }
         });
+        
+        // Fecha menu ao clicar no overlay (mobile)
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', () => {
+                this.closeMenu();
+            });
+        }
 
         // Dark mode toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
@@ -223,9 +235,11 @@ class StickyWebBoard {
 
         // Fecha menu ao clicar fora
         document.addEventListener('click', (e) => {
+            const menu = document.getElementById('menu');
+            const menuToggle = document.getElementById('menuToggle');
+            
             if (!menu.contains(e.target) && !menuToggle.contains(e.target)) {
-                menu.classList.remove('active');
-                menuToggle.classList.remove('active');
+                this.closeMenu();
             }
         });
 
@@ -293,31 +307,38 @@ class StickyWebBoard {
         // Botões de ação
         document.getElementById('createPostit').addEventListener('click', () => {
             this.createPostit();
+            if (this.isMobile) this.closeMenu();
         });
 
         document.getElementById('exportJson').addEventListener('click', () => {
             this.exportJson();
+            if (this.isMobile) this.closeMenu();
         });
 
         document.getElementById('importJson').addEventListener('click', () => {
             document.getElementById('importFile').click();
+            if (this.isMobile) this.closeMenu();
         });
 
         document.getElementById('importFile').addEventListener('change', (e) => {
             this.importJson(e.target.files[0]);
+            if (this.isMobile) this.closeMenu();
         });
 
         document.getElementById('undoAction').addEventListener('click', () => {
             this.undo();
+            if (this.isMobile) this.closeMenu();
         });
 
         document.getElementById('redoAction').addEventListener('click', () => {
             this.redo();
+            if (this.isMobile) this.closeMenu();
         });
 
         // Logout button
         document.getElementById('logout').addEventListener('click', () => {
             this.logout();
+            if (this.isMobile) this.closeMenu();
         });
 
         // Context menu
@@ -354,6 +375,7 @@ class StickyWebBoard {
         // Mobile-specific optimizations
         if (this.isMobile) {
             this.setupMobileOptimizations();
+            this.setupMobileHelpIndicator();
         }
     }
 
@@ -389,6 +411,7 @@ class StickyWebBoard {
             setTimeout(() => {
                 this.updateBoardSize();
                 this.hideContextMenu();
+                this.closeMenu();
             }, 100);
         });
 
@@ -397,8 +420,43 @@ class StickyWebBoard {
             if (document.hidden) {
                 this.clearEditingMode();
                 this.hideContextMenu();
+                this.closeMenu();
             }
         });
+
+        // Fechar menu com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.hideContextMenu();
+                this.closeMenu();
+            }
+        });
+    }
+
+    /**
+     * Adiciona indicador visual para ajudar no mobile
+     */
+    setupMobileHelpIndicator() {
+        const helpIndicator = document.createElement('div');
+        helpIndicator.className = 'mobile-help-indicator';
+        helpIndicator.innerHTML = `
+            <div class="help-text">
+                <i class="fas fa-hand-pointer"></i>
+                <span>Duplo toque para menu de contexto</span>
+            </div>
+        `;
+        document.body.appendChild(helpIndicator);
+
+        // Mostra indicador na primeira vez
+        setTimeout(() => {
+            helpIndicator.style.display = 'block';
+            setTimeout(() => {
+                helpIndicator.style.opacity = '0';
+                setTimeout(() => {
+                    helpIndicator.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }, 1000);
     }
 
     /**
@@ -572,6 +630,22 @@ class StickyWebBoard {
         }
         
         this.updateBoardSize();
+    }
+
+    /**
+     * Fecha o menu mobile
+     */
+    closeMenu() {
+        const menu = document.getElementById('menu');
+        const menuToggle = document.getElementById('menuToggle');
+        const menuOverlay = document.getElementById('menuOverlay');
+        
+        menu.classList.remove('active');
+        menuToggle.classList.remove('active');
+        
+        if (menuOverlay) {
+            menuOverlay.classList.remove('active');
+        }
     }
 
     /**
@@ -750,13 +824,19 @@ class StickyWebBoard {
         const currentTime = Date.now();
         const timeDiff = currentTime - this.lastTap;
         
-        if (timeDiff < this.doubleTapDelay) {
+        if (timeDiff < this.doubleTapDelay && timeDiff > 50) {
             // Double tap - abre context menu
+            e.preventDefault();
             this.showContextMenu(e, element);
             navigator.vibrate && navigator.vibrate(50);
+            this.lastTap = 0; // Reset para evitar triple tap
         } else {
-            // Single tap - entra em modo de edição
-            this.enterEditMode(element, postit);
+            // Single tap - entra em modo de edição (com delay para detectar double tap)
+            setTimeout(() => {
+                if (Date.now() - this.lastTap > this.doubleTapDelay) {
+                    this.enterEditMode(element, postit);
+                }
+            }, this.doubleTapDelay + 50);
         }
         
         this.lastTap = currentTime;
@@ -776,8 +856,9 @@ class StickyWebBoard {
         const board = document.getElementById('board');
         const boardRect = board.getBoundingClientRect();
         
-        const x = touch.clientX - boardRect.left - (element.offsetWidth / 2);
-        const y = touch.clientY - boardRect.top - (element.offsetHeight / 2);
+        // Calcula posição considerando scroll do board
+        const x = touch.clientX - boardRect.left - (element.offsetWidth / 2) + board.scrollLeft;
+        const y = touch.clientY - boardRect.top - (element.offsetHeight / 2) + board.scrollTop;
         
         element.style.left = Math.max(0, x) + 'px';
         element.style.top = Math.max(0, y) + 'px';
@@ -888,7 +969,11 @@ class StickyWebBoard {
         this.draggedPostit = { element, postit };
         element.classList.add('dragging');
         
+        const board = document.getElementById('board');
+        const boardRect = board.getBoundingClientRect();
         const rect = element.getBoundingClientRect();
+        
+        // Calcula offset considerando scroll do board
         this.dragOffset = {
             x: e.clientX - rect.left,
             y: e.clientY - rect.top
@@ -1517,7 +1602,13 @@ class StickyWebBoard {
         saveText.textContent = 'Salvando...';
         
         try {
-            await this.syncWithFirebase();
+            // Salva localmente primeiro
+            localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            
+            // Força sincronização com Firebase mesmo sem mudanças pendentes
+            if (this.userDocRef && this.currentUser) {
+                await this.saveToFirebase();
+            }
             
             // Sucesso
             saveButton.classList.remove('saving');
@@ -1712,14 +1803,51 @@ class StickyWebBoard {
             // Se há mudanças não salvas, salva no Firebase
             if (this.hasUnsavedChanges) {
                 await this.saveToFirebase();
-                this.showStatus('Dados salvos na nuvem');
+                this.updateSyncStatus('synced');
             }
             
         } catch (error) {
             console.error('Erro ao sincronizar:', error);
+            this.updateSyncStatus('error');
             this.showStatus('Erro na sincronização. Trabalhando offline.');
         } finally {
             this.syncInProgress = false;
+        }
+    }
+
+    /**
+     * Atualiza status de sincronização visual
+     */
+    updateSyncStatus(status) {
+        const saveButton = document.getElementById('saveButton');
+        const saveText = saveButton.querySelector('.save-text');
+        
+        // Remove classes anteriores
+        saveButton.classList.remove('saving', 'saved', 'error');
+        
+        switch (status) {
+            case 'syncing':
+                saveButton.classList.add('saving');
+                saveText.textContent = 'Sincronizando...';
+                break;
+            case 'synced':
+                saveButton.classList.add('saved');
+                saveText.textContent = 'Sincronizado';
+                setTimeout(() => {
+                    saveButton.classList.remove('saved');
+                    saveText.textContent = 'Salvar';
+                }, 2000);
+                break;
+            case 'error':
+                saveButton.classList.add('error');
+                saveText.textContent = 'Erro sync';
+                setTimeout(() => {
+                    saveButton.classList.remove('error');
+                    saveText.textContent = 'Salvar';
+                }, 3000);
+                break;
+            default:
+                saveText.textContent = 'Salvar';
         }
     }
 
@@ -1768,7 +1896,7 @@ class StickyWebBoard {
      * Salva dados no Firebase
      */
     async saveToFirebase() {
-        if (!this.userDocRef || !this.currentUser || this.syncInProgress) return;
+        if (!this.userDocRef || !this.currentUser) return;
         
         try {
             const userData = {
@@ -1787,6 +1915,7 @@ class StickyWebBoard {
         } catch (error) {
             console.error('Erro ao salvar no Firebase:', error);
             this.showStatus('Erro ao salvar. Dados mantidos localmente.');
+            throw error; // Re-throw para que o manualSave possa capturar
         }
     }
 
