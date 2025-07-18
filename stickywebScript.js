@@ -907,8 +907,9 @@ class StickyWebBoard {
         const board = document.getElementById('board');
         const boardRect = board.getBoundingClientRect();
         
-        const x = e.clientX - boardRect.left - this.dragOffset.x;
-        const y = e.clientY - boardRect.top - this.dragOffset.y;
+        // Calcula posição considerando scroll do board
+        const x = e.clientX - boardRect.left - this.dragOffset.x + board.scrollLeft;
+        const y = e.clientY - boardRect.top - this.dragOffset.y + board.scrollTop;
         
         this.draggedPostit.element.style.left = x + 'px';
         this.draggedPostit.element.style.top = y + 'px';
