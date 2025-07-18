@@ -53,6 +53,14 @@ const projects = [
         technologies: ["React", "TailwindCSS", "Python"],
         link: "stackhunt.html",
         repoUrl: "https://bonviniv.github.io/StackHunt.html"
+    }, 
+    {
+        id: "stickyweb",
+        title: "StickyWeb Board",
+        description: "Interactive digital sticky note board with real-time collaboration, drag-and-drop functionality, customizable post-its, dark mode, and cloud synchronization for team productivity.",
+        technologies: ["HTML", "CSS", "JavaScript", "Firebase"],
+        link: "stickyweblogin.html",
+        repoUrl: "https://bonviniv.github.io/stickyweblogin.html"
     },
     {
         id: "tetris",
