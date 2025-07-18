@@ -47,6 +47,13 @@ class StickyWebBoard {
         this.initializeFirebase();
         this.checkAuthentication();
         this.loadBoardData();
+        
+        // Aplica modo noturno se estiver ativado
+        if (this.isDarkMode) {
+            this.applyDarkMode();
+        }
+        this.updateModeIcon();
+        
         this.setupEventListeners();
         this.renderBoard();
         this.setupKeyboardShortcuts();
@@ -214,7 +221,14 @@ class StickyWebBoard {
 
         // Dark mode toggle
         const darkModeToggle = document.getElementById('darkModeToggle');
+        const modeIcon = document.getElementById('modeIcon');
+        
         darkModeToggle.addEventListener('click', () => {
+            this.toggleDarkMode();
+        });
+        
+        // Permite clicar no ícone também
+        modeIcon.addEventListener('click', () => {
             this.toggleDarkMode();
         });
 
@@ -343,10 +357,41 @@ class StickyWebBoard {
 
         // Context menu
         document.addEventListener('contextmenu', (e) => {
+            console.log('Contextmenu event:', {
+                target: e.target,
+                isPostit: e.target.closest('.postit'),
+                isBoard: e.target.closest('.board'),
+                isMobile: this.isMobile
+            });
+            
             if (e.target.closest('.postit') && !this.isMobile) {
                 e.preventDefault();
                 this.showContextMenu(e, e.target.closest('.postit'));
+            } else if (e.target.closest('.board') && !e.target.closest('.postit') && !this.isMobile) {
+                // Context menu do board
+                console.log('Mostrando contexto menu do board');
+                e.preventDefault();
+                this.showBoardContextMenu(e);
             }
+        });
+
+        // Reset defaults button
+        document.getElementById('resetDefaults').addEventListener('click', () => {
+            this.resetToDefaults();
+            if (this.isMobile) this.closeMenu();
+        });
+
+        // Board context menu buttons
+        document.getElementById('createPostitAt').addEventListener('click', () => {
+            console.log('Botão "Criar Novo Post-it" clicado');
+            this.createPostitAtPosition();
+            this.hideBoardContextMenu();
+        });
+
+        document.getElementById('resetBoardColor').addEventListener('click', () => {
+            console.log('Botão "Cor Padrão do Board" clicado');
+            this.resetBoardColorToDefault();
+            this.hideBoardContextMenu();
         });
 
         // Context menu event listeners
@@ -1723,7 +1768,17 @@ class StickyWebBoard {
     updateModeIcon() {
         const modeIcon = document.getElementById('modeIcon');
         if (modeIcon) {
+            // Usando símbolos que funcionam melhor com filtros CSS
             modeIcon.textContent = this.isDarkMode ? '🌙' : '☀️';
+            
+            // Aplica filtros para controlar a cor
+            if (this.isDarkMode) {
+                // Lua branca no modo escuro
+                modeIcon.style.filter = 'brightness(2) contrast(1.5) saturate(0)';
+            } else {
+                // Sol preto no modo claro
+                modeIcon.style.filter = 'brightness(0.2) contrast(2) saturate(0)';
+            }
         }
     }
 
@@ -1732,11 +1787,9 @@ class StickyWebBoard {
      */
     async manualSave() {
         const saveButton = document.getElementById('saveButton');
-        const saveText = saveButton.querySelector('.save-text');
         
         // Feedback visual
         saveButton.classList.add('saving');
-        saveText.textContent = 'Salvando...';
         
         try {
             // Salva localmente primeiro
@@ -1750,12 +1803,10 @@ class StickyWebBoard {
             // Sucesso
             saveButton.classList.remove('saving');
             saveButton.classList.add('saved');
-            saveText.textContent = 'Salvo!';
             
             // Volta ao normal após 2 segundos
             setTimeout(() => {
                 saveButton.classList.remove('saved');
-                saveText.textContent = 'Salvar';
             }, 2000);
             
         } catch (error) {
@@ -1763,11 +1814,11 @@ class StickyWebBoard {
             
             // Erro
             saveButton.classList.remove('saving');
-            saveText.textContent = 'Erro';
+            saveButton.classList.add('error');
             
             // Volta ao normal após 2 segundos
             setTimeout(() => {
-                saveText.textContent = 'Salvar';
+                saveButton.classList.remove('error');
             }, 2000);
         }
     }
@@ -1957,7 +2008,6 @@ class StickyWebBoard {
      */
     updateSyncStatus(status) {
         const saveButton = document.getElementById('saveButton');
-        const saveText = saveButton.querySelector('.save-text');
         
         // Remove classes anteriores
         saveButton.classList.remove('saving', 'saved', 'error');
@@ -1965,26 +2015,19 @@ class StickyWebBoard {
         switch (status) {
             case 'syncing':
                 saveButton.classList.add('saving');
-                saveText.textContent = 'Sincronizando...';
                 break;
             case 'synced':
                 saveButton.classList.add('saved');
-                saveText.textContent = 'Sincronizado';
                 setTimeout(() => {
                     saveButton.classList.remove('saved');
-                    saveText.textContent = 'Salvar';
                 }, 2000);
                 break;
             case 'error':
                 saveButton.classList.add('error');
-                saveText.textContent = 'Erro sync';
                 setTimeout(() => {
                     saveButton.classList.remove('error');
-                    saveText.textContent = 'Salvar';
                 }, 3000);
                 break;
-            default:
-                saveText.textContent = 'Salvar';
         }
     }
 
@@ -2147,15 +2190,18 @@ class StickyWebBoard {
         // Fecha context menu com clique esquerdo fora
         this.contextMenuClickHandler = (e) => {
             const contextMenu = document.getElementById('contextMenu');
+            const boardContextMenu = document.getElementById('boardContextMenu');
             
             console.log('Click detectado:', {
                 target: e.target,
                 menuAtivo: contextMenu?.classList.contains('active'),
+                boardMenuAtivo: boardContextMenu?.classList.contains('active'),
                 isPostit: e.target.closest('.postit'),
-                isMenu: contextMenu?.contains(e.target)
+                isMenu: contextMenu?.contains(e.target),
+                isBoardMenu: boardContextMenu?.contains(e.target)
             });
             
-            // Se o menu está ativo e clicou fora dele
+            // Se o menu de post-it está ativo e clicou fora dele
             if (contextMenu && contextMenu.classList.contains('active')) {
                 const clickedPostit = e.target.closest('.postit');
                 const clickedMenu = contextMenu.contains(e.target);
@@ -2163,6 +2209,16 @@ class StickyWebBoard {
                 if (!clickedPostit && !clickedMenu) {
                     console.log('Fechando menu por clique fora');
                     this.hideContextMenu();
+                }
+            }
+            
+            // Se o menu de board está ativo e clicou fora dele
+            if (boardContextMenu && boardContextMenu.classList.contains('active')) {
+                const clickedBoardMenu = boardContextMenu.contains(e.target);
+                
+                if (!clickedBoardMenu) {
+                    console.log('Fechando menu do board por clique fora');
+                    this.hideBoardContextMenu();
                 }
             }
         };
@@ -2189,6 +2245,236 @@ class StickyWebBoard {
         // Adiciona os listeners sem capture para testar
         document.addEventListener('click', this.contextMenuClickHandler, false);
         document.addEventListener('contextmenu', this.contextMenuRightClickHandler, false);
+    }
+
+    /**
+     * Mostra o menu de contexto do board
+     */
+    showBoardContextMenu(event) {
+        console.log('showBoardContextMenu chamado', event);
+        
+        const boardContextMenu = document.getElementById('boardContextMenu');
+        if (!boardContextMenu) {
+            console.error('boardContextMenu não encontrado');
+            return;
+        }
+
+        // Armazena a posição do clique para criar o post-it
+        this.boardContextClickPosition = {
+            x: event.pageX,
+            y: event.pageY
+        };
+
+        console.log('Posição do clique armazenada:', this.boardContextClickPosition);
+
+        // Posiciona o menu
+        boardContextMenu.style.left = `${event.pageX}px`;
+        boardContextMenu.style.top = `${event.pageY}px`;
+        
+        // Aplica dark mode se necessário
+        if (this.isDarkMode) {
+            boardContextMenu.classList.add('dark-mode');
+        } else {
+            boardContextMenu.classList.remove('dark-mode');
+        }
+        
+        // Mostra o menu
+        boardContextMenu.classList.add('active');
+        
+        console.log('Menu de contexto do board mostrado');
+    }
+
+    /**
+     * Esconde o menu de contexto do board
+     */
+    hideBoardContextMenu() {
+        const boardContextMenu = document.getElementById('boardContextMenu');
+        if (boardContextMenu) {
+            boardContextMenu.classList.remove('active');
+        }
+    }
+
+    /**
+     * Cria um post-it na posição do clique do mouse
+     */
+    createPostitAtPosition() {
+        console.log('createPostitAtPosition chamado', this.boardContextClickPosition);
+        
+        if (!this.boardContextClickPosition) {
+            console.error('Posição do clique não encontrada');
+            return;
+        }
+
+        const boardContainer = document.getElementById('boardContainer');
+        const boardRect = boardContainer.getBoundingClientRect();
+        
+        // Calcula a posição relativa ao board
+        const x = this.boardContextClickPosition.x - boardRect.left + boardContainer.scrollLeft;
+        const y = this.boardContextClickPosition.y - boardRect.top + boardContainer.scrollTop;
+
+        console.log('Posição calculada:', { x, y });
+
+        // Cria o post-it com as preferências atuais mas texto vazio
+        const postit = {
+            id: Date.now().toString(),
+            text: '', // Texto vazio
+            x: Math.max(0, x - 90), // Centraliza o post-it no clique
+            y: Math.max(0, y - 90),
+            width: 180,
+            height: 180,
+            backgroundColor: this.boardData.userPreferences.lastPostitColor,
+            textColor: this.boardData.userPreferences.lastTextColor,
+            fontSize: this.boardData.userPreferences.lastFontSize,
+            fontFamily: this.boardData.userPreferences.lastFontFamily,
+            isBold: this.boardData.userPreferences.lastBold,
+            isItalic: this.boardData.userPreferences.lastItalic,
+            zIndex: this.getMaxZIndex() + 1
+        };
+
+        console.log('Post-it criado:', postit);
+
+        // Adiciona à estrutura de dados
+        this.boardData.postits.push(postit);
+        
+        // Adiciona ao histórico
+        this.addToHistory({
+            type: 'create',
+            data: { ...postit }
+        });
+        
+        // Marca como alteração não salva
+        this.markUnsavedChanges();
+        
+        // Renderiza o board
+        this.renderBoard();
+        
+        // Salva no localStorage e Firebase
+        this.saveBoardData();
+        
+        console.log('Post-it adicionado ao board, total:', this.boardData.postits.length);
+        
+        // Entra em modo de edição automaticamente
+        setTimeout(() => {
+            const postitElement = document.querySelector(`[data-id="${postit.id}"]`);
+            if (postitElement) {
+                console.log('Iniciando edição do post-it');
+                this.startEditing(postitElement);
+            } else {
+                console.error('Elemento do post-it não encontrado para edição');
+            }
+        }, 100);
+    }
+
+    /**
+     * Restaura a cor padrão do board
+     */
+    resetBoardColorToDefault() {
+        const defaultColor = "#2d4a3d";
+        
+        console.log('Restaurando cor do board para:', defaultColor);
+        
+        // Atualiza a cor do board
+        this.boardData.board.backgroundColor = defaultColor;
+        this.updateBoardBackground(defaultColor);
+        
+        // Atualiza o controle de cor no menu
+        const boardColorInput = document.getElementById('boardColor');
+        if (boardColorInput) {
+            boardColorInput.value = defaultColor;
+        }
+        
+        // Marca como alteração não salva
+        this.markUnsavedChanges();
+        
+        // Salva no localStorage imediatamente
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        
+        // Salva as alterações no Firebase
+        this.saveBoardData();
+        
+        // Mostra mensagem de confirmação
+        this.showStatus('Cor do board restaurada ao padrão!');
+    }
+
+    /**
+     * Retorna todas as definições ao padrão
+     */
+    resetToDefaults() {
+        const defaultData = this.getDefaultBoardData();
+        
+        // Restaura cor do board
+        this.boardData.board.backgroundColor = defaultData.board.backgroundColor;
+        this.updateBoardBackground(defaultData.board.backgroundColor);
+        
+        // Restaura preferências do usuário
+        this.boardData.userPreferences = { ...defaultData.userPreferences };
+        
+        // Atualiza todos os controles do menu
+        this.updateMenuControls();
+        
+        // Atualiza o preview
+        this.updatePreview();
+        
+        // Salva as alterações
+        this.saveBoardData();
+        
+        // Mostra mensagem de confirmação
+        this.showStatus('Todas as definições foram restauradas ao padrão!');
+    }
+
+    /**
+     * Atualiza todos os controles do menu com os valores atuais
+     */
+    updateMenuControls() {
+        // Cor do board
+        const boardColorInput = document.getElementById('boardColor');
+        if (boardColorInput) {
+            boardColorInput.value = this.boardData.board.backgroundColor;
+        }
+        
+        // Próximo post-it
+        const nextPostitColor = document.getElementById('nextPostitColor');
+        if (nextPostitColor) {
+            nextPostitColor.value = this.boardData.userPreferences.lastPostitColor;
+        }
+        
+        const nextTextColor = document.getElementById('nextTextColor');
+        if (nextTextColor) {
+            nextTextColor.value = this.boardData.userPreferences.lastTextColor;
+        }
+        
+        const nextFontSize = document.getElementById('nextFontSize');
+        if (nextFontSize) {
+            nextFontSize.value = this.boardData.userPreferences.lastFontSize;
+            const fontSizeValue = document.getElementById('fontSizeValue');
+            if (fontSizeValue) {
+                fontSizeValue.textContent = this.boardData.userPreferences.lastFontSize + 'px';
+            }
+        }
+        
+        const nextFontFamily = document.getElementById('nextFontFamily');
+        if (nextFontFamily) {
+            nextFontFamily.value = this.boardData.userPreferences.lastFontFamily;
+        }
+        
+        // Botões de formatação
+        const nextBoldBtn = document.getElementById('nextBoldBtn');
+        if (nextBoldBtn) {
+            if (this.boardData.userPreferences.lastBold) {
+                nextBoldBtn.classList.add('active');
+            } else {
+                nextBoldBtn.classList.remove('active');
+            }
+        }
+        
+        const nextItalicBtn = document.getElementById('nextItalicBtn');
+        if (nextItalicBtn) {
+            if (this.boardData.userPreferences.lastItalic) {
+                nextItalicBtn.classList.add('active');
+            } else {
+                nextItalicBtn.classList.remove('active');
+            }
+        }
     }
 }
 

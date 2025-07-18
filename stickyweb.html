@@ -13,10 +13,9 @@
             <div class="header-controls">
                 <button class="save-button" id="saveButton">
                     <span class="save-icon">💾</span>
-                    <span class="save-text">Salvar</span>
                 </button>
                 <div class="dark-mode-toggle">
-                    <label>Modo Noturno</label>
+                    <span class="mode-icon" id="modeIcon">☀️</span>
                     <div class="toggle-switch" id="darkModeToggle">
                         <div class="toggle-slider"></div>
                     </div>
@@ -86,6 +85,7 @@
                 <input type="file" id="importFile" accept=".json" style="display: none;">
                 <button class="btn btn-secondary" id="undoAction">Desfazer</button>
                 <button class="btn btn-secondary" id="redoAction">Refazer</button>
+                <button class="btn btn-warning" id="resetDefaults">Retornar Definições ao Padrão</button>
                 <button class="btn btn-danger" id="logout">Sair</button>
             </div>
             
@@ -138,6 +138,12 @@
         </div>
         
         <div class="menu-overlay" id="menuOverlay"></div>
+        
+        <!-- Menu de contexto do board -->
+        <div class="board-context-menu" id="boardContextMenu">
+            <button class="context-menu-btn" id="createPostitAt">Criar Novo Post-it</button>
+            <button class="context-menu-btn" id="resetBoardColor">Cor Padrão do Board</button>
+        </div>
     </div>
     
     <!-- Firebase SDK -->
