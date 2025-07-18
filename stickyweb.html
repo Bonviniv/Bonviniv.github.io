@@ -10,7 +10,11 @@
     <div class="container">
         <header class="header">
             <h1>StickyWeb Board</h1>
-            <div style="display: flex; align-items: center;">
+            <div class="header-controls">
+                <button class="save-button" id="saveButton">
+                    <span class="save-icon">💾</span>
+                    <span class="save-text">Salvar</span>
+                </button>
                 <div class="dark-mode-toggle">
                     <label>Modo Noturno</label>
                     <div class="toggle-switch" id="darkModeToggle">
@@ -104,6 +108,7 @@
         </div>
         
         <div class="context-menu" id="contextMenu">
+            <button class="context-menu-close" id="contextMenuClose">&times;</button>
             <div class="context-menu-section">
                 <h4>Personalizar Post-it</h4>
                 <label for="contextPostitColor">Cor do Post-it:</label>
@@ -126,9 +131,13 @@
                     <button class="format-btn" id="contextItalicBtn" type="button">I</button>
                 </div>
                 
+                <button class="btn btn-primary" id="clonePostit">Clonar Post-it</button>
+                <button class="btn btn-secondary" id="clonePostitEmpty">Clonar Post-it Vazio</button>
                 <button class="btn btn-danger" id="deletePostit">Deletar Post-it</button>
             </div>
         </div>
+        
+        <div class="menu-overlay" id="menuOverlay"></div>
     </div>
     
     <!-- Firebase SDK -->

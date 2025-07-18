@@ -518,10 +518,45 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     padding: 20px;
     min-width: 250px;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
     display: none;
     z-index: 1000;
     border: 1px solid #e0e0e0;
     transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.context-menu-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.context-menu-close:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.context-menu.dark-mode .context-menu-close {
+    color: #bbb;
+}
+
+.context-menu.dark-mode .context-menu-close:hover {
+    background-color: #555;
+    color: #fff;
 }
 
 .context-menu.dark-mode {

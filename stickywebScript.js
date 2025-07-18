@@ -349,21 +349,8 @@ class StickyWebBoard {
             }
         });
 
-        // Fecha context menu
-        document.addEventListener('click', (e) => {
-            if (!document.getElementById('contextMenu').contains(e.target) && !e.target.closest('.postit')) {
-                this.hideContextMenu();
-            }
-        });
-
-        // Touch events para fechar context menu em mobile
-        if (this.isMobile) {
-            document.addEventListener('touchstart', (e) => {
-                if (!document.getElementById('contextMenu').contains(e.target) && !e.target.closest('.postit')) {
-                    this.hideContextMenu();
-                }
-            });
-        }
+        // Context menu event listeners
+        this.setupContextMenuGlobalEvents();
 
         // Board events
         board.addEventListener('click', (e) => {
@@ -1114,13 +1101,61 @@ class StickyWebBoard {
             contextMenu.style.top = '50%';
             contextMenu.style.transform = 'translate(-50%, -50%)';
         } else {
-            // Desktop: posiciona no cursor
-            contextMenu.style.left = e.pageX + 'px';
-            contextMenu.style.top = e.pageY + 'px';
+            // Desktop: posiciona no cursor com verificação de limites
+            let menuX = e.pageX;
+            let menuY = e.pageY;
+            
+            // Mostra o menu temporariamente para obter suas dimensões
+            contextMenu.style.visibility = 'hidden';
+            contextMenu.classList.add('active');
+            
+            const menuRect = contextMenu.getBoundingClientRect();
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
+            
+            // Se o menu for maior que a tela, centraliza
+            if (menuRect.width > windowWidth * 0.9 || menuRect.height > windowHeight * 0.8) {
+                menuX = (windowWidth - menuRect.width) / 2 + scrollX;
+                menuY = (windowHeight - menuRect.height) / 2 + scrollY;
+            } else {
+                // Ajusta X se o menu sair da tela pela direita
+                if (menuX + menuRect.width > windowWidth + scrollX) {
+                    menuX = e.pageX - menuRect.width;
+                }
+                
+                // Ajusta X se ainda sair da tela pela esquerda
+                if (menuX < scrollX) {
+                    menuX = scrollX + 10;
+                }
+                
+                // Ajusta Y se o menu sair da tela por baixo
+                if (menuY + menuRect.height > windowHeight + scrollY) {
+                    menuY = e.pageY - menuRect.height;
+                }
+                
+                // Ajusta Y se ainda sair da tela por cima
+                if (menuY < scrollY) {
+                    menuY = scrollY + 10;
+                }
+            }
+            
+            // Garante que o menu não saia dos limites mínimos
+            menuX = Math.max(scrollX + 5, Math.min(menuX, windowWidth + scrollX - menuRect.width - 5));
+            menuY = Math.max(scrollY + 5, Math.min(menuY, windowHeight + scrollY - menuRect.height - 5));
+            
+            // Aplica a posição final
+            contextMenu.style.left = menuX + 'px';
+            contextMenu.style.top = menuY + 'px';
             contextMenu.style.transform = 'none';
+            contextMenu.style.visibility = 'visible';
         }
         
-        contextMenu.classList.add('active');
+        // Para mobile, adiciona a classe active aqui (para desktop já foi adicionada acima)
+        if (this.isMobile) {
+            contextMenu.classList.add('active');
+        }
         
         // Adiciona overlay para mobile
         if (this.isMobile) {
@@ -1186,24 +1221,65 @@ class StickyWebBoard {
             this.toggleTextFormat('italic', 'context');
         };
         
-        // Duplicar post-it
-        document.getElementById('duplicatePostit').onclick = () => {
-            this.duplicatePostit(postit);
-            this.hideContextMenu();
-        };
+        // Limpar event listeners anteriores e adicionar novos
+        const deleteBtn = document.getElementById('deletePostit');
+        const cloneBtn = document.getElementById('clonePostit');
+        const cloneEmptyBtn = document.getElementById('clonePostitEmpty');
         
-        // Deletar post-it
-        document.getElementById('deletePostit').onclick = () => {
+        // Remove listeners antigos
+        deleteBtn.replaceWith(deleteBtn.cloneNode(true));
+        cloneBtn.replaceWith(cloneBtn.cloneNode(true));
+        cloneEmptyBtn.replaceWith(cloneEmptyBtn.cloneNode(true));
+        
+        // Adiciona novos listeners
+        document.getElementById('deletePostit').addEventListener('click', () => {
             this.deletePostit(postit);
             this.hideContextMenu();
-        };
+        });
+        
+        document.getElementById('clonePostit').addEventListener('click', () => {
+            this.clonePostit(postit, false);
+            this.hideContextMenu();
+        });
+        
+        document.getElementById('clonePostitEmpty').addEventListener('click', () => {
+            this.clonePostit(postit, true);
+            this.hideContextMenu();
+        });
+        
+        // Botão de fechar menu
+        const closeBtn = document.getElementById('contextMenuClose');
+        if (closeBtn) {
+            closeBtn.replaceWith(closeBtn.cloneNode(true));
+            const newCloseBtn = document.getElementById('contextMenuClose');
+            newCloseBtn.addEventListener('click', (e) => {
+                console.log('Botão de fechar clicado');
+                e.preventDefault();
+                e.stopPropagation();
+                this.hideContextMenu();
+            });
+            console.log('Event listener do botão de fechar adicionado');
+        } else {
+            console.error('Botão contextMenuClose não encontrado');
+        }
     }
 
     /**
      * Esconde menu de contexto
      */
     hideContextMenu() {
-        document.getElementById('contextMenu').classList.remove('active');
+        console.log('hideContextMenu chamada');
+        const contextMenu = document.getElementById('contextMenu');
+        if (contextMenu) {
+            console.log('Classes antes:', contextMenu.classList.toString());
+            contextMenu.classList.remove('active');
+            // Remove qualquer style inline de display que possa estar interferindo
+            contextMenu.style.display = '';
+            contextMenu.style.visibility = '';
+            console.log('Classes depois:', contextMenu.classList.toString());
+            console.log('Display style:', window.getComputedStyle(contextMenu).display);
+            console.log('Menu de contexto fechado');
+        }
         this.contextMenuTarget = null;
         this.removeContextMenuOverlay();
     }
@@ -1275,6 +1351,67 @@ class StickyWebBoard {
         if (this.isOnline && this.userDocRef) {
             this.syncWithFirebase();
         }
+    }
+
+    /**
+     * Clona um post-it com as mesmas configurações
+     * @param {Object} originalPostit - Post-it original para clonar
+     * @param {boolean} isEmpty - Se true, cria post-it vazio; se false, copia o texto
+     */
+    clonePostit(originalPostit, isEmpty = false) {
+        // Calcula a posição do novo post-it (ao lado direito)
+        let newX = originalPostit.position.x + originalPostit.size.width + 20;
+        let newY = originalPostit.position.y;
+        
+        // Se não couber na horizontal, coloca embaixo
+        const boardWidth = this.boardData.board.width;
+        if (newX + originalPostit.size.width > boardWidth) {
+            newX = originalPostit.position.x;
+            newY = originalPostit.position.y + originalPostit.size.height + 20;
+        }
+        
+        // Cria o novo post-it com as mesmas configurações
+        const clonedPostit = {
+            id: this.generateId(),
+            position: { x: newX, y: newY },
+            size: { 
+                width: originalPostit.size.width, 
+                height: originalPostit.size.height 
+            },
+            color: originalPostit.color,
+            text: isEmpty ? "Clique para editar" : originalPostit.text,
+            textColor: originalPostit.textColor,
+            font: { 
+                family: originalPostit.font.family, 
+                size: originalPostit.font.size,
+                bold: originalPostit.font.bold || false,
+                italic: originalPostit.font.italic || false
+            },
+            zIndex: this.getMaxZIndex() + 1
+        };
+
+        // Adiciona ao histórico
+        this.addToHistory({
+            type: 'create',
+            postit: JSON.parse(JSON.stringify(clonedPostit))
+        });
+
+        // Adiciona ao board e renderiza
+        this.boardData.postits.push(clonedPostit);
+        this.renderPostit(clonedPostit);
+        this.checkBoardExpansion(clonedPostit.position.x, clonedPostit.position.y, clonedPostit.size.width, clonedPostit.size.height);
+        
+        // Salva imediatamente no localStorage e Firebase
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+        this.markUnsavedChanges();
+        
+        // Força salvamento imediato no Firebase
+        if (this.isOnline && this.userDocRef) {
+            this.syncWithFirebase();
+        }
+        
+        // Mostra mensagem de sucesso
+        this.showStatus(`Post-it ${isEmpty ? 'vazio ' : ''}clonado com sucesso!`);
     }
 
     /**
@@ -1993,6 +2130,65 @@ class StickyWebBoard {
                 console.error('Erro ao fazer logout:', error);
             }
         }
+    }
+
+    /**
+     * Configura eventos globais para o menu de contexto
+     */
+    setupContextMenuGlobalEvents() {
+        // Remove listeners anteriores se existirem
+        if (this.contextMenuClickHandler) {
+            document.removeEventListener('click', this.contextMenuClickHandler);
+        }
+        if (this.contextMenuRightClickHandler) {
+            document.removeEventListener('contextmenu', this.contextMenuRightClickHandler);
+        }
+
+        // Fecha context menu com clique esquerdo fora
+        this.contextMenuClickHandler = (e) => {
+            const contextMenu = document.getElementById('contextMenu');
+            
+            console.log('Click detectado:', {
+                target: e.target,
+                menuAtivo: contextMenu?.classList.contains('active'),
+                isPostit: e.target.closest('.postit'),
+                isMenu: contextMenu?.contains(e.target)
+            });
+            
+            // Se o menu está ativo e clicou fora dele
+            if (contextMenu && contextMenu.classList.contains('active')) {
+                const clickedPostit = e.target.closest('.postit');
+                const clickedMenu = contextMenu.contains(e.target);
+                
+                if (!clickedPostit && !clickedMenu) {
+                    console.log('Fechando menu por clique fora');
+                    this.hideContextMenu();
+                }
+            }
+        };
+
+        // Fecha context menu com clique direito no menu
+        this.contextMenuRightClickHandler = (e) => {
+            const contextMenu = document.getElementById('contextMenu');
+            
+            console.log('Right click detectado:', {
+                target: e.target,
+                menuAtivo: contextMenu?.classList.contains('active'),
+                isMenu: contextMenu?.contains(e.target)
+            });
+            
+            // Se o menu está ativo e clicou direito nele, fecha o menu
+            if (contextMenu && contextMenu.classList.contains('active') && 
+                contextMenu.contains(e.target)) {
+                console.log('Fechando menu por right click no menu');
+                e.preventDefault();
+                this.hideContextMenu();
+            }
+        };
+
+        // Adiciona os listeners sem capture para testar
+        document.addEventListener('click', this.contextMenuClickHandler, false);
+        document.addEventListener('contextmenu', this.contextMenuRightClickHandler, false);
     }
 }
 
