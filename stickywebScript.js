@@ -45,22 +45,27 @@ class StickyWebBoard {
      */
     init() {
         this.initializeFirebase();
-        this.checkAuthentication();
+        this.setupEventListeners();
+        this.setupKeyboardShortcuts();
+        this.startAutoSave();
+        this.setupBeforeUnload();
+        this.setupNetworkStatus();
+        
+        // Carrega dados locais primeiro (fallback)
         this.loadBoardData();
         
-        // Aplica modo noturno se estiver ativado
+        // Aplica modo noturno se estiver ativado localmente
         if (this.isDarkMode) {
             this.applyDarkMode();
         }
         this.updateModeIcon();
         
-        this.setupEventListeners();
+        // Renderiza o board com dados locais primeiro
         this.renderBoard();
-        this.setupKeyboardShortcuts();
-        this.startAutoSave();
-        this.setupBeforeUnload();
-        this.setupNetworkStatus();
         this.updateBoardSize();
+        
+        // Inicia verificação de autenticação (que carregará dados do Firebase)
+        this.checkAuthentication();
     }
 
     /**
@@ -103,6 +108,8 @@ class StickyWebBoard {
             const saved = localStorage.getItem('stickyWebBoardData');
             if (saved) {
                 this.boardData = { ...this.getDefaultBoardData(), ...JSON.parse(saved) };
+                // Valida e corrige a estrutura dos post-its
+                this.validateAndFixPostits();
             }
             
             // Carrega preferências do modo noturno
@@ -114,6 +121,45 @@ class StickyWebBoard {
             console.error('Erro ao carregar dados do board:', error);
             this.boardData = this.getDefaultBoardData();
         }
+    }
+
+    /**
+     * Valida e corrige a estrutura dos post-its
+     */
+    validateAndFixPostits() {
+        if (!this.boardData.postits || !Array.isArray(this.boardData.postits)) {
+            this.boardData.postits = [];
+            return;
+        }
+
+        this.boardData.postits.forEach(postit => {
+            // Garantir que font existe e tem todas as propriedades
+            if (!postit.font || typeof postit.font !== 'object') {
+                postit.font = {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    bold: false,
+                    italic: false
+                };
+            } else {
+                // Garantir que todas as propriedades existem
+                if (!postit.font.family) postit.font.family = 'Arial, sans-serif';
+                if (!postit.font.size) postit.font.size = 14;
+                if (postit.font.bold === undefined) postit.font.bold = false;
+                if (postit.font.italic === undefined) postit.font.italic = false;
+            }
+
+            // Garantir outras propriedades essenciais
+            if (!postit.id) postit.id = this.generateId();
+            if (!postit.text) postit.text = 'Clique para editar';
+            if (!postit.color) postit.color = '#ffeb3b';
+            if (!postit.textColor) postit.textColor = '#222222';
+            if (!postit.position) postit.position = { x: 100, y: 100 };
+            if (!postit.size) postit.size = { width: 180, height: 180 };
+            if (!postit.zIndex) postit.zIndex = 1;
+        });
+
+        console.log('Post-its validados e corrigidos:', this.boardData.postits.length);
     }
 
     /**
@@ -646,6 +692,8 @@ class StickyWebBoard {
      * Renderiza o board completo
      */
     renderBoard() {
+        console.log('Renderizando board com', this.boardData.postits?.length || 0, 'post-its');
+        
         const boardContainer = document.getElementById('boardContainer');
         this.updateBoardBackground(this.boardData.board.backgroundColor);
         this.updateBoardSize();
@@ -655,9 +703,12 @@ class StickyWebBoard {
         boardContainer.querySelectorAll('.postit').forEach(p => p.remove());
         
         // Renderiza todos os post-its
-        this.boardData.postits.forEach(postit => {
-            this.renderPostit(postit);
-        });
+        if (this.boardData.postits && this.boardData.postits.length > 0) {
+            this.boardData.postits.forEach(postit => {
+                console.log('Renderizando post-it:', postit.id, postit.text);
+                this.renderPostit(postit);
+            });
+        }
 
         // Atualiza controles do menu
         this.updateMenuControls();
@@ -672,6 +723,8 @@ class StickyWebBoard {
         if (this.isMobile) {
             this.optimizeMobileBoard();
         }
+        
+        console.log('Board renderizado com sucesso');
     }
 
     /**
@@ -731,8 +784,20 @@ class StickyWebBoard {
         textarea.className = 'postit-content';
         textarea.value = this.sanitizeText(postit.text);
         textarea.style.color = postit.textColor;
-        textarea.style.fontFamily = postit.font.family;
-        textarea.style.fontSize = postit.font.size + 'px';
+        
+        // Garantir que postit.font existe e tem todas as propriedades necessárias
+        if (!postit.font) {
+            postit.font = {
+                family: 'Arial, sans-serif',
+                size: 14,
+                bold: false,
+                italic: false
+            };
+        }
+        
+        // Aplicar estilos da fonte com valores padrão
+        textarea.style.fontFamily = postit.font.family || 'Arial, sans-serif';
+        textarea.style.fontSize = (postit.font.size || 14) + 'px';
         textarea.style.fontWeight = postit.font.bold ? 'bold' : 'normal';
         textarea.style.fontStyle = postit.font.italic ? 'italic' : 'normal';
         textarea.setAttribute('readonly', 'true');
@@ -1157,19 +1222,29 @@ class StickyWebBoard {
         
         if (!postit) return;
         
+        // Garantir que postit.font existe
+        if (!postit.font) {
+            postit.font = {
+                family: 'Arial, sans-serif',
+                size: 14,
+                bold: false,
+                italic: false
+            };
+        }
+        
         this.contextMenuTarget = { element: postitElement, postit };
         
         // Preenche valores atuais
         document.getElementById('contextPostitColor').value = postit.color;
         document.getElementById('contextTextColor').value = postit.textColor;
-        document.getElementById('contextFontSize').value = postit.font.size;
-        document.getElementById('contextFontSizeValue').textContent = postit.font.size + 'px';
+        document.getElementById('contextFontSize').value = postit.font.size || 14;
+        document.getElementById('contextFontSizeValue').textContent = (postit.font.size || 14) + 'px';
         document.getElementById('contextPostitSize').value = postit.size.width;
         document.getElementById('contextPostitSizeValue').textContent = postit.size.width + 'px';
         
         // Formatação
-        document.getElementById('contextBoldBtn').classList.toggle('active', postit.font.bold);
-        document.getElementById('contextItalicBtn').classList.toggle('active', postit.font.italic);
+        document.getElementById('contextBoldBtn').classList.toggle('active', postit.font.bold || false);
+        document.getElementById('contextItalicBtn').classList.toggle('active', postit.font.italic || false);
         
         // Posiciona menu
         if (this.isMobile) {
@@ -1269,6 +1344,9 @@ class StickyWebBoard {
         // Tamanho da fonte
         document.getElementById('contextFontSize').oninput = (e) => {
             const size = parseInt(e.target.value);
+            if (!postit.font) {
+                postit.font = { family: 'Arial, sans-serif', size: 14, bold: false, italic: false };
+            }
             postit.font.size = size;
             element.querySelector('.postit-content').style.fontSize = size + 'px';
             document.getElementById('contextFontSizeValue').textContent = size + 'px';
@@ -1459,10 +1537,10 @@ class StickyWebBoard {
             text: isEmpty ? "Clique para editar" : originalPostit.text,
             textColor: originalPostit.textColor,
             font: { 
-                family: originalPostit.font.family, 
-                size: originalPostit.font.size,
-                bold: originalPostit.font.bold || false,
-                italic: originalPostit.font.italic || false
+                family: originalPostit.font?.family || 'Arial, sans-serif', 
+                size: originalPostit.font?.size || 14,
+                bold: originalPostit.font?.bold || false,
+                italic: originalPostit.font?.italic || false
             },
             zIndex: this.getMaxZIndex() + 1
         };
@@ -1521,10 +1599,10 @@ class StickyWebBoard {
             color: originalPostit.color,
             textColor: originalPostit.textColor,
             font: {
-                family: originalPostit.font.family, // Adiciona family que estava faltando
-                size: originalPostit.font.size,
-                bold: originalPostit.font.bold,
-                italic: originalPostit.font.italic
+                family: originalPostit.font?.family || 'Arial, sans-serif',
+                size: originalPostit.font?.size || 14,
+                bold: originalPostit.font?.bold || false,
+                italic: originalPostit.font?.italic || false
             },
             zIndex: this.getMaxZIndex() + 1
         };
@@ -1819,31 +1897,56 @@ class StickyWebBoard {
      */
     async manualSave() {
         console.log('manualSave chamado');
+        console.log('Estado atual:', {
+            userDocRef: !!this.userDocRef,
+            currentUser: !!this.currentUser,
+            isOnline: this.isOnline,
+            hasUnsavedChanges: this.hasUnsavedChanges,
+            postitsCount: this.boardData.postits?.length || 0
+        });
         
         const saveButton = document.getElementById('saveButton');
         
         // Feedback visual
         saveButton.classList.add('saving');
+        this.showStatus('Salvando dados...');
         
         try {
             // Salva localmente primeiro
             localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             console.log('Dados salvos no localStorage');
             
-            // Força sincronização com Firebase mesmo sem mudanças pendentes
+            // Força sincronização com Firebase
             if (this.userDocRef && this.currentUser) {
+                console.log('Iniciando salvamento no Firebase...');
                 await this.saveToFirebase();
-                console.log('Dados salvos no Firebase');
+                console.log('Dados salvos no Firebase com sucesso');
+                
+                // Sucesso
+                saveButton.classList.remove('saving');
+                saveButton.classList.add('saved');
+                this.showStatus('Dados salvos na nuvem com sucesso!');
+                
+            } else {
+                console.warn('Firebase não disponível:', {
+                    userDocRef: !!this.userDocRef,
+                    currentUser: !!this.currentUser,
+                    authAvailable: !!this.auth
+                });
+                
+                // Salvou localmente mas não no Firebase
+                saveButton.classList.remove('saving');
+                saveButton.classList.add('saved');
+                this.showStatus('Dados salvos localmente. Firebase não disponível.');
             }
             
-            // Sucesso
-            saveButton.classList.remove('saving');
-            saveButton.classList.add('saved');
+            // Marca como sem mudanças pendentes
+            this.hasUnsavedChanges = false;
             
-            // Volta ao normal após 2 segundos
+            // Volta ao normal após 3 segundos
             setTimeout(() => {
                 saveButton.classList.remove('saved');
-            }, 2000);
+            }, 3000);
             
         } catch (error) {
             console.error('Erro ao salvar:', error);
@@ -1851,11 +1954,12 @@ class StickyWebBoard {
             // Erro
             saveButton.classList.remove('saving');
             saveButton.classList.add('error');
+            this.showStatus('Erro ao salvar: ' + error.message);
             
-            // Volta ao normal após 2 segundos
+            // Volta ao normal após 3 segundos
             setTimeout(() => {
                 saveButton.classList.remove('error');
-            }, 2000);
+            }, 3000);
         }
     }
 
@@ -1941,6 +2045,16 @@ class StickyWebBoard {
             const element = this.contextMenuTarget.element;
             const textarea = element.querySelector('.postit-content');
             
+            // Garantir que postit.font existe
+            if (!postit.font) {
+                postit.font = {
+                    family: 'Arial, sans-serif',
+                    size: 14,
+                    bold: false,
+                    italic: false
+                };
+            }
+            
             if (format === 'bold') {
                 postit.font.bold = !postit.font.bold;
                 document.getElementById('contextBoldBtn').classList.toggle('active', postit.font.bold);
@@ -1977,16 +2091,60 @@ class StickyWebBoard {
      * Inicializa o Firebase
      */
     initializeFirebase() {
+        console.log('Inicializando Firebase...');
+        console.log('Firebase disponível:', typeof firebase !== 'undefined');
+        
         if (typeof firebase !== 'undefined') {
-            this.auth = firebase.auth();
-            this.db = firebase.firestore();
-            
-            // Configurar persistência offline
-            this.db.enablePersistence().catch(err => {
-                console.warn('Persistência offline não disponível:', err);
-            });
+            try {
+                this.auth = firebase.auth();
+                
+                // Tenta conectar à database específica "stickyweb" primeiro, 
+                // depois fallback para default se der erro
+                try {
+                    // Primeiro tenta a database padrão
+                    this.db = firebase.firestore();
+                    console.log('Conectado à database padrão do Firestore');
+                } catch (dbError) {
+                    console.warn('Erro ao conectar à database padrão:', dbError);
+                    // Se houver uma database específica chamada "stickyweb", tente:
+                    // this.db = firebase.app().firestore('stickyweb');
+                    throw dbError;
+                }
+                
+                console.log('Firebase Auth inicializado:', !!this.auth);
+                console.log('Firebase Firestore inicializado:', !!this.db);
+                console.log('Project ID:', this.db.app.options.projectId);
+                console.log('Auth Domain:', this.db.app.options.authDomain);
+                
+                // Configurar persistência offline
+                this.db.enablePersistence().catch(err => {
+                    console.warn('Persistência offline não disponível:', err);
+                });
+                
+                console.log('Firebase inicializado com sucesso');
+                console.log('Configuração completa do Firebase:', {
+                    projectId: this.db.app.options.projectId,
+                    authDomain: this.db.app.options.authDomain,
+                    hasAuth: !!this.auth,
+                    hasDb: !!this.db,
+                    databaseType: 'firestore-default',
+                    apiKey: this.db.app.options.apiKey ? '***configurado***' : 'não configurado'
+                });
+                
+            } catch (error) {
+                console.error('Erro ao inicializar Firebase:', error);
+                console.error('Verifique se:');
+                console.error('1. O projeto Firebase está configurado corretamente');
+                console.error('2. As credenciais estão corretas');
+                console.error('3. O Firestore está habilitado no projeto');
+                console.error('4. Você tem permissões adequadas');
+                this.auth = null;
+                this.db = null;
+            }
         } else {
-            console.warn('Firebase não carregado. Funcionando em modo offline.');
+            console.warn('Firebase não carregado. Verifique se os scripts do Firebase foram carregados corretamente.');
+            this.auth = null;
+            this.db = null;
         }
     }
 
@@ -1994,18 +2152,43 @@ class StickyWebBoard {
      * Verifica se o usuário está autenticado
      */
     checkAuthentication() {
-        if (!this.auth) return;
+        console.log('Verificando autenticação...', {
+            auth: !!this.auth,
+            db: !!this.db,
+            projectId: this.db?.app?.options?.projectId
+        });
+        
+        if (!this.auth) {
+            console.log('Firebase auth não disponível, trabalhando offline');
+            this.showStatus('Trabalhando offline - Firebase Auth não disponível');
+            return;
+        }
 
         this.auth.onAuthStateChanged(user => {
             if (user) {
+                console.log('Usuário autenticado:', {
+                    email: user.email,
+                    uid: user.uid,
+                    projectId: this.db?.app?.options?.projectId
+                });
                 this.currentUser = user;
                 this.userDocRef = this.db.collection('users').doc(user.uid);
+                console.log('UserDocRef criado para coleção "users", documento:', user.uid);
+                console.log('Path da referência:', `users/${user.uid}`);
                 this.loadInitialDataFromFirebase(); // Carrega dados apenas uma vez
                 this.showStatus('Conectado como: ' + user.email);
             } else {
+                console.log('Usuário não autenticado');
                 this.currentUser = null;
                 this.userDocRef = null;
-                this.showStatus('Trabalhando offline');
+                
+                // Limpa listener em tempo real se existir
+                if (this.realtimeListener) {
+                    this.realtimeListener();
+                    this.realtimeListener = null;
+                }
+                
+                this.showStatus('Trabalhando offline - Usuário não autenticado');
                 // Só redireciona se não estiver já na página de login
                 if (!window.location.pathname.includes('stickyweblogin.html') && 
                     !window.location.pathname.includes('stickyweb.html')) {
@@ -2076,29 +2259,53 @@ class StickyWebBoard {
         this.syncInProgress = true;
         
         try {
+            console.log('Carregando dados do Firebase...');
             const doc = await this.userDocRef.get();
             
             if (doc.exists) {
                 const userData = doc.data();
+                console.log('Dados encontrados no Firebase:', userData);
+                
                 if (userData.boardData) {
+                    // Substitui completamente os dados locais pelos do Firebase
                     this.boardData = userData.boardData;
+                    
+                    // Valida e corrige a estrutura dos post-its
+                    this.validateAndFixPostits();
+                    
+                    // Salva no localStorage também para funcionamento offline
+                    localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+                    
+                    // Re-renderiza o board com os dados do Firebase
                     this.renderBoard();
                     this.applyBoardSettings();
-                    this.showStatus('Dados carregados da nuvem');
+                    this.showStatus('Dados carregados da nuvem (' + (this.boardData.postits?.length || 0) + ' post-its)');
+                    
+                    console.log('Board renderizado com dados do Firebase:', this.boardData.postits?.length, 'post-its');
+                } else {
+                    console.log('Nenhum boardData encontrado no Firebase');
                 }
                 
                 // Carrega preferência do modo noturno do Firebase
                 if (userData.preferences && userData.preferences.darkMode !== undefined) {
                     this.isDarkMode = userData.preferences.darkMode;
-                    this.applyDarkMode();
+                    if (this.isDarkMode) {
+                        this.applyDarkMode();
+                    }
                     localStorage.setItem('stickyWebDarkMode', this.isDarkMode.toString());
                 }
+                
+                // Configura listener em tempo real para sincronização
+                this.setupRealtimeListener();
+                
             } else {
-                // Primeira vez do usuário - criar documento
+                console.log('Documento não existe no Firebase, criando...');
+                // Primeira vez do usuário - criar documento com dados atuais
                 await this.saveToFirebase();
+                this.showStatus('Dados iniciais salvos na nuvem');
             }
             
-            console.log('Dados iniciais carregados do Firebase');
+            console.log('Dados iniciais carregados do Firebase com sucesso');
             
         } catch (error) {
             console.error('Erro ao carregar dados iniciais:', error);
@@ -2109,10 +2316,56 @@ class StickyWebBoard {
     }
 
     /**
+     * Configura listener em tempo real para sincronização automática
+     */
+    setupRealtimeListener() {
+        if (!this.userDocRef || this.realtimeListener) return;
+        
+        console.log('Configurando listener em tempo real...');
+        
+        this.realtimeListener = this.userDocRef.onSnapshot((doc) => {
+            if (!doc.exists) return;
+            
+            const userData = doc.data();
+            if (!userData.boardData) return;
+            
+            // Só atualiza se não estivermos editando e se há diferenças
+            if (!this.currentEditingPostit && !this.syncInProgress) {
+                const currentDataStr = JSON.stringify(this.boardData);
+                const newDataStr = JSON.stringify(userData.boardData);
+                
+                if (currentDataStr !== newDataStr) {
+                    console.log('Dados atualizados em tempo real do Firebase');
+                    this.boardData = userData.boardData;
+                    
+                    // Valida e corrige a estrutura dos post-its
+                    this.validateAndFixPostits();
+                    
+                    localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+                    this.renderBoard();
+                    this.showStatus('Dados sincronizados automaticamente');
+                }
+            }
+        }, (error) => {
+            console.error('Erro no listener em tempo real:', error);
+        });
+    }
+
+    /**
      * Salva dados no Firebase
      */
     async saveToFirebase() {
-        if (!this.userDocRef || !this.currentUser) return;
+        console.log('saveToFirebase chamado');
+        
+        if (!this.userDocRef || !this.currentUser) {
+            console.error('Firebase não configurado:', {
+                userDocRef: !!this.userDocRef,
+                currentUser: !!this.currentUser,
+                auth: !!this.auth,
+                db: !!this.db
+            });
+            throw new Error('Firebase não está configurado corretamente');
+        }
         
         try {
             const userData = {
@@ -2124,12 +2377,26 @@ class StickyWebBoard {
                 }
             };
             
+            console.log('Dados a serem salvos no Firebase:', {
+                email: userData.email,
+                postitsCount: userData.boardData.postits?.length || 0,
+                boardConfig: userData.boardData.board,
+                darkMode: userData.preferences.darkMode
+            });
+            
+            console.log('Enviando dados para Firebase...');
             await this.userDocRef.set(userData, { merge: true });
+            
             this.hasUnsavedChanges = false;
+            console.log('Dados salvos no Firebase com sucesso');
             this.showStatus('Dados salvos na nuvem');
             
         } catch (error) {
-            console.error('Erro ao salvar no Firebase:', error);
+            console.error('Erro detalhado ao salvar no Firebase:', {
+                message: error.message,
+                code: error.code,
+                stack: error.stack
+            });
             this.showStatus('Erro ao salvar. Dados mantidos localmente.');
             throw error; // Re-throw para que o manualSave possa capturar
         }
@@ -2480,6 +2747,148 @@ class StickyWebBoard {
     }
 
     /**
+     * Método de debug para verificar estado do Firebase
+     */
+    debugFirebaseState() {
+        const state = {
+            firebase: {
+                available: typeof firebase !== 'undefined',
+                version: typeof firebase !== 'undefined' ? firebase.SDK_VERSION : 'N/A'
+            },
+            auth: {
+                available: !!this.auth,
+                currentUser: !!this.currentUser,
+                userEmail: this.currentUser?.email || 'N/A',
+                userUID: this.currentUser?.uid || 'N/A'
+            },
+            firestore: {
+                available: !!this.db,
+                projectId: this.db?.app?.options?.projectId || 'N/A',
+                authDomain: this.db?.app?.options?.authDomain || 'N/A'
+            },
+            userDocRef: {
+                available: !!this.userDocRef,
+                path: this.userDocRef ? `users/${this.currentUser?.uid}` : 'N/A'
+            },
+            data: {
+                postitsCount: this.boardData?.postits?.length || 0,
+                hasUnsavedChanges: this.hasUnsavedChanges,
+                isOnline: this.isOnline
+            }
+        };
+        
+        console.group('🔍 Firebase Debug State');
+        console.table(state.firebase);
+        console.table(state.auth);
+        console.table(state.firestore);
+        console.table(state.userDocRef);
+        console.table(state.data);
+        console.groupEnd();
+        
+        return state;
+    }
+
+    /**
+     * Testa conectividade com Firebase
+     */
+    async testFirebaseConnection() {
+        console.group('🧪 Teste de Conexão Firebase');
+        
+        try {
+            if (!this.auth) {
+                throw new Error('Firebase Auth não inicializado');
+            }
+            
+            if (!this.db) {
+                throw new Error('Firebase Firestore não inicializado');
+            }
+            
+            if (!this.currentUser) {
+                throw new Error('Usuário não autenticado');
+            }
+            
+            if (!this.userDocRef) {
+                throw new Error('UserDocRef não está configurado');
+            }
+            
+            console.log('📋 Configuração atual:', {
+                projectId: this.db.app.options.projectId,
+                authDomain: this.db.app.options.authDomain,
+                userEmail: this.currentUser.email,
+                userUID: this.currentUser.uid,
+                collectionPath: `users/${this.currentUser.uid}`
+            });
+            
+            console.log('1️⃣ Testando leitura do documento...');
+            const doc = await this.userDocRef.get();
+            console.log('✅ Leitura bem-sucedida:', doc.exists ? 'Documento existe' : 'Documento não existe');
+            
+            if (doc.exists) {
+                const data = doc.data();
+                console.log('📄 Dados existentes:', {
+                    hasEmail: !!data.email,
+                    hasBoardData: !!data.boardData,
+                    postitsCount: data.boardData?.postits?.length || 0,
+                    lastUpdated: data.lastUpdated?.toDate?.() || 'N/A'
+                });
+            }
+            
+            console.log('2️⃣ Testando escrita no documento...');
+            await this.userDocRef.set({
+                testConnection: {
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'connection_test_ok',
+                    projectId: this.db.app.options.projectId
+                }
+            }, { merge: true });
+            console.log('✅ Escrita bem-sucedida');
+            
+            console.log('3️⃣ Verificando escrita...');
+            const verifyDoc = await this.userDocRef.get();
+            const testData = verifyDoc.data()?.testConnection;
+            console.log('✅ Verificação bem-sucedida:', testData);
+            
+            console.log('🎉 Todas as operações Firebase funcionaram corretamente!');
+            console.log('💡 O problema não é de conectividade. Verifique:');
+            console.log('   - Se o usuário está autenticado corretamente');
+            console.log('   - Se as regras do Firestore permitem read/write para usuários autenticados');
+            console.log('   - Se a coleção "users" tem as permissões corretas');
+            
+            return true;
+            
+        } catch (error) {
+            console.error('❌ Erro no teste Firebase:', error);
+            console.error('Detalhes do erro:', {
+                message: error.message,
+                code: error.code,
+                details: error.details || 'N/A'
+            });
+            
+            // Diagnóstico específico baseado no tipo de erro
+            if (error.code === 'permission-denied') {
+                console.error('🚫 PROBLEMA DE PERMISSÃO: Verifique as regras do Firestore');
+                console.error('   Regras sugeridas para desenvolvimento:');
+                console.error('   rules_version = "2";');
+                console.error('   service cloud.firestore {');
+                console.error('     match /databases/{database}/documents {');
+                console.error('       match /users/{userId} {');
+                console.error('         allow read, write: if request.auth != null && request.auth.uid == userId;');
+                console.error('       }');
+                console.error('     }');
+                console.error('   }');
+            } else if (error.code === 'unauthenticated') {
+                console.error('🔐 PROBLEMA DE AUTENTICAÇÃO: Usuário não está logado');
+            } else if (error.message.includes('network')) {
+                console.error('🌐 PROBLEMA DE REDE: Verifique sua conexão com a internet');
+            }
+            
+            return false;
+        } finally {
+            console.groupEnd();
+        }
+    }
+
+    /**
      * Atualiza todos os controles do menu com os valores atuais
      */
     updateMenuControls() {
@@ -2537,5 +2946,22 @@ class StickyWebBoard {
 
 // Inicializa a aplicação quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-    new StickyWebBoard();
+    // Cria instância global para debug
+    window.stickyWebBoard = new StickyWebBoard();
+    
+    // Adiciona métodos de debug ao window para acesso no console
+    window.debugFirebase = () => {
+        return window.stickyWebBoard.debugFirebaseState();
+    };
+    
+    window.testFirebaseConnection = async () => {
+        return await window.stickyWebBoard.testFirebaseConnection();
+    };
+    
+    window.testSave = async () => {
+        console.log('Testando salvamento manual...');
+        await window.stickyWebBoard.manualSave();
+    };
+    
+    console.log('StickyWeb carregado. Use debugFirebase(), testFirebaseConnection() ou testSave() no console para debug.');
 });
