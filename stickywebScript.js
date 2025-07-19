@@ -84,7 +84,7 @@ class StickyWebBoard {
                 lastFontSize: 16,
                 lastPostitColor: "#ffeb3b",
                 lastTextColor: "#222222",
-                lastBold: false,
+                lastBold: true,
                 lastItalic: false
             },
             postits: []
