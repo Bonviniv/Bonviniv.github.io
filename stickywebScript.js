@@ -120,9 +120,9 @@ class StickyWebBoard {
      * Salva dados no localStorage e Firebase
      */
     async saveBoardData() {
-        if (!this.hasUnsavedChanges) return;
-        
         try {
+            console.log('Salvando dados do board...', this.boardData);
+            
             // Salvar localmente primeiro
             localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
             this.hasUnsavedChanges = false;
@@ -133,6 +133,8 @@ class StickyWebBoard {
             } else {
                 this.pendingSync = true;
             }
+            
+            console.log('Dados salvos com sucesso');
         } catch (error) {
             console.error('Erro ao salvar dados do board:', error);
         }
@@ -234,9 +236,14 @@ class StickyWebBoard {
 
         // Save button
         const saveButton = document.getElementById('saveButton');
-        saveButton.addEventListener('click', () => {
-            this.manualSave();
-        });
+        if (saveButton) {
+            saveButton.addEventListener('click', () => {
+                console.log('Botão salvar clicado');
+                this.manualSave();
+            });
+        } else {
+            console.error('Botão salvar não encontrado');
+        }
 
         // Zoom controls
         document.getElementById('zoomIn').addEventListener('click', () => {
@@ -355,6 +362,12 @@ class StickyWebBoard {
             if (this.isMobile) this.closeMenu();
         });
 
+        // Reset defaults button
+        document.getElementById('resetDefaults').addEventListener('click', () => {
+            this.resetToDefaults();
+            if (this.isMobile) this.closeMenu();
+        });
+
         // Context menu
         document.addEventListener('contextmenu', (e) => {
             console.log('Contextmenu event:', {
@@ -382,20 +395,39 @@ class StickyWebBoard {
         });
 
         // Board context menu buttons
-        document.getElementById('createPostitAt').addEventListener('click', () => {
-            console.log('Botão "Criar Novo Post-it" clicado');
-            this.createPostitAtPosition();
-            this.hideBoardContextMenu();
-        });
+        const createPostitBtn = document.getElementById('createPostitAt');
+        const resetBoardColorBtn = document.getElementById('resetBoardColor');
+        
+        if (createPostitBtn) {
+            createPostitBtn.addEventListener('click', () => {
+                console.log('Botão "Criar Novo Post-it" clicado');
+                this.createPostitAtPosition();
+                this.hideBoardContextMenu();
+            });
+        } else {
+            console.error('Elemento createPostitAt não encontrado');
+        }
 
-        document.getElementById('resetBoardColor').addEventListener('click', () => {
-            console.log('Botão "Cor Padrão do Board" clicado');
-            this.resetBoardColorToDefault();
-            this.hideBoardContextMenu();
-        });
+        if (resetBoardColorBtn) {
+            resetBoardColorBtn.addEventListener('click', () => {
+                console.log('Botão "Cor Padrão do Board" clicado');
+                this.resetBoardColorToDefault();
+                this.hideBoardContextMenu();
+            });
+        } else {
+            console.error('Elemento resetBoardColor não encontrado');
+        }
 
         // Context menu event listeners
         this.setupContextMenuGlobalEvents();
+
+        // Teste de funcionalidades (temporário)
+        console.log('Elementos do DOM:', {
+            createPostitBtn: !!document.getElementById('createPostitAt'),
+            resetBoardColorBtn: !!document.getElementById('resetBoardColor'),
+            boardContextMenu: !!document.getElementById('boardContextMenu'),
+            saveButton: !!document.getElementById('saveButton')
+        });
 
         // Board events
         board.addEventListener('click', (e) => {
@@ -1786,6 +1818,8 @@ class StickyWebBoard {
      * Salvamento manual do board
      */
     async manualSave() {
+        console.log('manualSave chamado');
+        
         const saveButton = document.getElementById('saveButton');
         
         // Feedback visual
@@ -1794,10 +1828,12 @@ class StickyWebBoard {
         try {
             // Salva localmente primeiro
             localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
+            console.log('Dados salvos no localStorage');
             
             // Força sincronização com Firebase mesmo sem mudanças pendentes
             if (this.userDocRef && this.currentUser) {
                 await this.saveToFirebase();
+                console.log('Dados salvos no Firebase');
             }
             
             // Sucesso
@@ -2315,40 +2351,50 @@ class StickyWebBoard {
         console.log('Posição calculada:', { x, y });
 
         // Cria o post-it com as preferências atuais mas texto vazio
+        const prefs = this.boardData.userPreferences;
         const postit = {
-            id: Date.now().toString(),
+            id: this.generateId(),
+            position: { 
+                x: Math.max(0, x - 90), // Centraliza o post-it no clique
+                y: Math.max(0, y - 90)
+            },
+            size: { width: 180, height: 180 },
+            color: prefs.lastPostitColor,
             text: '', // Texto vazio
-            x: Math.max(0, x - 90), // Centraliza o post-it no clique
-            y: Math.max(0, y - 90),
-            width: 180,
-            height: 180,
-            backgroundColor: this.boardData.userPreferences.lastPostitColor,
-            textColor: this.boardData.userPreferences.lastTextColor,
-            fontSize: this.boardData.userPreferences.lastFontSize,
-            fontFamily: this.boardData.userPreferences.lastFontFamily,
-            isBold: this.boardData.userPreferences.lastBold,
-            isItalic: this.boardData.userPreferences.lastItalic,
+            textColor: prefs.lastTextColor,
+            font: { 
+                family: prefs.lastFontFamily, 
+                size: prefs.lastFontSize,
+                bold: prefs.lastBold || false,
+                italic: prefs.lastItalic || false
+            },
             zIndex: this.getMaxZIndex() + 1
         };
 
         console.log('Post-it criado:', postit);
 
-        // Adiciona à estrutura de dados
-        this.boardData.postits.push(postit);
-        
         // Adiciona ao histórico
         this.addToHistory({
             type: 'create',
-            data: { ...postit }
+            postit: JSON.parse(JSON.stringify(postit))
         });
+
+        // Adiciona à estrutura de dados
+        this.boardData.postits.push(postit);
+        
+        // Renderiza o post-it
+        this.renderPostit(postit);
+        
+        // Verifica expansão do board
+        this.checkBoardExpansion(postit.position.x, postit.position.y, postit.size.width, postit.size.height);
         
         // Marca como alteração não salva
         this.markUnsavedChanges();
         
-        // Renderiza o board
-        this.renderBoard();
+        // Salva no localStorage imediatamente
+        localStorage.setItem('stickyWebBoardData', JSON.stringify(this.boardData));
         
-        // Salva no localStorage e Firebase
+        // Salva no Firebase
         this.saveBoardData();
         
         console.log('Post-it adicionado ao board, total:', this.boardData.postits.length);
@@ -2361,8 +2407,19 @@ class StickyWebBoard {
                 this.startEditing(postitElement);
             } else {
                 console.error('Elemento do post-it não encontrado para edição');
+                console.log('Tentando buscar elemento novamente...');
+                // Tenta buscar novamente após um pequeno delay
+                setTimeout(() => {
+                    const retryElement = document.querySelector(`[data-id="${postit.id}"]`);
+                    if (retryElement) {
+                        console.log('Elemento encontrado na segunda tentativa');
+                        this.startEditing(retryElement);
+                    } else {
+                        console.error('Elemento ainda não encontrado após retry');
+                    }
+                }, 200);
             }
-        }, 100);
+        }, 150);
     }
 
     /**
