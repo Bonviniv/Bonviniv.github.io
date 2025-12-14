@@ -113,13 +113,9 @@
 /* ============================================ */
 @media (max-width: 1024px) and (max-height: 768px), 
        (max-width: 768px) {
-  /* Volume control menor */
+  /* Esconder volume control no mobile */
   #volume-control {
-    top: auto;
-    bottom: 10px;
-    right: 10px;
-    padding: 8px 12px;
-    gap: 8px;
+    display: none !important;
   }
   
   #volume-icon {

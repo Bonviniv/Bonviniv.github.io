@@ -14,25 +14,25 @@ const AudioSystem = {
    */
   async init() {
     try {
-      // Criar elemento de áudio
-      this.audio = new Audio(AUDIO_CONFIG.musicPath);
-      this.audio.loop = true;
-      
       // Detectar se é mobile
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
                        (window.innerWidth <= 1024 && window.innerHeight <= 768);
       
-      // Recuperar volume salvo ou usar valor padrão
-      let volume;
+      // No mobile, não inicializar áudio
       if (isMobile) {
-        // No mobile, sempre iniciar com volume 0
-        volume = 0;
-      } else {
-        // No desktop, usar volume salvo ou padrão
-        volume = parseFloat(sessionStorage.getItem('gameVolume'));
-        if (isNaN(volume)) {
-          volume = AUDIO_CONFIG.initialVolume || 0.25;
-        }
+        console.log('[Audio] Áudio desabilitado no mobile');
+        this.initialized = false;
+        return;
+      }
+      
+      // Criar elemento de áudio
+      this.audio = new Audio(AUDIO_CONFIG.musicPath);
+      this.audio.loop = true;
+      
+      // Recuperar volume salvo ou usar valor padrão
+      let volume = parseFloat(sessionStorage.getItem('gameVolume'));
+      if (isNaN(volume)) {
+        volume = AUDIO_CONFIG.initialVolume || 0.25;
       }
       
       // Garantir que o volume está no range válido
