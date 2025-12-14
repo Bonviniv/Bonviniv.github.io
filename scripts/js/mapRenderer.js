@@ -189,7 +189,7 @@ const MapRenderer = {
       tilePromises.push(this._loadImage(tilePath));
     }
     
-    this._updateProgress(30, 'Carregando tiles...');
+    this._updateProgress(30, 'Carregando ...');
     
     // Carregar todos os tiles em paralelo
     const tileImages = await Promise.all(tilePromises);
