@@ -92,15 +92,25 @@ const MapRenderer = {
    * @private
    */
   _adaptMapData(jsonData, mapName) {
+    // Criar set de tiles que não devem ser renderizados
+    const dontRenderSet = new Set();
+    if (jsonData.dont_render && Array.isArray(jsonData.dont_render)) {
+      jsonData.dont_render.forEach(([x, y]) => {
+        dontRenderSet.add(`${x}_${y}`);
+      });
+    }
+    
     // Criar array de tiles (GRID_SIZE x GRID_SIZE)
     // Tiles são nomeados como: {mapName}{X}_{Y}.png
     const tiles = [];
     for (let y = 0; y < GRID_SIZE; y++) {
       for (let x = 0; x < GRID_SIZE; x++) {
+        const shouldRender = !dontRenderSet.has(`${x}_${y}`);
         tiles.push({
           imagem: `${mapName}${x}_${y}.png`,
           colide: false,
-          trigger: null
+          trigger: null,
+          render: shouldRender
         });
       }
     }
@@ -173,20 +183,29 @@ const MapRenderer = {
     canvas.height = BASE_MAP_SIZE;
     const ctx = canvas.getContext('2d');
     
+    // Criar tile transparente único para reutilizar
+    const transparentTile = await this._createTransparentTile();
+    
     // Preparar array de promessas para carregar todos os tiles
     const tilePromises = [];
     const tilePositions = [];
     
     for (let i = 0; i < mapData.tiles.length; i++) {
       const tile = mapData.tiles[i];
-      const tilePath = getTilePath(mapData.cenario, tile.imagem);
       
       // Calcular posição no grid
       const x = i % GRID_SIZE;
       const y = Math.floor(i / GRID_SIZE);
       
-      tilePositions.push({ x, y });
-      tilePromises.push(this._loadImage(tilePath));
+      tilePositions.push({ x, y, shouldRender: tile.render !== false });
+      
+      // Se não deve renderizar, usar tile transparente
+      if (tile.render === false) {
+        tilePromises.push(Promise.resolve(transparentTile));
+      } else {
+        const tilePath = getTilePath(mapData.cenario, tile.imagem);
+        tilePromises.push(this._loadImage(tilePath));
+      }
     }
     
     this._updateProgress(30, 'Carregando ...');
@@ -199,6 +218,7 @@ const MapRenderer = {
     // Desenhar todos os tiles no canvas
     tileImages.forEach((img, index) => {
       const pos = tilePositions[index];
+      // Desenhar apenas se deveria renderizar (tiles transparentes são desenhados mas são vazios)
       ctx.drawImage(
         img,
         pos.x * BASE_TILE_SIZE,
@@ -210,6 +230,24 @@ const MapRenderer = {
     
     // Converter canvas para data URL
     return canvas.toDataURL('image/png');
+  },
+  
+  /**
+   * Cria um tile transparente vazio
+   * @returns {Promise<HTMLImageElement>}
+   * @private
+   */
+  async _createTransparentTile() {
+    // Criar canvas transparente
+    const canvas = document.createElement('canvas');
+    canvas.width = BASE_TILE_SIZE;
+    canvas.height = BASE_TILE_SIZE;
+    const ctx = canvas.getContext('2d');
+    
+    // Não desenhar nada, deixar transparente
+    // Converter para imagem
+    const dataURL = canvas.toDataURL('image/png');
+    return await this._loadImage(dataURL);
   },
   
   /**

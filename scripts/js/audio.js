@@ -18,8 +18,11 @@ const AudioSystem = {
       this.audio = new Audio(AUDIO_CONFIG.musicPath);
       this.audio.loop = true;
       
-      // Sempre começar com volume 0
-      let volume = 0;
+      // Recuperar volume salvo ou usar valor padrão
+      let volume = parseFloat(sessionStorage.getItem('gameVolume'));
+      if (isNaN(volume)) {
+        volume = AUDIO_CONFIG.initialVolume || 0.25;
+      }
       
       // Garantir que o volume está no range válido
       volume = Math.max(0, Math.min(1, volume));

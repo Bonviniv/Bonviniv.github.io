@@ -1,0 +1,147 @@
+/* ============================================ */
+/* GERAL.CSS - Estilos compartilhados entre cenários */
+/* ============================================ */
+
+/* ============================================ */
+/* CONTROLE DE VOLUME */
+/* ============================================ */
+#volume-control {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 20, 20, 0.9);
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+}
+
+#volume-icon {
+  color: white;
+  font-size: 22px;
+  transition: transform 0.2s;
+}
+
+#volume-icon:hover {
+  transform: scale(1.1);
+}
+
+#volume-slider.game-volume-slider {
+  width: 120px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #666666, #999999);
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+#volume-slider.game-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s;
+}
+
+#volume-slider.game-volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+#volume-slider.game-volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s;
+}
+
+#volume-slider.game-volume-slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+}
+
+#volume-value {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* ============================================ */
+/* CAIXA DE DIÁLOGO (GERADA PELOS TRIGGERS) */
+/* ============================================ */
+#dialog-box {
+  position: fixed;
+  left: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 400px;
+  width: 35%;
+  background: rgba(20, 20, 20, 0.7);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 1.6;
+  z-index: 150;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+#dialog-box.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* ============================================ */
+/* MEDIA QUERIES - MOBILE (GERAL) */
+/* ============================================ */
+@media (max-width: 1024px) and (max-height: 768px), 
+       (max-width: 768px) {
+  /* Volume control menor */
+  #volume-control {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  
+  #volume-icon {
+    font-size: 18px;
+  }
+  
+  #volume-slider.game-volume-slider {
+    width: 80px;
+  }
+  
+  #volume-value {
+    font-size: 12px;
+    min-width: 30px;
+  }
+  
+  /* Dialog box menor */
+  #dialog-box {
+    left: 10px;
+    top: 35%;
+    max-width: 240px;
+    width: 85%;
+    padding: 16px;
+    font-size: 15px;
+  }
+}

@@ -35,9 +35,15 @@ const UISystem = {
   _setupVolumeControl() {
     if (!this.volumeSlider) return;
     
-    // Definir valor inicial do slider (sempre 0)
-    this.volumeSlider.value = 0;
-    this._updateVolumeDisplay(0);
+    // Recuperar volume salvo ou usar valor padrão
+    let savedVolume = parseFloat(sessionStorage.getItem('gameVolume'));
+    if (isNaN(savedVolume)) {
+      savedVolume = 0.25; // Valor padrão se não houver volume salvo
+    }
+    
+    // Definir valor inicial do slider baseado no volume salvo
+    this.volumeSlider.value = Math.round(savedVolume * 100);
+    this._updateVolumeDisplay(savedVolume);
     
     // Listener para mudanças no slider
     this.volumeSlider.addEventListener('input', (e) => {

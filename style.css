@@ -39,38 +39,41 @@ body {
   z-index: 100;
 }
 
-#volume-slider {
+#volume-slider.game-volume-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 150px;
   height: 10px;
-  background: linear-gradient(to right, #7a7f7f 0%,#7a7f7f 15%,#c9cece 20%, #c9cece 50%, #c9cece 100%); /* Gradiente inicial */
+  background: linear-gradient(to right, #666666, #999999);
   border-radius: 5px;
   outline: none;
   /* Adicione esta transição para suavizar a mudança de cor */
   transition: background 0.3s ease;
 }
 
-#volume-slider::-webkit-slider-thumb {
+#volume-slider.game-volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
-  background-color: white;
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
   border-radius: 50%;
   cursor: pointer;
   position: relative;
   z-index: 1;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
-#volume-slider::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  background-color: white;
+#volume-slider.game-volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
   border-radius: 50%;
   cursor: pointer;
   position: relative;
   z-index: 1;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 
