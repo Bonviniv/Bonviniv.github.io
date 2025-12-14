@@ -290,6 +290,42 @@
     }
     
     /* ============================================ */
+    /* CAIXA DE INSTRUÇÃO */
+    /* ============================================ */
+    #instruction-box {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(76, 175, 80, 0.9);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: 600;
+      z-index: 160;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+      text-align: center;
+    }
+    
+    #instruction-box.hidden {
+      display: none;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translateX(-50%) scale(1.05);
+        opacity: 1;
+      }
+    }
+    
+    /* ============================================ */
     /* CONTROLES MOBILE */
     /* ============================================ */
     #mobile-controls {
@@ -724,6 +760,11 @@
       <!-- Texto será inserido via JS -->
     </div>
     
+    <!-- Caixa de instrução -->
+    <div id="instruction-box">
+      Use WASD to move
+    </div>
+    
     <!-- Controles mobile -->
     <div id="mobile-controls" class="hidden">
       <button class="mobile-btn" data-direction="UP">▲</button>
@@ -769,5 +810,30 @@
   <script src="../js/ui.js"></script>
   <script src="../js/debug.js"></script>
   <script src="../js/game.js"></script>
+  
+  <!-- Script de controle da caixa de instrução -->
+  <script>
+    (function() {
+      const instructionBox = document.getElementById('instruction-box');
+      let hasMovedOnce = false;
+      
+      // Verificar movimento do jogador
+      const originalMove = PlayerSystem.move;
+      PlayerSystem.move = function(direction) {
+        const result = originalMove.call(this, direction);
+        
+        // Se o movimento foi bem-sucedido e é o primeiro movimento
+        if (result && !hasMovedOnce) {
+          hasMovedOnce = true;
+          // Esconder a caixa de instrução
+          if (instructionBox) {
+            instructionBox.classList.add('hidden');
+          }
+        }
+        
+        return result;
+      };
+    })();
+  </script>
 </body>
 </html>
