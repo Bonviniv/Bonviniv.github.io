@@ -46,11 +46,15 @@ const UISystem = {
     this._updateVolumeDisplay(savedVolume);
     
     // Listener para mudanças no slider
-    this.volumeSlider.addEventListener('input', (e) => {
+    const handleVolumeChange = (e) => {
       const volume = parseInt(e.target.value) / 100;
       AudioSystem.setVolume(volume);
       this._updateVolumeDisplay(volume);
-    });
+    };
+    
+    // 'input' para desktop, 'change' para mobile
+    this.volumeSlider.addEventListener('input', handleVolumeChange);
+    this.volumeSlider.addEventListener('change', handleVolumeChange);
     
     // Listener para clicar no ícone (mute)
     if (this.volumeIcon) {

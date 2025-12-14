@@ -18,10 +18,21 @@ const AudioSystem = {
       this.audio = new Audio(AUDIO_CONFIG.musicPath);
       this.audio.loop = true;
       
+      // Detectar se é mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                       (window.innerWidth <= 1024 && window.innerHeight <= 768);
+      
       // Recuperar volume salvo ou usar valor padrão
-      let volume = parseFloat(sessionStorage.getItem('gameVolume'));
-      if (isNaN(volume)) {
-        volume = AUDIO_CONFIG.initialVolume || 0.25;
+      let volume;
+      if (isMobile) {
+        // No mobile, sempre iniciar com volume 0
+        volume = 0;
+      } else {
+        // No desktop, usar volume salvo ou padrão
+        volume = parseFloat(sessionStorage.getItem('gameVolume'));
+        if (isNaN(volume)) {
+          volume = AUDIO_CONFIG.initialVolume || 0.25;
+        }
       }
       
       // Garantir que o volume está no range válido
@@ -57,6 +68,12 @@ const AudioSystem = {
   _setupUserInteractionPlay() {
     const playOnInteraction = () => {
       if (this.audio && this.audio.paused) {
+        // Aplicar volume salvo antes de reproduzir
+        const savedVolume = parseFloat(sessionStorage.getItem('gameVolume'));
+        if (!isNaN(savedVolume)) {
+          this.audio.volume = savedVolume;
+        }
+        
         this.audio.play().catch(err => {
           console.error('Erro ao reproduzir áudio:', err);
         });
@@ -101,6 +118,9 @@ const AudioSystem = {
     if (this.audio) {
       this.audio.volume = volume;
       sessionStorage.setItem('gameVolume', volume.toString());
+      console.log('[Audio] Volume alterado para:', volume, 'Audio element:', this.audio);
+    } else {
+      console.warn('[Audio] Tentativa de alterar volume sem elemento de áudio inicializado');
     }
   },
   
