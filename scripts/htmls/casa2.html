@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>ScriptTownn - Casa 2</title>
+  
+  <style>
+    /* ============================================ */
+    /* CUSTOM FONT */
+    /* ============================================ */
+    @font-face {
+      font-family: 'CustomFont';
+      src: url('../outros/fonte.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    /* ============================================ */
+    /* RESET E BASE */
+    /* ============================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'CustomFont', monospace, sans-serif;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #000;
+    }
+    
+    /* ============================================ */
+    /* BACKGROUND FULLSCREEN */
+    /* ============================================ */
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 1;
+    }
+    
+    /* ============================================ */
+    /* CONTAINER PRINCIPAL */
+    /* ============================================ */
+    #game-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    
+    /* ============================================ */
+    /* CONTROLE DE VOLUME */
+    /* ============================================ */
+    #volume-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 12px 18px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 100;
+    }
+    
+    #volume-icon {
+      color: white;
+      font-size: 22px;
+      transition: transform 0.2s;
+    }
+    
+    #volume-icon:hover {
+      transform: scale(1.1);
+    }
+    
+    #volume-slider {
+      width: 120px;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+    
+    #volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+    
+    #volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    
+    #volume-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+    
+    #volume-slider::-moz-range-thumb:hover {
+      transform: scale(1.2);
+    }
+    
+    #volume-value {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      min-width: 40px;
+      text-align: right;
+    }
+    
+    /* ============================================ */
+    /* CONTAINER DO MAPA */
+    /* ============================================ */
+    #map-container {
+      position: relative;
+      transform-origin: center;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    
+    #map-image {
+      display: block;
+      width: 500px;
+      height: 500px;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    
+    /* ============================================ */
+    /* PERSONAGEM */
+    /* ============================================ */
+    #player-sprite {
+      position: absolute;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+      pointer-events: none;
+      z-index: 20;
+    }
+    
+    /* ============================================ */
+    /* CAIXA DE DIÁLOGO */
+    /* ============================================ */
+    #dialog-box {
+      position: fixed;
+      left: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 400px;
+      width: 35%;
+      background: rgba(20, 20, 20, 0.7);
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+      z-index: 150;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+    
+    #dialog-box.hidden {
+      display: none;
+      opacity: 0;
+    }
+    
+    /* ============================================ */
+    /* CONTROLES MOBILE */
+    /* ============================================ */
+    #mobile-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      grid-template-rows: repeat(3, 60px);
+      gap: 5px;
+      z-index: 100;
+    }
+    
+    #mobile-controls.hidden {
+      display: none;
+    }
+    
+    .mobile-btn {
+      width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      font-size: 24px;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      transition: background 0.1s;
+    }
+    
+    .mobile-btn:active {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(0.95);
+    }
+    
+    .mobile-btn[data-direction="UP"] {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    
+    .mobile-btn[data-direction="LEFT"] {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    
+    .mobile-btn[data-direction="DOWN"] {
+      grid-column: 2;
+      grid-row: 3;
+    }
+    
+    .mobile-btn[data-direction="RIGHT"] {
+      grid-column: 3;
+      grid-row: 2;
+    }
+    
+    /* ============================================ */
+    /* LOADING SCREEN */
+    /* ============================================ */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      color: white;
+    }
+    
+    #loading-screen.hidden {
+      display: none;
+    }
+    
+    /* ============================================ */
+    /* TRANSITION SCREEN */
+    /* ============================================ */
+    #transition-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 250;
+      color: white;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    #transition-screen.hidden {
+      display: none;
+    }
+    
+    #transition-text {
+      font-size: 24px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+    
+    #loading-text {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .progress-bar {
+      width: 300px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: white;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    /* ============================================ */
+    /* DEBUG OVERLAY */
+    /* ============================================ */
+    #debug-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 500px;
+      height: 500px;
+      pointer-events: none;
+      z-index: 50;
+    }
+    
+    #debug-overlay.hidden {
+      display: none;
+    }
+    
+    #debug-info {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #0f0;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 12px;
+      border-radius: 4px;
+      z-index: 150;
+      line-height: 1.4;
+    }
+    
+    #debug-info.hidden {
+      display: none;
+    }
+    
+    .debug-cell {
+      position: absolute;
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      pointer-events: none;
+      font-size: 8px;
+      color: rgba(255, 255, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .debug-collision {
+      background: rgba(255, 0, 0, 0.3);
+    }
+    
+    .debug-trigger {
+      background: rgba(0, 255, 0, 0.3);
+    }
+    
+    /* ============================================ */
+    /* AVISO DE ORIENTAÇÃO (MOBILE PORTRAIT) */
+    /* ============================================ */
+    #rotate-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    #rotate-message.show {
+      display: flex;
+    }
+    
+    #rotate-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      animation: rotate 2s infinite;
+    }
+    
+    @keyframes rotate {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(90deg); }
+    }
+    
+    #rotate-text {
+      font-size: 18px;
+    }
+    
+    /* ============================================ */
+    /* MENSAGEM DE ERRO */
+    /* ============================================ */
+    #error-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 0, 0, 0.9);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      text-align: center;
+      z-index: 250;
+      display: none;
+    }
+    
+    #error-message.show {
+      display: block;
+    }
+    
+    #error-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    #error-text {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    
+    #error-reload {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: white;
+      color: #d00;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    #error-reload:hover {
+      background: #f0f0f0;
+    }
+    
+    /* ============================================ */
+    /* MEDIA QUERIES - MOBILE */
+    /* ============================================ */
+    @media (max-width: 1024px) and (max-height: 768px), 
+           (max-width: 768px) {
+      /* Controles mobile menores */
+      #mobile-controls {
+        bottom: 10px;
+        left: 10px;
+        grid-template-columns: repeat(3, 45px);
+        grid-template-rows: repeat(3, 45px);
+        gap: 4px;
+      }
+      
+      .mobile-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
+      
+      /* Volume control menor */
+      #volume-control {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      
+      #volume-icon {
+        font-size: 18px;
+      }
+      
+      #volume-slider {
+        width: 80px;
+      }
+      
+      #volume-value {
+        font-size: 12px;
+        min-width: 30px;
+      }
+      
+      /* Dialog box menor */
+      #dialog-box {
+        left: 10px;
+        top: 35%;
+        max-width: 240px;
+        width: 85%;
+        padding: 16px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background fullscreen -->
+  <div id="background"></div>
+  
+  <!-- Container principal -->
+  <div id="game-container">
+    <!-- Controle de volume -->
+    <div id="volume-control">
+      <span id="volume-icon">🔊</span>
+      <input type="range" id="volume-slider" min="0" max="100" value="25">
+      <span id="volume-value">25%</span>
+    </div>
+    
+    <!-- Container do mapa -->
+    <div id="map-container">
+      <!-- Mapa será inserido aqui via JS -->
+      <!-- Personagem será inserido aqui via JS -->
+      <!-- Debug overlay -->
+      <div id="debug-overlay" class="hidden">
+        <!-- Grid de debug será inserida via JS -->
+      </div>
+    </div>
+    
+    <!-- Caixa de diálogo -->
+    <div id="dialog-box" class="hidden">
+      <!-- Texto será inserido via JS -->
+    </div>
+    
+    <!-- Controles mobile -->
+    <div id="mobile-controls" class="hidden">
+      <button class="mobile-btn" data-direction="UP">▲</button>
+      <button class="mobile-btn" data-direction="LEFT">◄</button>
+      <button class="mobile-btn" data-direction="DOWN">▼</button>
+      <button class="mobile-btn" data-direction="RIGHT">►</button>
+    </div>
+    
+    <!-- Transition screen -->
+    <div id="transition-screen" class="hidden">
+      <div id="transition-text">Carregando...</div>
+    </div>
+    
+    <!-- Loading screen -->
+    <div id="loading-screen">
+      <p id="loading-text">Carregando mapa...</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+    
+    <!-- Debug info (outside map-container) -->
+    <div id="debug-info" class="hidden"></div>
+    
+    <!-- Aviso de orientação (mobile portrait) -->
+    <div id="rotate-message">
+      <div id="rotate-icon">📱 ↻</div>
+      <p id="rotate-text">Por favor, vire seu dispositivo para modo paisagem (horizontal)</p>
+    </div>
+    
+    <!-- Mensagem de erro -->
+    <div id="error-message">
+      <div id="error-title">Erro</div>
+      <div id="error-text"></div>
+      <button id="error-reload" onclick="location.reload()">Recarregar</button>
+    </div>
+  </div>
+  
+  <!-- Scripts -->
+  <script src="../js/constants.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/scale.js"></script>
+  <script src="../js/mapRenderer.js"></script>
+  <script src="../js/player.js"></script>
+  <script src="../js/collision.js"></script>
+  <script src="../js/triggers.js"></script>
+  <script src="../js/controls.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/debug.js"></script>
+  <script src="../js/game.js"></script>
+</body>
+</html>
