@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (area.cv) {
                             const link = document.createElement('a');
                             link.href = area.cv;
-                            link.download = 'VitorBarbosaCV.pdf';
+                            link.download = 'Vitor_Barbosa_Full_Stack_Software_Engineer.pdf';
                             document.body.appendChild(link);
                             link.click();
                             document.body.removeChild(link);

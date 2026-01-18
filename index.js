@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Hope you enjoy your stay here!\n 
       \n 
   
-      <a href="assets/cv/VitorBarbosaCV.pdf" download="VitorBarbosaCV">Download CV</a>  |  <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">LinkedIn Profile</a> <br><br>
+      <a href="assets/cv/Vitor_Barbosa_Full_Stack_Software_Engineer.pdf" download="Vitor_Barbosa_Full_Stack_Software_Engineer">Download CV</a>  |  <a href="https://www.linkedin.com/in/vitorsantosbarbosa/" target="_blank">LinkedIn Profile</a> <br><br>
       <a href="https://bonviniv.github.io/projects.html" class="game-link">Other Projects</a>`;
 
     const textElement = createIndexTextDisplay();
